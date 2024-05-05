@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { CirclePlusIcon } from "lucide-react";
+import { CirclePlusIcon, Edit, Trash } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
 import {
     Dialog,
@@ -274,7 +274,7 @@ const PersonalExpenses = () => {
                                                         Ingreso
                                                     </Badge>
                                                 )}
-                                                <div className="flex flex-col gap-2">
+                                                <div className="flex flex-col">
                                                     <h4 className="font-semibold">
                                                         {
                                                             exp[
@@ -293,25 +293,35 @@ const PersonalExpenses = () => {
                                                     </h6>
                                                 </div>
                                             </div>
-                                            <div>
-                                                {exp[
-                                                    ExpensesInterfaceFields
-                                                        .IsExpense
-                                                ] === ExpenseType.Gasto ? (
-                                                    <p className="text-xl text-red-500">{`- $ ${
-                                                        exp[
-                                                            ExpensesInterfaceFields
-                                                                .Amount
-                                                        ]
-                                                    }`}</p>
-                                                ) : (
-                                                    <p className="text-xl text-green-600">{`+ $ ${
-                                                        exp[
-                                                            ExpensesInterfaceFields
-                                                                .Amount
-                                                        ]
-                                                    }`}</p>
-                                                )}
+                                            <div className="flex flex-row items-center space-x-4">
+                                                <div>
+                                                    {exp[
+                                                        ExpensesInterfaceFields
+                                                            .IsExpense
+                                                    ] === ExpenseType.Gasto ? (
+                                                        <p className="text-xl text-red-500">{`- $ ${
+                                                            exp[
+                                                                ExpensesInterfaceFields
+                                                                    .Amount
+                                                            ]
+                                                        }`}</p>
+                                                    ) : (
+                                                        <p className="text-xl text-green-600">{`+ $ ${
+                                                            exp[
+                                                                ExpensesInterfaceFields
+                                                                    .Amount
+                                                            ]
+                                                        }`}</p>
+                                                    )}
+                                                </div>
+                                                <div className="flex flex-row items-center space-x-2">
+                                                    <Button variant="outline" size="icon" className="rounded-full">
+                                                        <Edit className="h-4 w-4"/>
+                                                    </Button>
+                                                    <Button variant="outline" size="icon" className="rounded-full">
+                                                        <Trash className="h-4 w-4"/>
+                                                    </Button>
+                                                </div>
                                             </div>
                                         </div>
                                     </CardContent>
