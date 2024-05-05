@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete, Put } from '@nestjs/common';
 import { TransfersService } from './transfers.service';
 import { CreateTransferDto } from './dto/create-transfer.dto';
 import { UpdateTransferDto } from './dto/update-transfer.dto';
@@ -9,7 +9,9 @@ export class TransfersController {
 
   @Post()
   create(@Body() createTransferDto: CreateTransferDto) {
-    return this.transfersService.create(createTransferDto);
+    const transfer = this.transfersService.create(createTransferDto);
+    console.log("Transfer del lado del controller:\n", transfer);
+    return transfer;
   }
 
   @Get()
@@ -22,7 +24,7 @@ export class TransfersController {
     return this.transfersService.findOne(+id);
   }
 
-  @Patch(':id')
+  @Put(':id')
   update(@Param('id') id: string, @Body() updateTransferDto: UpdateTransferDto) {
     return this.transfersService.update(+id, updateTransferDto);
   }
