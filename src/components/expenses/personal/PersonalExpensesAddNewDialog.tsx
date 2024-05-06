@@ -12,6 +12,7 @@ import { CirclePlusIcon } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useForm, FormProvider } from "react-hook-form";
 import PersonalExpensesAddNewForm from "./PersonalExpensesAddNewForm";
+import { EntityWithIdFields } from "@/types/baseEntities";
 
 
 
@@ -25,6 +26,7 @@ const PersonalExpensesAddNewDialog = ({onAddExpense}: PersonalExpensesAddNewDial
     const [isExpense, setIsExpense] = useState<ExpenseType>(ExpenseType.Gasto);
 
     const defaultFormValues: ExpensesInterface = {
+        [EntityWithIdFields.Id]: 0,
         [ExpensesInterfaceFields.Image]: "",
         [ExpensesInterfaceFields.Amount]: 0,
         [ExpensesInterfaceFields.Description]: "",

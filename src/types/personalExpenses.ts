@@ -1,3 +1,5 @@
+import { EntityWithId } from "./baseEntities";
+
 export enum ExpensesInterfaceFields {
     Title = "titulo",
     Description = "descripcion",
@@ -11,7 +13,7 @@ export enum ExpenseType {
     Ingreso = "ingreso",
 }
 
-export interface ExpensesInterface {
+export interface ExpensesInterface extends EntityWithId {
     [ExpensesInterfaceFields.Title]: string;
     [ExpensesInterfaceFields.Description]: string;
     [ExpensesInterfaceFields.Image]?: string;

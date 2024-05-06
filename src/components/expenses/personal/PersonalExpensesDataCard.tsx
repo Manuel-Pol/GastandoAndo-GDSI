@@ -1,21 +1,25 @@
 import { Button } from "@/components/ui/button";
-import { Edit, Trash } from "lucide-react";
+import { Trash } from "lucide-react";
 
 import { Card, CardContent } from "@/components/ui/card";
 import { AlertCircle } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
 import { ExpensesInterface, ExpenseType, ExpensesInterfaceFields } from "@/types/personalExpenses";
+import PersonalExpensesEditDialog from "./PersonalExpensesEditDialog";
 
 interface PersonalExpensesDataCardProps {
-    expenses: ExpensesInterface[]
+    expenses: ExpensesInterface[],
+    triggerDeleteExp: (exp: ExpensesInterface) => void,
+    onSaveEdit: (exp: ExpensesInterface) => void
 }
 
 
-const PersonalExpensesDataCard = ({expenses}: PersonalExpensesDataCardProps) => {
+const PersonalExpensesDataCard = ({expenses, triggerDeleteExp, onSaveEdit}: PersonalExpensesDataCardProps) => {
+    
+    const onDelExp = (exp: ExpensesInterface) => triggerDeleteExp(exp)
 
     return (
-
         <div className="w-full">
             {expenses.length !== 0 ? (
                 <div className="flex flex-col space-y-5">
@@ -77,11 +81,9 @@ const PersonalExpensesDataCard = ({expenses}: PersonalExpensesDataCardProps) => 
                                             )}
                                         </div>
                                         <div className="flex flex-row items-center space-x-2">
-                                            <Button variant="outline" size="icon" className="rounded-full">
-                                                <Edit className="h-4 w-4"/>
-                                            </Button>
-                                            <Button variant="outline" size="icon" className="rounded-full">
-                                                <Trash className="h-4 w-4"/>
+                                            <PersonalExpensesEditDialog expense={exp} onSubmitEdit={onSaveEdit} />
+                                            <Button variant="outline" size="icon" className="rounded-full border-red-500" onClick={() => onDelExp(exp)}>
+                                                <Trash className="h-4 w-4" color='#EF4444'/>
                                             </Button>
                                         </div>
                                     </div>
