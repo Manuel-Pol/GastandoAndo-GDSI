@@ -3,7 +3,7 @@ import Home from './components/home/Home'
 import HomeLanding from './HomeLanding'
 import LayoutLogged from './components/layouts/LayoutLogged'
 import LayoutNotLogged from './components/layouts/LayoutNotLogged'
-import PersonalExpenses from './components/expenses/PersonalExpenses'
+import PersonalExpenses from './components/expenses/personal/PersonalExpenses'
 
 function App() {
 

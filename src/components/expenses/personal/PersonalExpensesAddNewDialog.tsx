@@ -1,0 +1,97 @@
+import { Button } from "@/components/ui/button";
+import { ExpenseType, ExpensesInterface, ExpensesInterfaceFields } from "@/types/personalExpenses"
+import {
+    Dialog,
+    DialogContent,
+    DialogClose,
+    DialogTitle,
+    DialogTrigger,
+    DialogFooter,
+} from "@/components/ui/dialog";
+import { CirclePlusIcon } from "lucide-react";
+import { useState, useEffect } from "react";
+import { useForm, FormProvider } from "react-hook-form";
+import PersonalExpensesAddNewForm from "./PersonalExpensesAddNewForm";
+
+
+
+interface PersonalExpensesAddNewDialogProps {
+    onAddExpense: (exp: ExpensesInterface) => void
+}
+
+
+const PersonalExpensesAddNewDialog = ({onAddExpense}: PersonalExpensesAddNewDialogProps) => {
+    const [open, setOpen] = useState<boolean>(false);
+    const [isExpense, setIsExpense] = useState<ExpenseType>(ExpenseType.Gasto);
+
+    const defaultFormValues: ExpensesInterface = {
+        [ExpensesInterfaceFields.Image]: "",
+        [ExpensesInterfaceFields.Amount]: 0,
+        [ExpensesInterfaceFields.Description]: "",
+        [ExpensesInterfaceFields.Title]: "",
+        [ExpensesInterfaceFields.IsExpense]: ExpenseType.Gasto,
+    };
+
+    const methods = useForm<ExpensesInterface>({
+        defaultValues: defaultFormValues,
+    });
+
+    useEffect(() => {
+        if (open) {
+            methods.reset(defaultFormValues);
+            setIsExpense(ExpenseType.Gasto);
+        }
+    }, [open]);
+
+    const onSubmitExpense = (data: ExpensesInterface) => {
+        const submitData: ExpensesInterface = {
+            ...data,
+            [ExpensesInterfaceFields.IsExpense]: isExpense,
+        };
+
+        onAddExpense(submitData)
+        setOpen(false);
+    };
+
+    const onChangeExpense = (expT: ExpenseType) => setIsExpense(expT)
+
+    return (
+        <div>
+            <Dialog>
+                <DialogTrigger asChild>
+                    <Button className="bg-[#E34400] hover:bg-[#E34400] rounded  text-white  py-6 "
+                            onClick={() => {
+                                    setOpen(true);
+                                }}
+                    >
+                        <CirclePlusIcon className="mr-2 text-white " />{" "}
+                        <p className="text-lg">Agregar</p>
+                    </Button>
+                </DialogTrigger>
+                {open && (
+                    <DialogContent className="sm:max-w-[425px] bg-white rounded">
+                        <DialogTitle className="text-black mb-2">
+                            Agregar Movimiento
+                        </DialogTitle>
+                        <FormProvider {...methods}>
+                            <PersonalExpensesAddNewForm onTriggerExpense={onChangeExpense}/>
+                        </FormProvider>
+                        <DialogFooter>
+                            <DialogClose asChild>
+                                <Button onClick={methods.handleSubmit(onSubmitExpense)}
+                                        disabled={!methods.watch(ExpensesInterfaceFields.Amount)}
+                                >
+                                    <CirclePlusIcon className="mr-2 items-center" />{" "}
+                                    Agregar
+                                    </Button>
+                            </DialogClose>
+                        </DialogFooter>
+                    </DialogContent>
+                )}
+            </Dialog>
+        </div>
+    )
+}
+
+
+export default PersonalExpensesAddNewDialog
