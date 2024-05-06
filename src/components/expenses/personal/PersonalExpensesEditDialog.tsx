@@ -69,7 +69,7 @@ const PersonalExpensesEditDialog = ({expense, onSubmitEdit}: PersonalExpensesEdi
                 {openEdit && (
                     <DialogContent className="sm:max-w-[425px] bg-white rounded">
                         <DialogTitle className="text-black mb-2">
-                            Agregar Movimiento
+                            Editar Movimiento
                         </DialogTitle>
                         <FormProvider {...methods}>
                             <PersonalExpensesAddNewForm onTriggerExpense={onChangeExpense}/>
