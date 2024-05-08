@@ -1,9 +1,9 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import './App.css'
 import Home from './components/home/Home'
 import HomeLanding from './HomeLanding'
 import LayoutLogged from './components/layouts/LayoutLogged'
 import LayoutNotLogged from './components/layouts/LayoutNotLogged'
+import PersonalExpenses from './components/expenses/personal/PersonalExpenses'
 
 function App() {
 
@@ -16,6 +16,7 @@ function App() {
           </Route>
           <Route element={<LayoutLogged />}>
             <Route path="home" element={<Home />} />
+            <Route path="individual" element={<PersonalExpenses />} />
           </Route>
         </Routes>
       </BrowserRouter>
