@@ -4,12 +4,13 @@ export interface PostTransfer {
   title: string;
   description?: string;
   amount: number;
-  date: Date;
+  date: string;
   isNegative: boolean;
 }
 
 export const createTransfer = (transfer: PostTransfer) => {
-  fetch(`${api}/transfer`, {
+  console.log(transfer);
+  fetch(`${api}/transfers`, {
     method: "POST",
     body: JSON.stringify(transfer),
     headers: { "Content-Type": "application/json" },

@@ -27,8 +27,8 @@ const parseExpenses = (data: ExpensesInterface) => {
   const transfer: PostTransfer = {
     title: data.titulo,
     description: data.descripcion ? data.descripcion : "",
-    amount: data.monto,
-    date: data.fecha,
+    amount: parseInt(data.monto),
+    date: data.fecha ? data.fecha : "2024-01-01T00:00:00",
     isNegative: data.esGasto == "gasto" ? true : false,
   };
   return transfer;
@@ -43,11 +43,11 @@ const PersonalExpensesAddNewDialog = ({
   const defaultFormValues: ExpensesInterface = {
     [EntityWithIdFields.Id]: 0,
     [ExpensesInterfaceFields.Image]: "",
-    [ExpensesInterfaceFields.Amount]: 0,
+    [ExpensesInterfaceFields.Amount]: "0",
     [ExpensesInterfaceFields.Description]: "",
     [ExpensesInterfaceFields.Title]: "",
     [ExpensesInterfaceFields.IsExpense]: ExpenseType.Gasto,
-    [ExpensesInterfaceFields.Date]: new Date("2024-01-01T00:00:00"),
+    [ExpensesInterfaceFields.Date]: "2024-01-01T00:00:00",
   };
 
   const methods = useForm<ExpensesInterface>({

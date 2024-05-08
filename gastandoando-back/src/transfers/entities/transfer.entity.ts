@@ -1,64 +1,59 @@
-import { Column, Entity, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
-
+import { Column, Entity, PrimaryColumn, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class Transfer {
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @PrimaryGeneratedColumn()
-    id: number;
+  @Column({ default: 10 })
+  amount: number;
 
-    @Column({default: 10})
-    amount: number;
+  @Column()
+  title: string;
 
-    @Column()
-    name: string;
+  @Column()
+  description: string;
 
-    @Column()
-    description: string;
+  //YYYY-MM-DDTHH:mm:ss
+  @Column()
+  date: Date;
 
-    //YYYY-MM-DDTHH:mm:ss
-    @Column()
-    date: Date;
+  @Column()
+  isNegative: boolean;
 
-    @Column()
-    isNegative: boolean;
+  getTitle(): string {
+    return this.title;
+  }
 
+  getAmount(): number {
+    return this.amount;
+  }
 
+  getDescription(): string {
+    return this.description;
+  }
 
-    getName(): string{
-        return this.name;
-    }
+  getDate(): Date {
+    return this.date;
+  }
 
-    getAmount(): number{
-        return this.amount;
-    }
+  getIsNegative(): boolean {
+    return this.isNegative;
+  }
 
-    getDescription(): string{
-        return this.description;
-    }
+  setTitle(newTitle: string) {
+    this.title = newTitle;
+  }
 
-    getDate(): Date{
-        return this.date;
-    }
+  setAmount(newAmount: number) {
+    this.amount = newAmount;
+  }
 
-    getIsNegative(): boolean{
-        return this.isNegative;
-    }
+  setDescription(newDescription) {
+    this.description = newDescription;
+  }
 
-    setName(newName: string){
-        this.name = newName;
-    }
-
-    setAmount(newAmount: number){
-        this.amount = newAmount;
-    }
-
-    setDescription(newDescription){
-        this.description = newDescription;
-    }
-
-    setDate(newDate: Date){
-        this.date = newDate;
-    }
+  setDate(newDate: Date) {
+    this.date = newDate;
+  }
 }
-
