@@ -10,12 +10,34 @@ exports.AppModule = void 0;
 const common_1 = require("@nestjs/common");
 const app_controller_1 = require("./app.controller");
 const app_service_1 = require("./app.service");
+const transfers_module_1 = require("./transfers/transfers.module");
+const typeorm_1 = require("@nestjs/typeorm");
+const transfer_entity_1 = require("./transfers/entities/transfer.entity");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
 exports.AppModule = AppModule = __decorate([
     (0, common_1.Module)({
-        imports: [],
+        imports: [
+            typeorm_1.TypeOrmModule.forRoot({
+                type: "postgres",
+                host: 'ep-super-pond-a4zoivba.us-east-1.aws.neon.tech',
+                port: 5432,
+                username: 'gandodb_owner',
+                password: 'fDZMoOiq7BY2',
+                database: 'gandodb',
+                entities: [transfer_entity_1.Transfer],
+                ssl: true,
+                extra: {
+                    ssl: {
+                        rejectUnauthorized: false,
+                        sslmode: 'require',
+                    },
+                },
+                synchronize: true,
+            }),
+            transfers_module_1.TransfersModule
+        ],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService],
     })

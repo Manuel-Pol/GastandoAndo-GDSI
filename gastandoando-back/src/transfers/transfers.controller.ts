@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete, Put, UsePipes, ValidationPipe } from '@nestjs/common';
 import { TransfersService } from './transfers.service';
 import { CreateTransferDto } from './dto/create-transfer.dto';
 import { UpdateTransferDto } from './dto/update-transfer.dto';
@@ -8,6 +8,7 @@ export class TransfersController {
   constructor(private readonly transfersService: TransfersService) {}
 
   @Post()
+  @UsePipes(new ValidationPipe({ transform: true }))
   create(@Body() createTransferDto: CreateTransferDto) {
     return this.transfersService.create(createTransferDto);
   }
@@ -22,7 +23,8 @@ export class TransfersController {
     return this.transfersService.findOne(+id);
   }
 
-  @Patch(':id')
+  @Put(':id')
+  @UsePipes(new ValidationPipe({ transform: true }))
   update(@Param('id') id: string, @Body() updateTransferDto: UpdateTransferDto) {
     return this.transfersService.update(+id, updateTransferDto);
   }
