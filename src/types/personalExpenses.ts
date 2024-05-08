@@ -17,6 +17,6 @@ export interface ExpensesInterface extends EntityWithId {
     [ExpensesInterfaceFields.Title]: string;
     [ExpensesInterfaceFields.Description]: string;
     [ExpensesInterfaceFields.Image]?: string;
-    [ExpensesInterfaceFields.Amount]: number;
+    [ExpensesInterfaceFields.Amount]?: number;
     [ExpensesInterfaceFields.IsExpense]: ExpenseType;
 }

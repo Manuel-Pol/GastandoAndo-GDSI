@@ -28,7 +28,7 @@ const PersonalExpensesAddNewDialog = ({onAddExpense}: PersonalExpensesAddNewDial
     const defaultFormValues: ExpensesInterface = {
         [EntityWithIdFields.Id]: 0,
         [ExpensesInterfaceFields.Image]: "",
-        [ExpensesInterfaceFields.Amount]: 0,
+        [ExpensesInterfaceFields.Amount]: undefined,
         [ExpensesInterfaceFields.Description]: "",
         [ExpensesInterfaceFields.Title]: "",
         [ExpensesInterfaceFields.IsExpense]: ExpenseType.Gasto,

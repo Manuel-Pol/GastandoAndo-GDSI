@@ -7,6 +7,7 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
 import { ExpensesInterface, ExpenseType, ExpensesInterfaceFields } from "@/types/personalExpenses";
 import PersonalExpensesEditDialog from "./PersonalExpensesEditDialog";
+import { numberFormatter } from "@/utils/formatters/numberFormatter";
 
 interface PersonalExpensesDataCardProps {
     expenses: ExpensesInterface[],
@@ -42,20 +43,10 @@ const PersonalExpensesDataCard = ({expenses, triggerDeleteExp, onSaveEdit}: Pers
                                         )}
                                         <div className="flex flex-col">
                                             <h4 className="font-semibold">
-                                                {
-                                                    exp[
-                                                        ExpensesInterfaceFields
-                                                            .Title
-                                                    ]
-                                                }
+                                                {exp[ExpensesInterfaceFields.Title]}
                                             </h4>
                                             <h6 className="font-semibold text-gray-400">
-                                                {
-                                                    exp[
-                                                        ExpensesInterfaceFields
-                                                            .Description
-                                                    ]
-                                                }
+                                                {exp[ExpensesInterfaceFields.Description]}
                                             </h6>
                                         </div>
                                     </div>
@@ -65,18 +56,14 @@ const PersonalExpensesDataCard = ({expenses, triggerDeleteExp, onSaveEdit}: Pers
                                                 ExpensesInterfaceFields
                                                     .IsExpense
                                             ] === ExpenseType.Gasto ? (
-                                                <p className="text-xl text-red-500">{`- $ ${
-                                                    exp[
-                                                        ExpensesInterfaceFields
-                                                            .Amount
-                                                    ]
+                                                <p className="text-xl text-red-500">{`- $ ${numberFormatter.toStringWithDecimals(
+                                                    parseFloat(exp[ExpensesInterfaceFields.Amount])
+                                                )
                                                 }`}</p>
                                             ) : (
-                                                <p className="text-xl text-green-600">{`+ $ ${
-                                                    exp[
-                                                        ExpensesInterfaceFields
-                                                            .Amount
-                                                    ]
+                                                <p className="text-xl text-green-600">{`+ $ ${numberFormatter.toStringWithDecimals(
+                                                    parseFloat(exp[ExpensesInterfaceFields.Amount])
+                                                )
                                                 }`}</p>
                                             )}
                                         </div>

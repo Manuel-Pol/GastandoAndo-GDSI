@@ -35,10 +35,11 @@ const PersonalExpensesEditDialog = ({expense, onSubmitEdit}: PersonalExpensesEdi
         [ExpensesInterfaceFields.IsExpense]: expense[ExpensesInterfaceFields.IsExpense]
     };
 
+    
     const methods = useForm<ExpensesInterface>({
         defaultValues: defaultFormValues,
     });
-
+    
     const onSubmitExpense = (data: ExpensesInterface) => {
         const submitData: ExpensesInterface = {
             ...data,

@@ -101,6 +101,7 @@ const PersonalExpensesAddNewForm = ({onTriggerExpense}: PersonalExpensesAddNewFo
                             <FormControl>
                                 <Select
                                     onValueChange={(e: ExpenseType) => onTriggerExpense(e)}
+                                    defaultValue={methods.getValues(ExpensesInterfaceFields.IsExpense)}
                                 >
                                     <SelectTrigger className="w-[200px]">
                                         <SelectValue placeholder="Tipo de movimiento" />
