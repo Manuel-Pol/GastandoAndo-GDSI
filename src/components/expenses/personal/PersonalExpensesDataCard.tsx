@@ -5,20 +5,26 @@ import { Card, CardContent } from "@/components/ui/card";
 import { AlertCircle } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
-import { ExpensesInterface, ExpenseType, ExpensesInterfaceFields } from "@/types/personalExpenses";
+import {
+    ExpensesInterface,
+    ExpenseType,
+    ExpensesInterfaceFields,
+} from "@/types/personalExpenses";
 import PersonalExpensesEditDialog from "./PersonalExpensesEditDialog";
 import { numberFormatter } from "@/utils/formatters/numberFormatter";
 
 interface PersonalExpensesDataCardProps {
-    expenses: ExpensesInterface[],
-    triggerDeleteExp: (exp: ExpensesInterface) => void,
-    onSaveEdit: (exp: ExpensesInterface) => void
+    expenses: ExpensesInterface[];
+    triggerDeleteExp: (exp: ExpensesInterface) => void;
+    onSaveEdit: (exp: ExpensesInterface) => void;
 }
 
-
-const PersonalExpensesDataCard = ({expenses, triggerDeleteExp, onSaveEdit}: PersonalExpensesDataCardProps) => {
-    
-    const onDelExp = (exp: ExpensesInterface) => triggerDeleteExp(exp)
+const PersonalExpensesDataCard = ({
+    expenses,
+    triggerDeleteExp,
+    onSaveEdit,
+}: PersonalExpensesDataCardProps) => {
+    const onDelExp = (exp: ExpensesInterface) => triggerDeleteExp(exp);
 
     return (
         <div className="w-full">
@@ -30,8 +36,7 @@ const PersonalExpensesDataCard = ({expenses, triggerDeleteExp, onSaveEdit}: Pers
                                 <div className="flex flex-row justify-between items-center">
                                     <div className="flex flex-row space-x-6 items-center">
                                         {exp[
-                                            ExpensesInterfaceFields
-                                                .IsExpense
+                                            ExpensesInterfaceFields.IsExpense
                                         ] === ExpenseType.Gasto ? (
                                             <Badge className="bg-[#EF4444]">
                                                 Gasto
@@ -41,12 +46,25 @@ const PersonalExpensesDataCard = ({expenses, triggerDeleteExp, onSaveEdit}: Pers
                                                 Ingreso
                                             </Badge>
                                         )}
+                                        <p>
+                                            {exp[ExpensesInterfaceFields.Date]}
+                                        </p>
                                         <div className="flex flex-col">
                                             <h4 className="font-semibold">
-                                                {exp[ExpensesInterfaceFields.Title]}
+                                                {
+                                                    exp[
+                                                        ExpensesInterfaceFields
+                                                            .Title
+                                                    ]
+                                                }
                                             </h4>
                                             <h6 className="font-semibold text-gray-400">
-                                                {exp[ExpensesInterfaceFields.Description]}
+                                                {
+                                                    exp[
+                                                        ExpensesInterfaceFields
+                                                            .Description
+                                                    ]
+                                                }
                                             </h6>
                                         </div>
                                     </div>
@@ -57,20 +75,39 @@ const PersonalExpensesDataCard = ({expenses, triggerDeleteExp, onSaveEdit}: Pers
                                                     .IsExpense
                                             ] === ExpenseType.Gasto ? (
                                                 <p className="text-xl text-red-500">{`- $ ${numberFormatter.toStringWithDecimals(
-                                                    parseFloat(exp[ExpensesInterfaceFields.Amount])
-                                                )
-                                                }`}</p>
+                                                    parseFloat(
+                                                        exp[
+                                                            ExpensesInterfaceFields
+                                                                .Amount
+                                                        ]
+                                                    )
+                                                )}`}</p>
                                             ) : (
                                                 <p className="text-xl text-green-600">{`+ $ ${numberFormatter.toStringWithDecimals(
-                                                    parseFloat(exp[ExpensesInterfaceFields.Amount])
-                                                )
-                                                }`}</p>
+                                                    parseFloat(
+                                                        exp[
+                                                            ExpensesInterfaceFields
+                                                                .Amount
+                                                        ]
+                                                    )
+                                                )}`}</p>
                                             )}
                                         </div>
                                         <div className="flex flex-row items-center space-x-2">
-                                            <PersonalExpensesEditDialog expense={exp} onSubmitEdit={onSaveEdit} />
-                                            <Button variant="outline" size="icon" className="rounded-full border-red-500" onClick={() => onDelExp(exp)}>
-                                                <Trash className="h-4 w-4" color='#EF4444'/>
+                                            <PersonalExpensesEditDialog
+                                                expense={exp}
+                                                onSubmitEdit={onSaveEdit}
+                                            />
+                                            <Button
+                                                variant="outline"
+                                                size="icon"
+                                                className="rounded-full border-red-500"
+                                                onClick={() => onDelExp(exp)}
+                                            >
+                                                <Trash
+                                                    className="h-4 w-4"
+                                                    color="#EF4444"
+                                                />
                                             </Button>
                                         </div>
                                     </div>
@@ -89,14 +126,13 @@ const PersonalExpensesDataCard = ({expenses, triggerDeleteExp, onSaveEdit}: Pers
                         <AlertTitle>Sin movimientos</AlertTitle>
                     </div>
                     <AlertDescription>
-                        No hay movimientos por el momento. Presiona en
-                        agregar para registrarlos
+                        No hay movimientos por el momento. Presiona en agregar
+                        para registrarlos
                     </AlertDescription>
                 </Alert>
             )}
         </div>
-    )
-} 
+    );
+};
 
-
-export default PersonalExpensesDataCard
+export default PersonalExpensesDataCard;

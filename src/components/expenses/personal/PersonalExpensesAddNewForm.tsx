@@ -1,7 +1,14 @@
-import { FormField, FormItem, FormLabel, FormControl, FormMessage, Form } from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
-import { ExpensesInterfaceFields, ExpenseType } from "@/types/personalExpenses"
+import {
+    FormField,
+    FormItem,
+    FormLabel,
+    FormControl,
+    FormMessage,
+    Form,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { ExpensesInterfaceFields, ExpenseType } from "@/types/personalExpenses";
 import {
     Select,
     SelectContent,
@@ -10,30 +17,27 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select";
-import { useFormContext } from "react-hook-form"
-
+import { useFormContext } from "react-hook-form";
+import { DatePicker } from "./DatePicker";
 
 interface PersonalExpensesAddNewFormProps {
-    onTriggerExpense: (expT: ExpenseType) => void
+    onTriggerExpense: (expT: ExpenseType) => void;
 }
 
-const PersonalExpensesAddNewForm = ({onTriggerExpense}: PersonalExpensesAddNewFormProps) => {
-
-    const methods = useFormContext()
+const PersonalExpensesAddNewForm = ({
+    onTriggerExpense,
+}: PersonalExpensesAddNewFormProps) => {
+    const methods = useFormContext();
 
     return (
         <Form {...methods}>
             <div className="flex flex-col gap-4 justify-center">
                 <FormField
                     control={methods.control}
-                    name={
-                        ExpensesInterfaceFields.Title
-                    }
+                    name={ExpensesInterfaceFields.Title}
                     render={({ field }) => (
                         <FormItem>
-                            <FormLabel>
-                                Titulo
-                            </FormLabel>
+                            <FormLabel>Titulo</FormLabel>
                             <FormControl>
                                 <Input {...field} />
                             </FormControl>
@@ -43,18 +47,12 @@ const PersonalExpensesAddNewForm = ({onTriggerExpense}: PersonalExpensesAddNewFo
                 />
                 <FormField
                     control={methods.control}
-                    name={
-                        ExpensesInterfaceFields.Description
-                    }
+                    name={ExpensesInterfaceFields.Description}
                     render={({ field }) => (
                         <FormItem>
-                            <FormLabel>
-                                Descripcion
-                            </FormLabel>
+                            <FormLabel>Descripcion</FormLabel>
                             <FormControl>
-                                <Textarea
-                                    {...field}
-                                />
+                                <Textarea {...field} />
                             </FormControl>
                             <FormMessage />
                         </FormItem>
@@ -62,24 +60,16 @@ const PersonalExpensesAddNewForm = ({onTriggerExpense}: PersonalExpensesAddNewFo
                 />
                 <FormField
                     control={methods.control}
-                    name={
-                        ExpensesInterfaceFields.Amount
-                    }
+                    name={ExpensesInterfaceFields.Amount}
                     render={({ field }) => (
                         <FormItem>
-                            <FormLabel className="mr-2">
-                                Monto
-                            </FormLabel>
+                            <FormLabel className="mr-2">Monto</FormLabel>
                             <div className="w-full">
                                 <FormControl>
                                     <Input
                                         placeholder=""
                                         {...field}
-                                        startAdornment={
-                                            <h5>
-                                                $
-                                            </h5>
-                                        }
+                                        startAdornment={<h5>$</h5>}
                                     />
                                 </FormControl>
                             </div>
@@ -90,37 +80,33 @@ const PersonalExpensesAddNewForm = ({onTriggerExpense}: PersonalExpensesAddNewFo
                 <FormField
                     rules={{ required: true }}
                     control={methods.control}
-                    name={
-                        ExpensesInterfaceFields.IsExpense
-                    }
+                    name={ExpensesInterfaceFields.IsExpense}
                     render={({ field }) => (
                         <FormItem>
-                            <FormLabel>
-                                Tipo de movimiento
-                            </FormLabel>
+                            <FormLabel>Tipo de movimiento</FormLabel>
                             <FormControl>
                                 <Select
-                                    onValueChange={(e: ExpenseType) => onTriggerExpense(e)}
-                                    defaultValue={methods.getValues(ExpensesInterfaceFields.IsExpense)}
+                                    onValueChange={(e: ExpenseType) =>
+                                        onTriggerExpense(e)
+                                    }
+                                    defaultValue={methods.getValues(
+                                        ExpensesInterfaceFields.IsExpense
+                                    )}
                                 >
                                     <SelectTrigger className="w-[200px]">
                                         <SelectValue placeholder="Tipo de movimiento" />
                                     </SelectTrigger>
-                                    <SelectContent>
+                                    <SelectContent className="bg-white">
                                         <SelectGroup>
                                             <SelectItem
                                                 className="cursor-pointer"
-                                                value={
-                                                    ExpenseType.Gasto
-                                                }
+                                                value={ExpenseType.Gasto}
                                             >
                                                 Gasto
                                             </SelectItem>
                                             <SelectItem
                                                 className="cursor-pointer"
-                                                value={
-                                                    ExpenseType.Ingreso
-                                                }
+                                                value={ExpenseType.Ingreso}
                                             >
                                                 Ingreso
                                             </SelectItem>
@@ -128,14 +114,29 @@ const PersonalExpensesAddNewForm = ({onTriggerExpense}: PersonalExpensesAddNewFo
                                     </SelectContent>
                                 </Select>
                             </FormControl>
+
                             <FormMessage />
                         </FormItem>
                     )}
                 />
+                <FormField
+                    control={methods.control}
+                    name={ExpensesInterfaceFields.Date}
+                    render={({ field }) => (
+                        <div className="space-y-2">
+                            <FormLabel>Fecha</FormLabel>
+                            <FormItem>
+                                <FormControl>
+                                    <DatePicker />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        </div>
+                    )}
+                />
             </div>
         </Form>
-    )
-}
+    );
+};
 
-
-export default PersonalExpensesAddNewForm
+export default PersonalExpensesAddNewForm;

@@ -6,6 +6,7 @@ export enum ExpensesInterfaceFields {
     Image = "imagen",
     Amount = "monto",
     IsExpense = "esGasto",
+    Date = "fecha",
 }
 
 export enum ExpenseType {
@@ -19,4 +20,5 @@ export interface ExpensesInterface extends EntityWithId {
     [ExpensesInterfaceFields.Image]?: string;
     [ExpensesInterfaceFields.Amount]?: number;
     [ExpensesInterfaceFields.IsExpense]: ExpenseType;
+    [ExpensesInterfaceFields.Date]: string;
 }
