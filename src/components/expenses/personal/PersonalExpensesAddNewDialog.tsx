@@ -1,104 +1,80 @@
-import { Button } from "@/components/ui/button";
-import {
-    ExpenseType,
-    ExpensesInterface,
-    ExpensesInterfaceFields,
-} from "@/types/personalExpenses";
-import {
-    Dialog,
-    DialogContent,
-    DialogClose,
-    DialogTitle,
-    DialogTrigger,
-    DialogFooter,
-} from "@/components/ui/dialog";
-import { CirclePlusIcon } from "lucide-react";
-import { useState, useEffect } from "react";
-import { useForm, FormProvider } from "react-hook-form";
-import PersonalExpensesAddNewForm from "./PersonalExpensesAddNewForm";
-import { EntityWithIdFields } from "@/types/baseEntities";
+import { Button } from '@/components/ui/button'
+import { ExpenseType, ExpensesInterface, ExpensesInterfaceFields } from '@/types/personalExpenses'
+import { Dialog, DialogContent, DialogClose, DialogTitle, DialogTrigger, DialogFooter } from '@/components/ui/dialog'
+import { CirclePlusIcon } from 'lucide-react'
+import { useState, useEffect } from 'react'
+import { useForm, FormProvider } from 'react-hook-form'
+import PersonalExpensesAddNewForm from './PersonalExpensesAddNewForm'
+import { EntityWithIdFields } from '@/types/baseEntities'
 
 interface PersonalExpensesAddNewDialogProps {
-    onAddExpense: (exp: ExpensesInterface) => void;
+    onAddExpense: (exp: ExpensesInterface) => void
 }
 
-const PersonalExpensesAddNewDialog = ({
-    onAddExpense,
-}: PersonalExpensesAddNewDialogProps) => {
-    const [open, setOpen] = useState<boolean>(false);
-    const [isExpense, setIsExpense] = useState<ExpenseType>(ExpenseType.Gasto);
+const PersonalExpensesAddNewDialog = ({ onAddExpense }: PersonalExpensesAddNewDialogProps) => {
+    const [open, setOpen] = useState<boolean>(false)
+    const [isExpense, setIsExpense] = useState<ExpenseType>(ExpenseType.Gasto)
 
     const defaultFormValues: ExpensesInterface = {
         [EntityWithIdFields.Id]: 0,
-        [ExpensesInterfaceFields.Image]: "",
+        [ExpensesInterfaceFields.Image]: '',
         [ExpensesInterfaceFields.Amount]: undefined,
-        [ExpensesInterfaceFields.Description]: "",
-        [ExpensesInterfaceFields.Title]: "",
+        [ExpensesInterfaceFields.Description]: '',
+        [ExpensesInterfaceFields.Title]: '',
         [ExpensesInterfaceFields.IsExpense]: ExpenseType.Gasto,
-    };
+        [ExpensesInterfaceFields.Date]: new Date()
+    }
 
     const methods = useForm<ExpensesInterface>({
-        defaultValues: defaultFormValues,
-    });
+        defaultValues: defaultFormValues
+    })
 
     useEffect(() => {
         if (open) {
-            methods.reset(defaultFormValues);
-            setIsExpense(ExpenseType.Gasto);
+            methods.reset(defaultFormValues)
+            setIsExpense(ExpenseType.Gasto)
         }
-    }, [open]);
+    }, [open])
 
     const onSubmitExpense = (data: ExpensesInterface) => {
         const submitData: ExpensesInterface = {
             ...data,
-            [ExpensesInterfaceFields.IsExpense]: isExpense,
-        };
+            [ExpensesInterfaceFields.IsExpense]: isExpense
+        }
 
-        onAddExpense(submitData);
-        setOpen(false);
-    };
+        onAddExpense(submitData)
+        setOpen(false)
+    }
 
-    const onChangeExpense = (expT: ExpenseType) => setIsExpense(expT);
+    const onChangeExpense = (expT: ExpenseType) => setIsExpense(expT)
 
     return (
         <div>
             <Dialog>
                 <DialogTrigger asChild>
                     <Button
-                        className="bg-[#E34400] hover:bg-[#E34400] rounded text-white py-6 "
+                        className='bg-[#E34400] hover:bg-[#E34400] rounded text-white py-6 '
                         onClick={() => {
-                            setOpen(true);
+                            setOpen(true)
                         }}
                     >
-                        <CirclePlusIcon className="mr-2 text-white " />{" "}
-                        <p className="text-lg">Agregar</p>
+                        <CirclePlusIcon className='mr-2 text-white ' /> <p className='text-lg'>Agregar</p>
                     </Button>
                 </DialogTrigger>
                 {open && (
-                    <DialogContent className="sm:max-w-[425px] bg-white rounded">
-                        <DialogTitle className="text-black">
-                            Agregar Movimiento
-                        </DialogTitle>
+                    <DialogContent className='sm:max-w-[425px] bg-white rounded'>
+                        <DialogTitle className='text-black'>Agregar Movimiento</DialogTitle>
                         <FormProvider {...methods}>
-                            <PersonalExpensesAddNewForm
-                                onTriggerExpense={onChangeExpense}
-                            />
+                            <PersonalExpensesAddNewForm onTriggerExpense={onChangeExpense} />
                         </FormProvider>
                         <DialogFooter>
                             <DialogClose asChild>
                                 <Button
-                                    className="rounded text-black hover:bg-neutral-300"
-                                    onClick={methods.handleSubmit(
-                                        onSubmitExpense
-                                    )}
-                                    disabled={
-                                        !methods.watch(
-                                            ExpensesInterfaceFields.Amount
-                                        )
-                                    }
+                                    className='rounded text-black hover:bg-neutral-300'
+                                    onClick={methods.handleSubmit(onSubmitExpense)}
+                                    disabled={!methods.watch(ExpensesInterfaceFields.Amount)}
                                 >
-                                    <CirclePlusIcon className="mr-2 items-center" />{" "}
-                                    Agregar
+                                    <CirclePlusIcon className='mr-2 items-center' /> Agregar
                                 </Button>
                             </DialogClose>
                         </DialogFooter>
@@ -106,7 +82,7 @@ const PersonalExpensesAddNewDialog = ({
                 )}
             </Dialog>
         </div>
-    );
-};
+    )
+}
 
-export default PersonalExpensesAddNewDialog;
+export default PersonalExpensesAddNewDialog
