@@ -1,19 +1,21 @@
 import { IsNotEmpty, IsString, IsNumber, Min } from 'class-validator';
+import { Recurrence } from '../entities/recurrence';
 
 export class CreateTransferDto {
+  @IsNumber()
+  @IsNotEmpty({ message: 'Debe incluir un monto.' })
+  @Min(0.001, { message: 'El monto debe ser mayor que cero.' })
+  amount: number;
 
-    @IsNumber()
-    @IsNotEmpty({message: "Debe incluir un monto."})
-    @Min(0.001,  {message: 'El monto debe ser mayor que cero.'})
-    amount: number;
+  @IsString()
+  title: string;
 
-    @IsString()
-    name: string;
+  @IsString()
+  description: string;
 
-    @IsString()
-    description: string;
+  date: Date;
 
-    date: Date;
+  isNegative: boolean;
 
-    isNegative: boolean;
+  recurrence: Recurrence;
 }

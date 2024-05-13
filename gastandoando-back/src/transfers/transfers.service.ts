@@ -8,22 +8,23 @@ import { userInfo } from 'os';
 
 @Injectable()
 export class TransfersService {
-
   constructor(
     @InjectRepository(Transfer)
-    private transferRepository: Repository<Transfer>
-  ){
-
-  }
+    private transferRepository: Repository<Transfer>,
+  ) {}
 
   async create(createTransferDto: CreateTransferDto): Promise<Transfer> {
-    const { name } = createTransferDto;
+    const { title } = createTransferDto;
 
-    const existingTransfer = await this.transferRepository.findOne({ where: { name } });
+    const existingTransfer = await this.transferRepository.findOne({
+      where: { title },
+    });
     if (existingTransfer) {
-        throw new ConflictException(`Ya existe un movimiento con el nombre '${name}'.`);
+      throw new ConflictException(
+        `Ya existe un movimiento con el nombre '${title}'.`,
+      );
     }
-    
+
     return await this.transferRepository.save(createTransferDto);
   }
 
@@ -32,16 +33,22 @@ export class TransfersService {
   }
 
   async findOne(id: number) {
-    return await this.transferRepository.findOneBy({id});
+    return await this.transferRepository.findOneBy({ id });
   }
 
-  async update(id: number, updateTransferDto: UpdateTransferDto): Promise<UpdateResult> {
-
-    const { name } = updateTransferDto;
-    if (name){
-      const existingTransfer = await this.transferRepository.findOne({ where: { name } });
+  async update(
+    id: number,
+    updateTransferDto: UpdateTransferDto,
+  ): Promise<UpdateResult> {
+    const { title } = updateTransferDto;
+    if (title) {
+      const existingTransfer = await this.transferRepository.findOne({
+        where: { title },
+      });
       if (existingTransfer) {
-          throw new ConflictException(`Ya existe un movimiento con el nombre '${name}'.`);
+        throw new ConflictException(
+          `Ya existe un movimiento con el nombre '${title}'.`,
+        );
       }
     }
 

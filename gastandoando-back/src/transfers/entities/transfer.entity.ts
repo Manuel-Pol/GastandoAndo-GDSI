@@ -1,64 +1,63 @@
-import { Column, Entity, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
-
+import { Column, Entity, PrimaryColumn, PrimaryGeneratedColumn } from 'typeorm';
+import { Recurrence } from './recurrence';
 
 @Entity()
 export class Transfer {
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @PrimaryGeneratedColumn()
-    id: number;
+  @Column({ default: 10 })
+  amount: number;
 
-    @Column({default: 10})
-    amount: number;
+  @Column()
+  title: string;
 
-    @Column()
-    name: string;
+  @Column()
+  description: string;
 
-    @Column()
-    description: string;
+  //YYYY-MM-DDTHH:mm:ss
+  @Column()
+  date: Date;
 
-    //YYYY-MM-DDTHH:mm:ss
-    @Column()
-    date: Date;
+  @Column()
+  isNegative: boolean;
 
-    @Column()
-    isNegative: boolean;
+  @Column({ default: Recurrence.NonRecurrent })
+  recurrence: Recurrence;
 
+  getTitle(): string {
+    return this.title;
+  }
 
+  getAmount(): number {
+    return this.amount;
+  }
 
-    getName(): string{
-        return this.name;
-    }
+  getDescription(): string {
+    return this.description;
+  }
 
-    getAmount(): number{
-        return this.amount;
-    }
+  getDate(): Date {
+    return this.date;
+  }
 
-    getDescription(): string{
-        return this.description;
-    }
+  getIsNegative(): boolean {
+    return this.isNegative;
+  }
 
-    getDate(): Date{
-        return this.date;
-    }
+  setTitle(newTitle: string) {
+    this.title = newTitle;
+  }
 
-    getIsNegative(): boolean{
-        return this.isNegative;
-    }
+  setAmount(newAmount: number) {
+    this.amount = newAmount;
+  }
 
-    setName(newName: string){
-        this.name = newName;
-    }
+  setDescription(newDescription: string) {
+    this.description = newDescription;
+  }
 
-    setAmount(newAmount: number){
-        this.amount = newAmount;
-    }
-
-    setDescription(newDescription){
-        this.description = newDescription;
-    }
-
-    setDate(newDate: Date){
-        this.date = newDate;
-    }
+  setDate(newDate: Date) {
+    this.date = newDate;
+  }
 }
-
