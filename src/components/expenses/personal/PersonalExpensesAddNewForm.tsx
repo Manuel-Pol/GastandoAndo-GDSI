@@ -5,6 +5,7 @@ import { ExpensesInterfaceFields, ExpenseType, RecurrenceTypeCodes } from '@/typ
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { useFormContext } from 'react-hook-form'
 import { DatePicker } from './DatePicker'
+import { useEffect, useState } from 'react'
 
 interface PersonalExpensesAddNewFormProps {
     onTriggerExpense: (expT: ExpenseType) => void
@@ -13,6 +14,12 @@ interface PersonalExpensesAddNewFormProps {
 
 const PersonalExpensesAddNewForm = ({ onTriggerExpense, onTriggerRecurrence }: PersonalExpensesAddNewFormProps) => {
     const methods = useFormContext()
+    const watchFile = methods.watch(ExpensesInterfaceFields.Image)
+    const [imgPath, setImgPath] = useState<string>()
+
+    useEffect(() => {
+        console.log('archivo', watchFile)
+    }, [watchFile])
 
     return (
         <Form {...methods}>
@@ -43,6 +50,7 @@ const PersonalExpensesAddNewForm = ({ onTriggerExpense, onTriggerRecurrence }: P
                         </FormItem>
                     )}
                 />
+                {imgPath && <img src={imgPath} />}
                 <FormField
                     control={methods.control}
                     name={ExpensesInterfaceFields.Image}

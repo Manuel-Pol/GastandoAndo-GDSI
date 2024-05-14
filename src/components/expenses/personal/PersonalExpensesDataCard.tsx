@@ -8,7 +8,6 @@ import { Badge } from '@/components/ui/badge'
 import { ExpensesInterface, ExpenseType, ExpensesInterfaceFields, RecurrenceTypeCodes } from '@/types/personalExpenses'
 import PersonalExpensesEditDialog from './PersonalExpensesEditDialog'
 import { numberFormatter } from '@/utils/formatters/numberFormatter'
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 
 interface PersonalExpensesDataCardProps {
     expenses: ExpensesInterface[]
@@ -88,23 +87,15 @@ const PersonalExpensesDataCard = ({ expenses, triggerDeleteExp, onSaveEdit }: Pe
                                         </div>
                                         <div className='flex flex-row items-center relative left-5'>
                                             <PersonalExpensesEditDialog expense={exp} onSubmitEdit={onSaveEdit} />
-                                            <TooltipProvider>
-                                                <Tooltip>
-                                                    <TooltipTrigger asChild>
-                                                        <Button
-                                                            variant='outline'
-                                                            size='icon'
-                                                            className='rounded-full border-none'
-                                                            onClick={() => onDelExp(exp)}
-                                                        >
-                                                            <Trash2 className='h-4 w-4' color='#EF4444' />
-                                                        </Button>
-                                                    </TooltipTrigger>
-                                                    <TooltipContent className='bg-black text-white rounded-full border border-neutral-500'>
-                                                        <p>Eliminar</p>
-                                                    </TooltipContent>
-                                                </Tooltip>
-                                            </TooltipProvider>
+
+                                            <Button
+                                                variant='outline'
+                                                size='icon'
+                                                className='rounded-full border-none'
+                                                onClick={() => onDelExp(exp)}
+                                            >
+                                                <Trash2 className='h-4 w-4' color='#EF4444' />
+                                            </Button>
                                         </div>
                                     </div>
                                 </div>
