@@ -6,6 +6,7 @@ import { Dialog, DialogContent, DialogClose, DialogTitle, DialogTrigger, DialogF
 import { EntityWithIdFields } from '@/types/baseEntities'
 import { FormProvider, useForm } from 'react-hook-form'
 import PersonalExpensesAddNewForm from './PersonalExpensesAddNewForm'
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 
 interface PersonalExpensesEditDialogProps {
     expense: ExpensesInterface
@@ -61,9 +62,23 @@ const PersonalExpensesEditDialog = ({ expense, onSubmitEdit }: PersonalExpensesE
         <div>
             <Dialog>
                 <DialogTrigger asChild>
-                    <Button variant='outline' size='icon' className='rounded-full border-none' onClick={onEditExp}>
-                        <Edit className='h-4 w-4' color='#3B82F6' />
-                    </Button>
+                    <TooltipProvider>
+                        <Tooltip>
+                            <TooltipTrigger asChild>
+                                <Button
+                                    variant='outline'
+                                    size='icon'
+                                    className='rounded-full border-none'
+                                    onClick={onEditExp}
+                                >
+                                    <Edit className='h-4 w-4' color='#3B82F6' />
+                                </Button>
+                            </TooltipTrigger>
+                            <TooltipContent className='bg-black text-white rounded-full border border-neutral-500'>
+                                <p>Editar</p>
+                            </TooltipContent>
+                        </Tooltip>
+                    </TooltipProvider>
                 </DialogTrigger>
                 {openEdit && (
                     <DialogContent className='min-w-[400px] bg-white rounded'>
