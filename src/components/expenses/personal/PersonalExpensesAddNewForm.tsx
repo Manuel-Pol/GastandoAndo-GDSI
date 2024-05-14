@@ -16,7 +16,7 @@ const PersonalExpensesAddNewForm = ({ onTriggerExpense, onTriggerRecurrence }: P
 
     return (
         <Form {...methods}>
-            <div className='flex flex-col gap-4 justify-center'>
+            <div className='flex flex-col gap-2 justify-center'>
                 <FormField
                     control={methods.control}
                     name={ExpensesInterfaceFields.Title}
@@ -38,6 +38,19 @@ const PersonalExpensesAddNewForm = ({ onTriggerExpense, onTriggerRecurrence }: P
                             <FormLabel>Descripcion</FormLabel>
                             <FormControl>
                                 <Textarea {...field} />
+                            </FormControl>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
+                <FormField
+                    control={methods.control}
+                    name={ExpensesInterfaceFields.Image}
+                    render={({ field }) => (
+                        <FormItem>
+                            <FormLabel>Imagen</FormLabel>
+                            <FormControl>
+                                <Input type='file' {...field} className='cursor-pointer' />
                             </FormControl>
                             <FormMessage />
                         </FormItem>

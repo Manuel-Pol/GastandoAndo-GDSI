@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button'
-import { Trash } from 'lucide-react'
+import { Trash2 } from 'lucide-react'
 
 import { Card, CardContent } from '@/components/ui/card'
 import { AlertCircle } from 'lucide-react'
@@ -85,15 +85,15 @@ const PersonalExpensesDataCard = ({ expenses, triggerDeleteExp, onSaveEdit }: Pe
                                                 )}`}</p>
                                             )}
                                         </div>
-                                        <div className='flex flex-row items-center space-x-2'>
+                                        <div className='flex flex-row items-center relative left-5'>
                                             <PersonalExpensesEditDialog expense={exp} onSubmitEdit={onSaveEdit} />
                                             <Button
                                                 variant='outline'
                                                 size='icon'
-                                                className='rounded-full border-red-500'
+                                                className='rounded-full border-none'
                                                 onClick={() => onDelExp(exp)}
                                             >
-                                                <Trash className='h-4 w-4' color='#EF4444' />
+                                                <Trash2 className='h-4 w-4' color='#EF4444' />
                                             </Button>
                                         </div>
                                     </div>
