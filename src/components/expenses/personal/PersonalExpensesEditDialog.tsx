@@ -1,4 +1,4 @@
-import { ExpenseType, ExpensesInterface, ExpensesInterfaceFields } from "@/types/personalExpenses";
+import { ExpenseType, ExpensesInterface, ExpensesInterfaceFields, FrequencyTypeCodes } from "@/types/personalExpenses";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Edit, Save } from "lucide-react";
@@ -23,6 +23,7 @@ interface PersonalExpensesEditDialogProps {
 const PersonalExpensesEditDialog = ({expense, onSubmitEdit}: PersonalExpensesEditDialogProps) => {
     const [openEdit, setOpenEdit] = useState<boolean>(false)
     const [isExpense, setIsExpense] = useState<ExpenseType>(expense[ExpensesInterfaceFields.IsExpense]);
+    const [freq, setFreq] = useState<FrequencyTypeCodes>(expense[ExpensesInterfaceFields.Frequency])
 
     const onEditExp = () => setOpenEdit(true)
 
@@ -32,7 +33,8 @@ const PersonalExpensesEditDialog = ({expense, onSubmitEdit}: PersonalExpensesEdi
         [ExpensesInterfaceFields.Amount]: expense[ExpensesInterfaceFields.Amount],
         [ExpensesInterfaceFields.Description]: expense[ExpensesInterfaceFields.Description],
         [ExpensesInterfaceFields.Title]: expense[ExpensesInterfaceFields.Title],
-        [ExpensesInterfaceFields.IsExpense]: expense[ExpensesInterfaceFields.IsExpense]
+        [ExpensesInterfaceFields.IsExpense]: expense[ExpensesInterfaceFields.IsExpense],
+        [ExpensesInterfaceFields.Frequency]: expense[ExpensesInterfaceFields.Frequency]
     };
 
     
@@ -44,6 +46,7 @@ const PersonalExpensesEditDialog = ({expense, onSubmitEdit}: PersonalExpensesEdi
         const submitData: ExpensesInterface = {
             ...data,
             [ExpensesInterfaceFields.IsExpense]: isExpense,
+            [ExpensesInterfaceFields.Frequency]: freq
         };
 
         onSubmitEdit(submitData)
@@ -54,11 +57,14 @@ const PersonalExpensesEditDialog = ({expense, onSubmitEdit}: PersonalExpensesEdi
         if (openEdit) {
             methods.reset(defaultFormValues);
             setIsExpense(expense[ExpensesInterfaceFields.IsExpense]);
+            setFreq(expense[ExpensesInterfaceFields.Frequency])
         }
     }, [openEdit]);
 
     const onChangeExpense = (expT: ExpenseType) => setIsExpense(expT)
     
+    const onChangeFrequency = (newFreq: FrequencyTypeCodes) => setFreq(newFreq)
+
     return (
         <div>
             <Dialog>
@@ -68,12 +74,12 @@ const PersonalExpensesEditDialog = ({expense, onSubmitEdit}: PersonalExpensesEdi
                     </Button>
                 </DialogTrigger>
                 {openEdit && (
-                    <DialogContent className="sm:max-w-[425px] bg-white rounded">
+                    <DialogContent className="min-w-[400px] bg-white rounded">
                         <DialogTitle className="text-black mb-2">
                             Editar Movimiento
                         </DialogTitle>
                         <FormProvider {...methods}>
-                            <PersonalExpensesAddNewForm onTriggerExpense={onChangeExpense}/>
+                            <PersonalExpensesAddNewForm onTriggerExpense={onChangeExpense} onTriggerFrequency={onChangeFrequency}/>
                         </FormProvider>
                         <DialogFooter>
                             <DialogClose asChild>

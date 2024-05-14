@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button'
-import { ExpenseType, ExpensesInterface, ExpensesInterfaceFields } from '@/types/personalExpenses'
+import { ExpenseType, ExpensesInterface, ExpensesInterfaceFields, FrequencyTypeCodes } from '@/types/personalExpenses'
 import { Dialog, DialogContent, DialogClose, DialogTitle, DialogTrigger, DialogFooter } from '@/components/ui/dialog'
 import { CirclePlusIcon } from 'lucide-react'
 import { useState, useEffect } from 'react'
@@ -14,6 +14,7 @@ interface PersonalExpensesAddNewDialogProps {
 const PersonalExpensesAddNewDialog = ({ onAddExpense }: PersonalExpensesAddNewDialogProps) => {
     const [open, setOpen] = useState<boolean>(false)
     const [isExpense, setIsExpense] = useState<ExpenseType>(ExpenseType.Gasto)
+    const [freq, setFreq] = useState<FrequencyTypeCodes>(FrequencyTypeCodes.Singular)
 
     const defaultFormValues: ExpensesInterface = {
         [EntityWithIdFields.Id]: 0,
@@ -22,7 +23,8 @@ const PersonalExpensesAddNewDialog = ({ onAddExpense }: PersonalExpensesAddNewDi
         [ExpensesInterfaceFields.Description]: '',
         [ExpensesInterfaceFields.Title]: '',
         [ExpensesInterfaceFields.IsExpense]: ExpenseType.Gasto,
-        [ExpensesInterfaceFields.Date]: new Date()
+        [ExpensesInterfaceFields.Date]: new Date(),
+        [ExpensesInterfaceFields.Frequency]: FrequencyTypeCodes.Singular
     }
 
     const methods = useForm<ExpensesInterface>({
@@ -33,13 +35,15 @@ const PersonalExpensesAddNewDialog = ({ onAddExpense }: PersonalExpensesAddNewDi
         if (open) {
             methods.reset(defaultFormValues)
             setIsExpense(ExpenseType.Gasto)
+            setFreq(FrequencyTypeCodes.Singular)
         }
     }, [open])
 
     const onSubmitExpense = (data: ExpensesInterface) => {
         const submitData: ExpensesInterface = {
             ...data,
-            [ExpensesInterfaceFields.IsExpense]: isExpense
+            [ExpensesInterfaceFields.IsExpense]: isExpense,
+            [ExpensesInterfaceFields.Frequency]: freq
         }
 
         onAddExpense(submitData)
@@ -47,6 +51,8 @@ const PersonalExpensesAddNewDialog = ({ onAddExpense }: PersonalExpensesAddNewDi
     }
 
     const onChangeExpense = (expT: ExpenseType) => setIsExpense(expT)
+
+    const onChangeFrequency = (newFreq: FrequencyTypeCodes) => setFreq(newFreq)
 
     return (
         <div>
@@ -62,10 +68,10 @@ const PersonalExpensesAddNewDialog = ({ onAddExpense }: PersonalExpensesAddNewDi
                     </Button>
                 </DialogTrigger>
                 {open && (
-                    <DialogContent className='sm:max-w-[425px] bg-white rounded'>
+                    <DialogContent className='min-w-[400px] bg-white rounded'>
                         <DialogTitle className='text-black'>Agregar Movimiento</DialogTitle>
                         <FormProvider {...methods}>
-                            <PersonalExpensesAddNewForm onTriggerExpense={onChangeExpense} />
+                            <PersonalExpensesAddNewForm onTriggerExpense={onChangeExpense} onTriggerFrequency={onChangeFrequency}/>
                         </FormProvider>
                         <DialogFooter>
                             <DialogClose asChild>

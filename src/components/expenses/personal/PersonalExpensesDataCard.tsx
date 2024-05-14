@@ -5,7 +5,7 @@ import { Card, CardContent } from '@/components/ui/card'
 import { AlertCircle } from 'lucide-react'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Badge } from '@/components/ui/badge'
-import { ExpensesInterface, ExpenseType, ExpensesInterfaceFields } from '@/types/personalExpenses'
+import { ExpensesInterface, ExpenseType, ExpensesInterfaceFields, FrequencyTypeCodes } from '@/types/personalExpenses'
 import PersonalExpensesEditDialog from './PersonalExpensesEditDialog'
 import { numberFormatter } from '@/utils/formatters/numberFormatter'
 
@@ -17,6 +17,24 @@ interface PersonalExpensesDataCardProps {
 
 const PersonalExpensesDataCard = ({ expenses, triggerDeleteExp, onSaveEdit }: PersonalExpensesDataCardProps) => {
     const onDelExp = (exp: ExpensesInterface) => triggerDeleteExp(exp)
+
+    const getExpenseFrequency = (freq: FrequencyTypeCodes) => {
+        switch (freq) {
+            case FrequencyTypeCodes.Singular:
+                return 'Singular'
+            case FrequencyTypeCodes.Diary:
+                return 'Diario'
+            case FrequencyTypeCodes.Weekly:
+                return 'Semanal'
+            case FrequencyTypeCodes.Monthly:
+                return 'Mensual'
+            case FrequencyTypeCodes.Quarter:
+                return 'Trimestral'
+            
+            default: return 'Singular'
+        }
+
+    }
 
     return (
         <div className='w-full'>
@@ -44,7 +62,10 @@ const PersonalExpensesDataCard = ({ expenses, triggerDeleteExp, onSaveEdit }: Pe
                                             </div>
                                         </div>
                                         <div className='flex flex-col'>
-                                            <h4 className='font-semibold'>{exp[ExpensesInterfaceFields.Title]}</h4>
+                                            <div className='flex flex-row space-x-4 items-center'>
+                                                <h4 className='font-semibold'>{exp[ExpensesInterfaceFields.Title]}</h4>
+                                                <Badge className='bg-[#e8ebe9]'>{getExpenseFrequency(exp[ExpensesInterfaceFields.Frequency])}</Badge>
+                                            </div>
                                             <h6 className='font-semibold text-gray-400'>
                                                 {exp[ExpensesInterfaceFields.Description]}
                                             </h6>
