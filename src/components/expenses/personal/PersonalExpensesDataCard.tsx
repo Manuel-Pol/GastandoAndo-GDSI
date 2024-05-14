@@ -48,7 +48,7 @@ const PersonalExpensesDataCard = ({ expenses, triggerDeleteExp, onSaveEdit }: Pe
                                         <div className='flex flex-col gap-4'>
                                             <div>
                                                 {exp[ExpensesInterfaceFields.IsExpense] === ExpenseType.Gasto ? (
-                                                    <Badge className='bg-[#EF4444]'>Gasto</Badge>
+                                                    <Badge className='bg-[#EF4444] text-white'>Gasto</Badge>
                                                 ) : (
                                                     <Badge className='bg-[#1C7549] text-white'>Ingreso</Badge>
                                                 )}
