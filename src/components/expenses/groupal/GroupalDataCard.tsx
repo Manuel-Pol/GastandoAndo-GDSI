@@ -29,7 +29,7 @@ const GroupalDataCard = ({ groups }: GroupDataCardProps) => {
                         <AlertTitle>Sin grupos</AlertTitle>
                     </div>
                     <AlertDescription>
-                        No hay grupos por el momento. Presiona en agregar para registrarlos
+                        No hay grupos por el momento. Presiona en crear para crear un nuevo grupo
                     </AlertDescription>
                 </Alert>
             )}

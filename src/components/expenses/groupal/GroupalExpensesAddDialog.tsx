@@ -3,7 +3,7 @@ import { Group, GroupFields } from '@/types/groupalExpenses'
 import { Button } from '@/components/ui/button'
 import { CirclePlusIcon } from 'lucide-react'
 import { useForm, FormProvider } from 'react-hook-form'
-import {useState, useEffect} from 'react'
+import { useState, useEffect } from 'react'
 import { EntityWithIdFields } from '@/types/baseEntities'
 import GroupForm from './GroupForm'
 
@@ -11,13 +11,13 @@ interface GroupalExpensesAddDialogProps {
     onAddGroup: (g: Group) => void
 }
 
-const GroupalExpensesAddDialog = ({onAddGroup}: GroupalExpensesAddDialogProps) => {
+const GroupalExpensesAddDialog = ({ onAddGroup }: GroupalExpensesAddDialogProps) => {
     const [open, setOpen] = useState<boolean>(false)
 
     const defaultFormValues: Group = {
         [EntityWithIdFields.Id]: 0,
-        [GroupFields.Name]: "",
-        [GroupFields.Description]: "",
+        [GroupFields.Name]: '',
+        [GroupFields.Description]: ''
     }
 
     const methods = useForm<Group>({
@@ -38,17 +38,17 @@ const GroupalExpensesAddDialog = ({onAddGroup}: GroupalExpensesAddDialogProps) =
             <Dialog>
                 <DialogTrigger asChild>
                     <Button
-                        className='bg-[#E34400] hover:bg-[#E34400] rounded text-white py-6 '
+                        className='bg-[#1b2766] hover:bg-[#1b2766] rounded text-white py-6 '
                         onClick={() => {
                             setOpen(true)
                         }}
                     >
-                        <CirclePlusIcon className='mr-2 text-white ' /> <p className='text-lg'>Agregar</p>
+                        <CirclePlusIcon className='mr-2 text-white ' /> <p className='text-lg'>Nuevo grupo</p>
                     </Button>
                 </DialogTrigger>
                 {open && (
                     <DialogContent className='min-w-[400px] bg-white rounded'>
-                        <DialogTitle className='text-black'>Agregar Grupo</DialogTitle>
+                        <DialogTitle className='text-black'>Crear grupo</DialogTitle>
                         <FormProvider {...methods}>
                             <GroupForm />
                         </FormProvider>
@@ -59,7 +59,7 @@ const GroupalExpensesAddDialog = ({onAddGroup}: GroupalExpensesAddDialogProps) =
                                     onClick={methods.handleSubmit(onSubmitGroup)}
                                     disabled={!methods.watch(GroupFields.Name)}
                                 >
-                                    <CirclePlusIcon className='mr-2 items-center' /> Agregar
+                                    <CirclePlusIcon className='mr-2 items-center' /> Aceptar
                                 </Button>
                             </DialogClose>
                         </DialogFooter>
@@ -69,6 +69,5 @@ const GroupalExpensesAddDialog = ({onAddGroup}: GroupalExpensesAddDialogProps) =
         </div>
     )
 }
-
 
 export default GroupalExpensesAddDialog

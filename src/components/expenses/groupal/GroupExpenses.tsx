@@ -19,18 +19,22 @@ const GroupExpenses = () => {
     return (
         <div className='flex justify-center'>
             <div className='flex flex-col gap-8 items-center w-full max-w-xl'>
-                <p className='text-xl text-center'>Seleccioná tu grupo actual para ver sus movimientos</p>
-                <div className='flex flex-row justify-between w-full'>
+                <p className='text-6xl text-center'>Grupos</p>
+                <div className='flex flex-row justify-between w-full items-center'>
                     <div>
                         {currentGroups.length !== 0 && (
                             <Select>
-                                <SelectTrigger className='w-[180px]'>
-                                    <SelectValue placeholder='Selecciona el grupo' />
+                                <SelectTrigger className='w-[180px] bg-white'>
+                                    <SelectValue placeholder='Selecciona un grupo' />
                                 </SelectTrigger>
-                                <SelectContent>
+                                <SelectContent className='bg-white'>
                                     <SelectGroup>
                                         {currentGroups.map(g => (
-                                            <SelectItem value={`${g.id}`}>{g[GroupFields.Name]}</SelectItem>
+                                            <div>
+                                                <SelectItem value={`${g.id}`} className='cursor-pointer'>
+                                                    {g[GroupFields.Name]}
+                                                </SelectItem>
+                                            </div>
                                         ))}
                                     </SelectGroup>
                                 </SelectContent>
