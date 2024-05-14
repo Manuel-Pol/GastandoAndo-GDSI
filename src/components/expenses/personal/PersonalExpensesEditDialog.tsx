@@ -16,7 +16,7 @@ const PersonalExpensesEditDialog = ({ expense, onSubmitEdit }: PersonalExpensesE
     const [openEdit, setOpenEdit] = useState<boolean>(false)
     const [isExpense, setIsExpense] = useState<ExpenseType>(expense[ExpensesInterfaceFields.IsExpense])
     const [freq, setFreq] = useState<RecurrenceTypeCodes>(expense[ExpensesInterfaceFields.Recurrence])
-    const [img, setImg] = useState<File>(expense[ExpensesInterfaceFields.Image])
+    const [img, setImg] = useState<File | undefined>(expense[ExpensesInterfaceFields.Image])
 
     const onEditExp = () => setOpenEdit(true)
 
@@ -78,6 +78,7 @@ const PersonalExpensesEditDialog = ({ expense, onSubmitEdit }: PersonalExpensesE
                                 onTriggerImage={onChangeImage}
                                 onTriggerExpense={onChangeExpense}
                                 onTriggerRecurrence={onChangeRecurrence}
+                                prevImg={img}
                             />
                         </FormProvider>
                         <DialogFooter>

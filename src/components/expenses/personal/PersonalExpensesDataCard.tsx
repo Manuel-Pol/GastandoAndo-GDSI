@@ -21,7 +21,7 @@ interface PersonalExpensesDataCardProps {
 const PersonalExpensesDataCard = ({ expenses, triggerDeleteExp, onSaveEdit }: PersonalExpensesDataCardProps) => {
     const onDelExp = (exp: ExpensesInterface) => triggerDeleteExp(exp)
 
-
+    console.log("exp ", expenses)
     return (
         <div className='w-full'>
             {expenses.length !== 0 ? (

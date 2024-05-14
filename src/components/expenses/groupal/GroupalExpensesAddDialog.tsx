@@ -38,7 +38,7 @@ const GroupalExpensesAddDialog = ({ onAddGroup }: GroupalExpensesAddDialogProps)
             <Dialog>
                 <DialogTrigger asChild>
                     <Button
-                        className='bg-[#1b2766] hover:bg-[#1b2766] rounded text-white py-6 '
+                        className='bg-[#1b2766] hover:bg-[#1b2766] rounded text-white py-4'
                         onClick={() => {
                             setOpen(true)
                         }}

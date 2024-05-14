@@ -10,16 +10,23 @@ import { useEffect } from 'react'
 interface PersonalExpensesAddNewFormProps {
     onTriggerExpense: (expT: ExpenseType) => void
     onTriggerRecurrence: (freq: RecurrenceTypeCodes) => void,
-    onTriggerImage: (img: File) => void
+    onTriggerImage: (img: File) => void,
+    prevImg?: File
 }
 
-const PersonalExpensesAddNewForm = ({ onTriggerExpense, onTriggerRecurrence, onTriggerImage }: PersonalExpensesAddNewFormProps) => {
+const PersonalExpensesAddNewForm = ({ onTriggerExpense, onTriggerRecurrence, onTriggerImage, prevImg }: PersonalExpensesAddNewFormProps) => {
     const methods = useFormContext()
     const watchFile = methods.watch(ExpensesInterfaceFields.Image)
 
     useEffect(() => {
         if (watchFile) onTriggerImage(watchFile)
     }, [watchFile])
+
+    useEffect(() => {
+        if (prevImg) {
+            methods.setValue(ExpensesInterfaceFields.Image, prevImg)
+        }
+    }, [prevImg])
 
     return (
         <Form {...methods}>
