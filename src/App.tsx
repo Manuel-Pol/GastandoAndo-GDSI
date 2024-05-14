@@ -4,6 +4,7 @@ import HomeLanding from './HomeLanding'
 import LayoutLogged from './components/layouts/LayoutLogged'
 import LayoutNotLogged from './components/layouts/LayoutNotLogged'
 import PersonalExpenses from './components/expenses/personal/PersonalExpenses'
+import GroupalExpenses from './components/expenses/groupal/GroupalExpenses'
 
 function App() {
 
@@ -17,6 +18,7 @@ function App() {
           <Route element={<LayoutLogged />}>
             <Route path="home" element={<Home />} />
             <Route path="individual" element={<PersonalExpenses />} />
+            <Route path="groupal" element={<GroupalExpenses />} />
           </Route>
         </Routes>
       </BrowserRouter>
