@@ -5,7 +5,7 @@ import { Group, GroupFields } from '@/types/groupalExpenses'
 import GroupalExpensesAddDialog from './GroupalExpensesAddDialog'
 import GroupalDataCard from './GroupalDataCard'
 
-const GroupalExpenses = () => {
+const GroupExpenses = () => {
     const [currentGroups, setCurrentGroups] = useState<Group[]>([])
 
     const handleAddGroup = (group: Group) => {
@@ -45,4 +45,4 @@ const GroupalExpenses = () => {
     )
 }
 
-export default GroupalExpenses
+export default GroupExpenses
