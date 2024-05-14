@@ -5,9 +5,12 @@ import { Card, CardContent } from '@/components/ui/card'
 import { AlertCircle } from 'lucide-react'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Badge } from '@/components/ui/badge'
-import { ExpensesInterface, ExpenseType, ExpensesInterfaceFields, RecurrenceTypeCodes } from '@/types/personalExpenses'
+import { ExpensesInterface, ExpenseType, ExpensesInterfaceFields } from '@/types/personalExpenses'
 import PersonalExpensesEditDialog from './PersonalExpensesEditDialog'
 import { numberFormatter } from '@/utils/formatters/numberFormatter'
+import PreviewMovementDialog from '../components/PreviewMovementDialog'
+import { getExpenseRecurrence } from '@/utils/mappers/movementMappers'
+import { dateFormatter } from '@/utils/formatters/dateFormatter'
 
 interface PersonalExpensesDataCardProps {
     expenses: ExpensesInterface[]
@@ -18,23 +21,6 @@ interface PersonalExpensesDataCardProps {
 const PersonalExpensesDataCard = ({ expenses, triggerDeleteExp, onSaveEdit }: PersonalExpensesDataCardProps) => {
     const onDelExp = (exp: ExpensesInterface) => triggerDeleteExp(exp)
 
-    const getExpenseRecurrence = (freq: RecurrenceTypeCodes) => {
-        switch (freq) {
-            case RecurrenceTypeCodes.Singular:
-                return 'Singular'
-            case RecurrenceTypeCodes.Diary:
-                return 'Diario'
-            case RecurrenceTypeCodes.Weekly:
-                return 'Semanal'
-            case RecurrenceTypeCodes.Monthly:
-                return 'Mensual'
-            case RecurrenceTypeCodes.Quarter:
-                return 'Trimestral'
-
-            default:
-                return 'Singular'
-        }
-    }
 
     return (
         <div className='w-full'>
@@ -54,11 +40,7 @@ const PersonalExpensesDataCard = ({ expenses, triggerDeleteExp, onSaveEdit }: Pe
                                                 )}
                                             </div>
                                             <div className='text-xs'>
-                                                {exp[ExpensesInterfaceFields.Date].toLocaleDateString('es-AR', {
-                                                    year: 'numeric',
-                                                    month: '2-digit',
-                                                    day: '2-digit'
-                                                })}
+                                                {dateFormatter.toShortDate(exp[ExpensesInterfaceFields.Date])}
                                             </div>
                                         </div>
                                         <div className='flex flex-col'>
@@ -86,8 +68,8 @@ const PersonalExpensesDataCard = ({ expenses, triggerDeleteExp, onSaveEdit }: Pe
                                             )}
                                         </div>
                                         <div className='flex flex-row items-center relative left-5'>
+                                            <PreviewMovementDialog movement={exp} />
                                             <PersonalExpensesEditDialog expense={exp} onSubmitEdit={onSaveEdit} />
-
                                             <Button
                                                 variant='outline'
                                                 size='icon'

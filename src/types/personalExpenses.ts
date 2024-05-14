@@ -26,7 +26,7 @@ export enum RecurrenceTypeCodes {
 export interface ExpensesInterface extends EntityWithId {
     [ExpensesInterfaceFields.Title]: string
     [ExpensesInterfaceFields.Description]: string
-    [ExpensesInterfaceFields.Image]?: string
+    [ExpensesInterfaceFields.Image]?: File
     [ExpensesInterfaceFields.Amount]?: number
     [ExpensesInterfaceFields.IsExpense]: ExpenseType
     [ExpensesInterfaceFields.Date]: Date

@@ -15,10 +15,11 @@ const PersonalExpensesAddNewDialog = ({ onAddExpense }: PersonalExpensesAddNewDi
     const [open, setOpen] = useState<boolean>(false)
     const [isExpense, setIsExpense] = useState<ExpenseType>(ExpenseType.Gasto)
     const [recurr, setRecurr] = useState<RecurrenceTypeCodes>(RecurrenceTypeCodes.Singular)
+    const [img, setImg] = useState<File>()
 
     const defaultFormValues: ExpensesInterface = {
         [EntityWithIdFields.Id]: 0,
-        [ExpensesInterfaceFields.Image]: '',
+        [ExpensesInterfaceFields.Image]: undefined,
         [ExpensesInterfaceFields.Amount]: undefined,
         [ExpensesInterfaceFields.Description]: '',
         [ExpensesInterfaceFields.Title]: '',
@@ -43,10 +44,9 @@ const PersonalExpensesAddNewDialog = ({ onAddExpense }: PersonalExpensesAddNewDi
         const submitData: ExpensesInterface = {
             ...data,
             [ExpensesInterfaceFields.IsExpense]: isExpense,
-            [ExpensesInterfaceFields.Recurrence]: recurr
+            [ExpensesInterfaceFields.Recurrence]: recurr,
+            [ExpensesInterfaceFields.Image]: img
         }
-
-        console.log(submitData.fecha.toDateString())
 
         onAddExpense(submitData)
         setOpen(false)
@@ -54,6 +54,8 @@ const PersonalExpensesAddNewDialog = ({ onAddExpense }: PersonalExpensesAddNewDi
     const onChangeExpense = (expT: ExpenseType) => setIsExpense(expT)
 
     const onChangeRecurrence = (newRecurr: RecurrenceTypeCodes) => setRecurr(newRecurr)
+
+    const onTriggerImage = (newImg: File) => setImg(newImg)
 
     return (
         <div>
@@ -74,6 +76,7 @@ const PersonalExpensesAddNewDialog = ({ onAddExpense }: PersonalExpensesAddNewDi
                         <FormProvider {...methods}>
                             <PersonalExpensesAddNewForm
                                 onTriggerExpense={onChangeExpense}
+                                onTriggerImage={onTriggerImage}
                                 onTriggerRecurrence={onChangeRecurrence}
                             />
                         </FormProvider>

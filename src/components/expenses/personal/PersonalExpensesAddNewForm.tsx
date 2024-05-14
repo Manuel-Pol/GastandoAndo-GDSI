@@ -5,20 +5,20 @@ import { ExpensesInterfaceFields, ExpenseType, RecurrenceTypeCodes } from '@/typ
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { useFormContext } from 'react-hook-form'
 import { DatePicker } from './DatePicker'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 
 interface PersonalExpensesAddNewFormProps {
     onTriggerExpense: (expT: ExpenseType) => void
-    onTriggerRecurrence: (freq: RecurrenceTypeCodes) => void
+    onTriggerRecurrence: (freq: RecurrenceTypeCodes) => void,
+    onTriggerImage: (img: File) => void
 }
 
-const PersonalExpensesAddNewForm = ({ onTriggerExpense, onTriggerRecurrence }: PersonalExpensesAddNewFormProps) => {
+const PersonalExpensesAddNewForm = ({ onTriggerExpense, onTriggerRecurrence, onTriggerImage }: PersonalExpensesAddNewFormProps) => {
     const methods = useFormContext()
     const watchFile = methods.watch(ExpensesInterfaceFields.Image)
-    const [imgPath, setImgPath] = useState<string>()
 
     useEffect(() => {
-        console.log('archivo', watchFile)
+        if (watchFile) onTriggerImage(watchFile)
     }, [watchFile])
 
     return (
@@ -50,15 +50,20 @@ const PersonalExpensesAddNewForm = ({ onTriggerExpense, onTriggerRecurrence }: P
                         </FormItem>
                     )}
                 />
-                {imgPath && <img src={imgPath} />}
                 <FormField
                     control={methods.control}
                     name={ExpensesInterfaceFields.Image}
-                    render={({ field }) => (
+                    render={({ field: { value, onChange, ...fieldProps } }) => (
                         <FormItem>
                             <FormLabel>Imagen</FormLabel>
                             <FormControl>
-                                <Input type='file' {...field} className='cursor-pointer' />
+                                <Input {...fieldProps} type='file'
+                                        accept="image/*, application/pdf"
+                                        onChange={(event) =>
+                                          onChange(event.target.files && event.target.files[0])
+                                        }
+                                        defaultValue={methods.getValues(ExpensesInterfaceFields.Image)}
+                                />
                             </FormControl>
                             <FormMessage />
                         </FormItem>

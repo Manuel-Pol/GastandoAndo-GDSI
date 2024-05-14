@@ -16,12 +16,13 @@ const PersonalExpensesEditDialog = ({ expense, onSubmitEdit }: PersonalExpensesE
     const [openEdit, setOpenEdit] = useState<boolean>(false)
     const [isExpense, setIsExpense] = useState<ExpenseType>(expense[ExpensesInterfaceFields.IsExpense])
     const [freq, setFreq] = useState<RecurrenceTypeCodes>(expense[ExpensesInterfaceFields.Recurrence])
+    const [img, setImg] = useState<File>(expense[ExpensesInterfaceFields.Image])
 
     const onEditExp = () => setOpenEdit(true)
 
     const defaultFormValues: ExpensesInterface = {
         [EntityWithIdFields.Id]: expense[EntityWithIdFields.Id],
-        [ExpensesInterfaceFields.Image]: '',
+        [ExpensesInterfaceFields.Image]: undefined,
         [ExpensesInterfaceFields.Amount]: expense[ExpensesInterfaceFields.Amount],
         [ExpensesInterfaceFields.Description]: expense[ExpensesInterfaceFields.Description],
         [ExpensesInterfaceFields.Title]: expense[ExpensesInterfaceFields.Title],
@@ -38,7 +39,8 @@ const PersonalExpensesEditDialog = ({ expense, onSubmitEdit }: PersonalExpensesE
         const submitData: ExpensesInterface = {
             ...data,
             [ExpensesInterfaceFields.IsExpense]: isExpense,
-            [ExpensesInterfaceFields.Recurrence]: freq
+            [ExpensesInterfaceFields.Recurrence]: freq,
+            [ExpensesInterfaceFields.Image]: img
         }
 
         onSubmitEdit(submitData)
@@ -50,12 +52,15 @@ const PersonalExpensesEditDialog = ({ expense, onSubmitEdit }: PersonalExpensesE
             methods.reset(defaultFormValues)
             setIsExpense(expense[ExpensesInterfaceFields.IsExpense])
             setFreq(expense[ExpensesInterfaceFields.Recurrence])
+            setImg(expense[ExpensesInterfaceFields.Image])
         }
     }, [openEdit])
 
     const onChangeExpense = (expT: ExpenseType) => setIsExpense(expT)
 
     const onChangeRecurrence = (newFreq: RecurrenceTypeCodes) => setFreq(newFreq)
+
+    const onChangeImage = (img: File) => setImg(img)
 
     return (
         <div>
@@ -70,6 +75,7 @@ const PersonalExpensesEditDialog = ({ expense, onSubmitEdit }: PersonalExpensesE
                         <DialogTitle className='text-black mb-2'>Editar Movimiento</DialogTitle>
                         <FormProvider {...methods}>
                             <PersonalExpensesAddNewForm
+                                onTriggerImage={onChangeImage}
                                 onTriggerExpense={onChangeExpense}
                                 onTriggerRecurrence={onChangeRecurrence}
                             />
