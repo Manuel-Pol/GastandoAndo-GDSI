@@ -1,11 +1,5 @@
-import { Button } from '@/components/ui/button'
-import { Trash } from 'lucide-react'
-
-import { Card, CardContent } from '@/components/ui/card'
 import { AlertCircle } from 'lucide-react'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
-import { Badge } from '@/components/ui/badge'
-import { numberFormatter } from '@/utils/formatters/numberFormatter'
 import { Group } from '@/types/groupalExpenses'
 
 interface GroupDataCardProps {

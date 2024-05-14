@@ -18,8 +18,12 @@ const GroupExpenses = () => {
 
     return (
         <div className='flex justify-center'>
-            <div className='flex flex-col gap-8 items-center w-full max-w-xl'>
-                <p className='text-6xl text-center'>Grupos</p>
+            <div className='flex flex-col gap-4 items-center w-full max-w-xl'>
+                <div className='flex flex-row w-full items-center justify-between'>
+                    <p className='text-6xl font-medium'>Grupos</p>
+                    <GroupalExpensesAddDialog onAddGroup={handleAddGroup} />
+                </div>
+
                 <div className='flex flex-row justify-between w-full items-center'>
                     <div>
                         {currentGroups.length !== 0 && (
@@ -41,7 +45,6 @@ const GroupExpenses = () => {
                             </Select>
                         )}
                     </div>
-                    <GroupalExpensesAddDialog onAddGroup={handleAddGroup} />
                 </div>
                 <GroupalDataCard groups={currentGroups} />
             </div>
