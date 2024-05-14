@@ -8,7 +8,7 @@ import PersonalExpensesAddNewForm from './PersonalExpensesAddNewForm'
 import { EntityWithIdFields } from '@/types/baseEntities'
 
 interface PersonalExpensesAddNewDialogProps {
-    onAddExpense: (exp: ExpensesInterface) => void
+  onAddExpense: (exp: ExpensesInterface) => void;
 }
 
 const PersonalExpensesAddNewDialog = ({ onAddExpense }: PersonalExpensesAddNewDialogProps) => {
@@ -49,45 +49,44 @@ const PersonalExpensesAddNewDialog = ({ onAddExpense }: PersonalExpensesAddNewDi
         onAddExpense(submitData)
         setOpen(false)
     }
+  const onChangeExpense = (expT: ExpenseType) => setIsExpense(expT);
+  
+  const onChangeFrequency = (newFreq: FrequencyTypeCodes) => setFreq(newFreq)
 
-    const onChangeExpense = (expT: ExpenseType) => setIsExpense(expT)
-
-    const onChangeFrequency = (newFreq: FrequencyTypeCodes) => setFreq(newFreq)
-
-    return (
-        <div>
-            <Dialog>
-                <DialogTrigger asChild>
-                    <Button
-                        className='bg-[#E34400] hover:bg-[#E34400] rounded text-white py-6 '
-                        onClick={() => {
-                            setOpen(true)
-                        }}
-                    >
-                        <CirclePlusIcon className='mr-2 text-white ' /> <p className='text-lg'>Agregar</p>
-                    </Button>
-                </DialogTrigger>
-                {open && (
-                    <DialogContent className='min-w-[400px] bg-white rounded'>
-                        <DialogTitle className='text-black'>Agregar Movimiento</DialogTitle>
-                        <FormProvider {...methods}>
-                            <PersonalExpensesAddNewForm onTriggerExpense={onChangeExpense} onTriggerFrequency={onChangeFrequency}/>
-                        </FormProvider>
-                        <DialogFooter>
-                            <DialogClose asChild>
-                                <Button
-                                    className='rounded text-black hover:bg-neutral-300'
-                                    onClick={methods.handleSubmit(onSubmitExpense)}
-                                    disabled={!methods.watch(ExpensesInterfaceFields.Amount)}
-                                >
-                                    <CirclePlusIcon className='mr-2 items-center' /> Agregar
-                                </Button>
-                            </DialogClose>
-                        </DialogFooter>
-                    </DialogContent>
-                )}
-            </Dialog>
-        </div>
+  return (
+      <div>
+          <Dialog>
+              <DialogTrigger asChild>
+                  <Button
+                      className='bg-[#E34400] hover:bg-[#E34400] rounded text-white py-6 '
+                      onClick={() => {
+                          setOpen(true)
+                      }}
+                  >
+                      <CirclePlusIcon className='mr-2 text-white ' /> <p className='text-lg'>Agregar</p>
+                  </Button>
+              </DialogTrigger>
+              {open && (
+                  <DialogContent className='min-w-[400px] bg-white rounded'>
+                      <DialogTitle className='text-black'>Agregar Movimiento</DialogTitle>
+                      <FormProvider {...methods}>
+                          <PersonalExpensesAddNewForm onTriggerExpense={onChangeExpense} onTriggerFrequency={onChangeFrequency}/>
+                      </FormProvider>
+                      <DialogFooter>
+                          <DialogClose asChild>
+                              <Button
+                                  className='rounded text-black hover:bg-neutral-300'
+                                  onClick={methods.handleSubmit(onSubmitExpense)}
+                                  disabled={!methods.watch(ExpensesInterfaceFields.Amount)}
+                              >
+                                  <CirclePlusIcon className='mr-2 items-center' /> Agregar
+                              </Button>
+                          </DialogClose>
+                      </DialogFooter>
+                  </DialogContent>
+              )}
+          </Dialog>
+      </div>
     )
 }
 
