@@ -2,6 +2,6 @@ export enum Recurrence {
   Daily = 'Diario',
   Weekly = 'Semanal',
   Mounthly = 'Mensual',
-  Annually = 'Anual',
+  Quarterly = 'Trimestral',
   NonRecurrent = 'No recurrente',
 }

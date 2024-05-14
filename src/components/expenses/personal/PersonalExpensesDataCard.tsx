@@ -5,7 +5,7 @@ import { Card, CardContent } from '@/components/ui/card'
 import { AlertCircle } from 'lucide-react'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Badge } from '@/components/ui/badge'
-import { ExpensesInterface, ExpenseType, ExpensesInterfaceFields, FrequencyTypeCodes } from '@/types/personalExpenses'
+import { ExpensesInterface, ExpenseType, ExpensesInterfaceFields, RecurrenceTypeCodes } from '@/types/personalExpenses'
 import PersonalExpensesEditDialog from './PersonalExpensesEditDialog'
 import { numberFormatter } from '@/utils/formatters/numberFormatter'
 
@@ -18,22 +18,22 @@ interface PersonalExpensesDataCardProps {
 const PersonalExpensesDataCard = ({ expenses, triggerDeleteExp, onSaveEdit }: PersonalExpensesDataCardProps) => {
     const onDelExp = (exp: ExpensesInterface) => triggerDeleteExp(exp)
 
-    const getExpenseFrequency = (freq: FrequencyTypeCodes) => {
+    const getExpenseRecurrence = (freq: RecurrenceTypeCodes) => {
         switch (freq) {
-            case FrequencyTypeCodes.Singular:
+            case RecurrenceTypeCodes.Singular:
                 return 'Singular'
-            case FrequencyTypeCodes.Diary:
+            case RecurrenceTypeCodes.Diary:
                 return 'Diario'
-            case FrequencyTypeCodes.Weekly:
+            case RecurrenceTypeCodes.Weekly:
                 return 'Semanal'
-            case FrequencyTypeCodes.Monthly:
+            case RecurrenceTypeCodes.Monthly:
                 return 'Mensual'
-            case FrequencyTypeCodes.Quarter:
+            case RecurrenceTypeCodes.Quarter:
                 return 'Trimestral'
-            
-            default: return 'Singular'
-        }
 
+            default:
+                return 'Singular'
+        }
     }
 
     return (
@@ -64,7 +64,9 @@ const PersonalExpensesDataCard = ({ expenses, triggerDeleteExp, onSaveEdit }: Pe
                                         <div className='flex flex-col'>
                                             <div className='flex flex-row space-x-4 items-center'>
                                                 <h4 className='font-semibold'>{exp[ExpensesInterfaceFields.Title]}</h4>
-                                                <Badge className='bg-[#e8ebe9]'>{getExpenseFrequency(exp[ExpensesInterfaceFields.Frequency])}</Badge>
+                                                <Badge className='bg-[#e8ebe9]'>
+                                                    {getExpenseRecurrence(exp[ExpensesInterfaceFields.Recurrence])}
+                                                </Badge>
                                             </div>
                                             <h6 className='font-semibold text-gray-400'>
                                                 {exp[ExpensesInterfaceFields.Description]}

@@ -16,5 +16,9 @@ export class UpdateTransferDto extends PartialType(CreateTransferDto) {
 
   date?: Date;
 
+  isExpense?: boolean;
+
   recurrence?: Recurrence;
+
+  image?: string;
 }

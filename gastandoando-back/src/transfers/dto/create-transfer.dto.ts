@@ -15,7 +15,9 @@ export class CreateTransferDto {
 
   date: Date;
 
-  isNegative: boolean;
+  isExpense: boolean;
 
   recurrence: Recurrence;
+
+  image: string;
 }

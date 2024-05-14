@@ -20,10 +20,13 @@ export class Transfer {
   date: Date;
 
   @Column()
-  isNegative: boolean;
+  isExpense: boolean;
 
   @Column({ default: Recurrence.NonRecurrent })
   recurrence: Recurrence;
+
+  @Column({ default: '' })
+  image: string;
 
   getTitle(): string {
     return this.title;
@@ -41,8 +44,8 @@ export class Transfer {
     return this.date;
   }
 
-  getIsNegative(): boolean {
-    return this.isNegative;
+  getIsExpense(): boolean {
+    return this.isExpense;
   }
 
   setTitle(newTitle: string) {

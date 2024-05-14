@@ -1,17 +1,17 @@
 import { FormField, FormItem, FormLabel, FormControl, FormMessage, Form } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
-import { ExpensesInterfaceFields, ExpenseType, FrequencyTypeCodes } from '@/types/personalExpenses'
+import { ExpensesInterfaceFields, ExpenseType, RecurrenceTypeCodes } from '@/types/personalExpenses'
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { useFormContext } from 'react-hook-form'
 import { DatePicker } from './DatePicker'
 
 interface PersonalExpensesAddNewFormProps {
-    onTriggerExpense: (expT: ExpenseType) => void,
-    onTriggerFrequency: (freq: FrequencyTypeCodes) => void
+    onTriggerExpense: (expT: ExpenseType) => void
+    onTriggerRecurrence: (freq: RecurrenceTypeCodes) => void
 }
 
-const PersonalExpensesAddNewForm = ({ onTriggerExpense, onTriggerFrequency }: PersonalExpensesAddNewFormProps) => {
+const PersonalExpensesAddNewForm = ({ onTriggerExpense, onTriggerRecurrence }: PersonalExpensesAddNewFormProps) => {
     const methods = useFormContext()
 
     return (
@@ -94,33 +94,48 @@ const PersonalExpensesAddNewForm = ({ onTriggerExpense, onTriggerFrequency }: Pe
                     <FormField
                         rules={{ required: true }}
                         control={methods.control}
-                        name={ExpensesInterfaceFields.Frequency}
+                        name={ExpensesInterfaceFields.Recurrence}
                         render={({ field }) => (
                             <FormItem>
                                 <FormLabel>Frecuencia</FormLabel>
                                 <FormControl>
                                     <Select
-                                        onValueChange={(e: string) => onTriggerFrequency(parseInt(e))}
-                                        defaultValue={(methods.getValues(ExpensesInterfaceFields.Frequency)).toString()}
+                                        onValueChange={(e: string) => onTriggerRecurrence(parseInt(e))}
+                                        defaultValue={methods.getValues(ExpensesInterfaceFields.Recurrence).toString()}
                                     >
                                         <SelectTrigger className='w-[200px]'>
                                             <SelectValue placeholder='Frecuencia' />
                                         </SelectTrigger>
                                         <SelectContent className='bg-white'>
                                             <SelectGroup>
-                                                <SelectItem className='cursor-pointer' value={`${FrequencyTypeCodes.Quarter}`}>
+                                                <SelectItem
+                                                    className='cursor-pointer'
+                                                    value={`${RecurrenceTypeCodes.Quarter}`}
+                                                >
                                                     Trimestral
                                                 </SelectItem>
-                                                <SelectItem className='cursor-pointer' value={`${FrequencyTypeCodes.Monthly}`}>
+                                                <SelectItem
+                                                    className='cursor-pointer'
+                                                    value={`${RecurrenceTypeCodes.Monthly}`}
+                                                >
                                                     Mensual
                                                 </SelectItem>
-                                                <SelectItem className='cursor-pointer' value={`${FrequencyTypeCodes.Weekly}`}>
+                                                <SelectItem
+                                                    className='cursor-pointer'
+                                                    value={`${RecurrenceTypeCodes.Weekly}`}
+                                                >
                                                     Semanal
                                                 </SelectItem>
-                                                <SelectItem className='cursor-pointer' value={`${FrequencyTypeCodes.Diary}`}>
+                                                <SelectItem
+                                                    className='cursor-pointer'
+                                                    value={`${RecurrenceTypeCodes.Diary}`}
+                                                >
                                                     Diario
                                                 </SelectItem>
-                                                <SelectItem className='cursor-pointer' value={`${FrequencyTypeCodes.Singular}`}>
+                                                <SelectItem
+                                                    className='cursor-pointer'
+                                                    value={`${RecurrenceTypeCodes.Singular}`}
+                                                >
                                                     Singular
                                                 </SelectItem>
                                             </SelectGroup>
