@@ -1,5 +1,5 @@
 import { EntityWithIdFields } from '@/types/baseEntities'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Group } from '@/types/groupalExpenses'
 import GroupalExpensesAddDialog from './GroupalExpensesAddDialog'
 import GroupalDataCard from './GroupalDataCard'
@@ -10,7 +10,8 @@ import { AlertCircle } from 'lucide-react'
 
 const GroupExpenses = () => {
     const [currentGroups, setCurrentGroups] = useState<Group[]>([])
-    const [selectedGroup, setSelectedGroup] = useState<Group>()
+    const [selectedGroup, setSelectedGroup] = useState<Group | undefined>(undefined)
+    const [currentDeleted, setCurrentDeleted] = useState<boolean>(false)
 
     const handleAddGroup = (group: Group) => {
         const groupAdd = {
@@ -22,8 +23,17 @@ const GroupExpenses = () => {
 
     const onClickGroup = (g: Group) => setSelectedGroup(g)
 
+    useEffect(() => {
+        if (selectedGroup){
+            setCurrentDeleted(false)
+        }
+    }, [selectedGroup])
+
     const deleteGroup = (id: number) => {
-        selectedGroup && selectedGroup[EntityWithIdFields.Id] == id && setSelectedGroup(undefined)
+        if(selectedGroup && selectedGroup[EntityWithIdFields.Id] === id){
+            setCurrentDeleted(true)
+            setSelectedGroup(undefined)
+        }
         const newGroups = currentGroups.filter((g) => g[EntityWithIdFields.Id] !== id)
         setCurrentGroups(newGroups)
     }
@@ -44,19 +54,19 @@ const GroupExpenses = () => {
                 </div>
             </div>
             <div className='col-span-3'>
-                {selectedGroup ? 
+                {selectedGroup && !currentDeleted ? 
                     <GroupMovements group={selectedGroup} />
                 :
                 <div className='w-full'>
-                    <Alert variant='default' className='bg-white rounded-xl space-y-2 p-6'>
-                        <div className='flex flex-row gap-2 text-xl items-center'>
-                            <AlertCircle />
-                            <AlertTitle>Sin movimientos</AlertTitle>
-                        </div>
-                        <AlertDescription>
-                            Seleccione un grupo para visualizar sus movimientos.
-                        </AlertDescription>
-                    </Alert>
+                        <Alert variant='default' className='bg-white rounded-xl space-y-2 p-6'>
+                            <div className='flex flex-row gap-2 text-xl items-center'>
+                                <AlertCircle />
+                                <AlertTitle>Sin movimientos</AlertTitle>
+                            </div>
+                            <AlertDescription>
+                                Seleccione un grupo para visualizar sus movimientos.
+                            </AlertDescription>
+                        </Alert>
                 </div>
                 }
             </div>
