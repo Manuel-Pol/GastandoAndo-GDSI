@@ -9,12 +9,17 @@ import { useEffect } from 'react'
 
 interface PersonalExpensesAddNewFormProps {
     onTriggerExpense: (expT: ExpenseType) => void
-    onTriggerRecurrence: (freq: RecurrenceTypeCodes) => void,
-    onTriggerImage: (img: File) => void,
+    onTriggerRecurrence: (freq: RecurrenceTypeCodes) => void
+    onTriggerImage: (img: File) => void
     prevImg?: File
 }
 
-const PersonalExpensesAddNewForm = ({ onTriggerExpense, onTriggerRecurrence, onTriggerImage, prevImg }: PersonalExpensesAddNewFormProps) => {
+const PersonalExpensesAddNewForm = ({
+    onTriggerExpense,
+    onTriggerRecurrence,
+    onTriggerImage,
+    prevImg
+}: PersonalExpensesAddNewFormProps) => {
     const methods = useFormContext()
     const watchFile = methods.watch(ExpensesInterfaceFields.Image)
 
@@ -64,12 +69,11 @@ const PersonalExpensesAddNewForm = ({ onTriggerExpense, onTriggerRecurrence, onT
                         <FormItem>
                             <FormLabel>Imagen</FormLabel>
                             <FormControl>
-                                <Input {...fieldProps} type='file'
-                                        accept="image/*, application/pdf"
-                                        onChange={(event) =>
-                                          onChange(event.target.files && event.target.files[0])
-                                        }
-                                        defaultValue={methods.getValues(ExpensesInterfaceFields.Image)}
+                                <Input
+                                    {...fieldProps}
+                                    type='file'
+                                    accept='image/*, application/pdf'
+                                    onChange={event => onChange(event.target.files && event.target.files[0])}
                                 />
                             </FormControl>
                             <FormMessage />

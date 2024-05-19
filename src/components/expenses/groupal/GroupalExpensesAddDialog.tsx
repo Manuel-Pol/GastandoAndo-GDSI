@@ -13,6 +13,7 @@ interface GroupalExpensesAddDialogProps {
 
 const GroupalExpensesAddDialog = ({ onAddGroup }: GroupalExpensesAddDialogProps) => {
     const [open, setOpen] = useState<boolean>(false)
+    const [img, setImg] = useState<File>()
 
     const defaultFormValues: Group = {
         [EntityWithIdFields.Id]: 0,
@@ -26,13 +27,20 @@ const GroupalExpensesAddDialog = ({ onAddGroup }: GroupalExpensesAddDialogProps)
     })
 
     const onSubmitGroup = (group: Group) => {
-        onAddGroup(group)
+        const submitGroup: Group = {
+            ...group,
+            [GroupFields.Image]: img
+        }
+
+        onAddGroup(submitGroup)
         setOpen(false)
     }
 
     useEffect(() => {
         if (open) methods.reset(defaultFormValues)
     }, [open])
+
+    const onTriggerImage = (newImg: File) => setImg(newImg)
 
     return (
         <div>
@@ -51,7 +59,7 @@ const GroupalExpensesAddDialog = ({ onAddGroup }: GroupalExpensesAddDialogProps)
                     <DialogContent className='min-w-[400px] bg-white rounded'>
                         <DialogTitle className='text-black'>Crear grupo</DialogTitle>
                         <FormProvider {...methods}>
-                            <GroupForm />
+                            <GroupForm onTriggerImage={onTriggerImage} />
                         </FormProvider>
                         <DialogFooter>
                             <DialogClose asChild>

@@ -13,7 +13,9 @@ interface GroupEditDialogProps {
 }
 
 const GroupEditDialog = ({ group, onSubmitEdit }: GroupEditDialogProps) => {
+    console.log('Entre al GroupEditDialog')
     const [openEdit, setOpenEdit] = useState<boolean>(false)
+    const [img, setImg] = useState<File | undefined>(group[GroupFields.Image])
 
     const onEditExp = () => setOpenEdit(true)
 
@@ -21,7 +23,8 @@ const GroupEditDialog = ({ group, onSubmitEdit }: GroupEditDialogProps) => {
         [EntityWithIdFields.Id]: group[EntityWithIdFields.Id],
         [GroupFields.Description]: group[GroupFields.Description],
         [GroupFields.Name]: group[GroupFields.Name],
-        [GroupFields.Members]: group[GroupFields.Members]
+        [GroupFields.Members]: group[GroupFields.Members],
+        [GroupFields.Image]: group[GroupFields.Image]
     }
 
     const methods = useForm<Group>({
@@ -30,7 +33,8 @@ const GroupEditDialog = ({ group, onSubmitEdit }: GroupEditDialogProps) => {
 
     const onSubmitExpense = (data: Group) => {
         const submitData: Group = {
-            ...data
+            ...data,
+            [GroupFields.Image]: img
         }
 
         onSubmitEdit(submitData)
@@ -40,8 +44,11 @@ const GroupEditDialog = ({ group, onSubmitEdit }: GroupEditDialogProps) => {
     useEffect(() => {
         if (openEdit) {
             methods.reset(defaultFormValues)
+            setImg(group[GroupFields.Image])
         }
     }, [openEdit])
+
+    const onTriggerImage = (newImg: File) => setImg(newImg)
 
     return (
         <div>
@@ -55,7 +62,7 @@ const GroupEditDialog = ({ group, onSubmitEdit }: GroupEditDialogProps) => {
                     <DialogContent className='min-w-[400px] bg-white rounded'>
                         <DialogTitle className='text-black mb-2'>Editar Grupo</DialogTitle>
                         <FormProvider {...methods}>
-                            <GroupForm />
+                            <GroupForm onTriggerImage={onTriggerImage} prevImg={img} />
                         </FormProvider>
                         <DialogFooter>
                             <DialogClose asChild>

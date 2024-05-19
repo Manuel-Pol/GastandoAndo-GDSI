@@ -1,12 +1,31 @@
-import { useFormContext } from "react-hook-form"
+import { useFormContext } from 'react-hook-form'
 import { FormField, FormItem, FormLabel, FormControl, FormMessage, Form } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
-import { GroupFields } from "@/types/groupalExpenses"
+import { GroupFields } from '@/types/groupalExpenses'
+import { useEffect } from 'react'
 
-const GroupForm = () => {
+interface GroupFormProps {
+    onTriggerImage: (img: File) => void
+    prevImg?: File
+}
+
+const GroupForm = ({ onTriggerImage, prevImg }: GroupFormProps) => {
+    console.log('Entre al GroupForm')
+    console.log(`Los valores son:\nonTrigerImage: ${onTriggerImage}\nprevImg: ${prevImg}`)
 
     const methods = useFormContext()
+    const watchFile = methods.watch(GroupFields.Image)
+
+    useEffect(() => {
+        if (watchFile) onTriggerImage(watchFile)
+    }, [watchFile])
+
+    useEffect(() => {
+        if (prevImg) {
+            methods.setValue(GroupFields.Image, prevImg)
+        }
+    }, [prevImg])
 
     return (
         <Form {...methods}>
@@ -37,10 +56,27 @@ const GroupForm = () => {
                         </FormItem>
                     )}
                 />
+                <FormField
+                    control={methods.control}
+                    name={GroupFields.Image}
+                    render={({ field: { value, onChange, ...fieldProps } }) => (
+                        <FormItem>
+                            <FormLabel>Imagen</FormLabel>
+                            <FormControl>
+                                <Input
+                                    {...fieldProps}
+                                    type='file'
+                                    accept='image/*, application/pdf'
+                                    onChange={event => onChange(event.target.files && event.target.files[0])}
+                                />
+                            </FormControl>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
             </div>
         </Form>
     )
 }
-
 
 export default GroupForm
