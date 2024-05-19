@@ -17,7 +17,8 @@ const GroupalExpensesAddDialog = ({ onAddGroup }: GroupalExpensesAddDialogProps)
     const defaultFormValues: Group = {
         [EntityWithIdFields.Id]: 0,
         [GroupFields.Name]: '',
-        [GroupFields.Description]: ''
+        [GroupFields.Description]: '',
+        [GroupFields.Members]: []
     }
 
     const methods = useForm<Group>({

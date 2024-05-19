@@ -20,7 +20,8 @@ const GroupEditDialog = ({ group, onSubmitEdit }: GroupEditDialogProps) => {
     const defaultFormValues: Group = {
         [EntityWithIdFields.Id]: group[EntityWithIdFields.Id],
         [GroupFields.Description]: group[GroupFields.Description],
-        [GroupFields.Name]: group[GroupFields.Name]
+        [GroupFields.Name]: group[GroupFields.Name],
+        [GroupFields.Members]: group[GroupFields.Members]
     }
 
     const methods = useForm<Group>({

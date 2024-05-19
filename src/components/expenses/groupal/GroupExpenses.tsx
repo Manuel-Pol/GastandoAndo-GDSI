@@ -1,11 +1,13 @@
 import { EntityWithIdFields } from '@/types/baseEntities'
 import { useEffect, useState } from 'react'
-import { Group } from '@/types/groupalExpenses'
+import { Group, GroupFields } from '@/types/groupalExpenses'
 import GroupalExpensesAddDialog from './GroupalExpensesAddDialog'
 import GroupalDataCard from './GroupalDataCard'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import GroupMovements from './GroupMovements'
 import { AlertCircle } from 'lucide-react'
+import { UserFields } from '@/types/users'
+import GroupalMembersCard from './GroupalMembersCard'
 
 const GroupExpenses = () => {
     const [currentGroups, setCurrentGroups] = useState<Group[]>([])
@@ -15,6 +17,12 @@ const GroupExpenses = () => {
     const handleAddGroup = (group: Group) => {
         const groupAdd = {
             ...group,
+            [GroupFields.Members]: [
+                {
+                    [UserFields.Name]: 'Vinicius',
+                    [EntityWithIdFields.Id]: 0
+                }
+            ],
             [EntityWithIdFields.Id]: currentGroups.length + 1
         }
         setCurrentGroups([...currentGroups, groupAdd])
@@ -65,7 +73,7 @@ const GroupExpenses = () => {
                     />
                 </div>
             </div>
-            <div className='col-span-3'>
+            <div className='col-span-2'>
                 {selectedGroup && !currentDeleted ? (
                     <GroupMovements group={selectedGroup} />
                 ) : (
@@ -80,6 +88,16 @@ const GroupExpenses = () => {
                     </div>
                 )}
             </div>
+            {selectedGroup && !currentDeleted && (
+                <div className='col-span-1 bg-white rounded'>
+                    <div className='flex flex-col gap-2 rounded'>
+                        <p className='text-white text-2xl rounded font-medium text-center bg-[#1C7549] m-1'>
+                            Integrantes
+                        </p>
+                        <GroupalMembersCard members={selectedGroup?.[GroupFields.Members]}></GroupalMembersCard>
+                    </div>
+                </div>
+            )}
         </div>
     )
 }
