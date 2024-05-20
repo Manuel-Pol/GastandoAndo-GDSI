@@ -16,7 +16,7 @@ const GroupExpenses = () => {
 
     const currUser: User = {
         [UserFields.Name]: 'Vinicius',
-        [UserFields.Friends]: ['Kross', 'Valverde'],
+        [UserFields.Friends]: ['Kross', 'Valverde', 'Militao', 'Rodrygo', 'Courtoa', 'Carbajal', 'Modric', 'Mbappe'],
         [EntityWithIdFields.Id]: 0
     }
 
@@ -63,7 +63,7 @@ const GroupExpenses = () => {
                 <div className='flex flex-col gap-2'>
                     <div className='flex flex-row justify-between items-center mb-2'>
                         <p className='text-2xl font-medium'>Grupos</p>
-                        <GroupalExpensesAddDialog onAddGroup={handleAddGroup} />
+                        <GroupalExpensesAddDialog onAddGroup={handleAddGroup} friends={currUser[UserFields.Friends]} />
                     </div>
                     <GroupalDataCard
                         groups={currentGroups}

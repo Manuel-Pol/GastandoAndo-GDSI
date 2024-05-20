@@ -6,14 +6,17 @@ import { useForm, FormProvider } from 'react-hook-form'
 import { useState, useEffect } from 'react'
 import { EntityWithIdFields } from '@/types/baseEntities'
 import GroupForm from './GroupForm'
+import { User, UserFields } from '@/types/users'
 
 interface GroupalExpensesAddDialogProps {
     onAddGroup: (g: Group) => void
+    friends: string[]
 }
 
-const GroupalExpensesAddDialog = ({ onAddGroup }: GroupalExpensesAddDialogProps) => {
+const GroupalExpensesAddDialog = ({ onAddGroup, friends }: GroupalExpensesAddDialogProps) => {
     const [open, setOpen] = useState<boolean>(false)
     const [img, setImg] = useState<File>()
+    const [members, setMembs] = useState<string[]>([])
 
     const defaultFormValues: Group = {
         [EntityWithIdFields.Id]: 0,
@@ -27,9 +30,18 @@ const GroupalExpensesAddDialog = ({ onAddGroup }: GroupalExpensesAddDialogProps)
     })
 
     const onSubmitGroup = (group: Group) => {
+        const submitMembers: User[] = []
+        members.forEach((name, inx) => {
+            submitMembers.push({
+                [UserFields.Name]: name,
+                [UserFields.Friends]: [],
+                [EntityWithIdFields.Id]: inx
+            })
+        })
         const submitGroup: Group = {
             ...group,
-            [GroupFields.Image]: img
+            [GroupFields.Image]: img,
+            [GroupFields.Members]: submitMembers
         }
 
         onAddGroup(submitGroup)
@@ -60,7 +72,7 @@ const GroupalExpensesAddDialog = ({ onAddGroup }: GroupalExpensesAddDialogProps)
                     <DialogContent className='min-w-[400px] bg-white rounded'>
                         <DialogTitle className='text-black'>Crear grupo</DialogTitle>
                         <FormProvider {...methods}>
-                            <GroupForm onTriggerImage={onTriggerImage} />
+                            <GroupForm onTriggerImage={onTriggerImage} friends={friends} />
                         </FormProvider>
                         <DialogFooter>
                             <DialogClose asChild>
