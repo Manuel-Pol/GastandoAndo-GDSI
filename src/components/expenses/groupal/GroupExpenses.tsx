@@ -6,7 +6,7 @@ import GroupalDataCard from './GroupalDataCard'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import GroupMovements from './GroupMovements'
 import { AlertCircle } from 'lucide-react'
-import { UserFields } from '@/types/users'
+import { User, UserFields } from '@/types/users'
 import GroupalMembersCard from './GroupalMembersCard'
 
 const GroupExpenses = () => {
@@ -14,15 +14,16 @@ const GroupExpenses = () => {
     const [selectedGroup, setSelectedGroup] = useState<Group | undefined>(undefined)
     const [currentDeleted, setCurrentDeleted] = useState<boolean>(false)
 
+    const currUser: User = {
+        [UserFields.Name]: 'Vinicius',
+        [UserFields.Friends]: ['Kross', 'Valverde'],
+        [EntityWithIdFields.Id]: 0
+    }
+
     const handleAddGroup = (group: Group) => {
         const groupAdd = {
             ...group,
-            [GroupFields.Members]: [
-                {
-                    [UserFields.Name]: 'Vinicius',
-                    [EntityWithIdFields.Id]: 0
-                }
-            ],
+            [GroupFields.Members]: [currUser],
             [EntityWithIdFields.Id]: currentGroups.length + 1
         }
         setCurrentGroups([...currentGroups, groupAdd])
@@ -38,8 +39,8 @@ const GroupExpenses = () => {
 
     const deleteGroup = (id: number) => {
         if (selectedGroup && selectedGroup[EntityWithIdFields.Id] === id) {
-            setCurrentDeleted(true)
             setSelectedGroup(undefined)
+            setCurrentDeleted(true)
         }
         const newGroups = currentGroups.filter(g => g[EntityWithIdFields.Id] !== id)
         setCurrentGroups(newGroups)

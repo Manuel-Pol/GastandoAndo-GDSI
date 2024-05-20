@@ -11,9 +11,6 @@ interface GroupFormProps {
 }
 
 const GroupForm = ({ onTriggerImage, prevImg }: GroupFormProps) => {
-    console.log('Entre al GroupForm')
-    console.log(`Los valores son:\nonTrigerImage: ${onTriggerImage}\nprevImg: ${prevImg}`)
-
     const methods = useFormContext()
     const watchFile = methods.watch(GroupFields.Image)
 

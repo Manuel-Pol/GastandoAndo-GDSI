@@ -3,6 +3,7 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Group, GroupFields } from '@/types/groupalExpenses'
 import { EntityWithIdFields } from '@/types/baseEntities'
 import GroupEditDialog from './GroupEditDialog'
+import PreviewGroupDialog from '../components/PreviewGroupDialog'
 interface GroupDataCardProps {
     groups: Group[]
     onSelect: (g: Group) => void
@@ -27,6 +28,9 @@ const GroupalDataCard = ({ groups, onSelect, selectedGroup, onSaveEdit, onDelete
                     >
                         <p className='font-medium'>{group[GroupFields.Name]}</p>
                         <div className='flex flex-row items-center gap-1'>
+                            <div className='rounded-full p-2 hover:bg-[#ccd3d8]'>
+                                <PreviewGroupDialog group={group} />
+                            </div>
                             <div className='rounded-full p-2 hover:bg-[#ccd3d8]'>
                                 <GroupEditDialog group={group} onSubmitEdit={onSaveEdit} />
                             </div>

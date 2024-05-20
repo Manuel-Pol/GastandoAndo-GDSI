@@ -13,7 +13,6 @@ interface GroupEditDialogProps {
 }
 
 const GroupEditDialog = ({ group, onSubmitEdit }: GroupEditDialogProps) => {
-    console.log('Entre al GroupEditDialog')
     const [openEdit, setOpenEdit] = useState<boolean>(false)
     const [img, setImg] = useState<File | undefined>(group[GroupFields.Image])
 

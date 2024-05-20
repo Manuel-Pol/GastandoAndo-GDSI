@@ -33,6 +33,7 @@ const GroupalExpensesAddDialog = ({ onAddGroup }: GroupalExpensesAddDialogProps)
         }
 
         onAddGroup(submitGroup)
+        setImg(undefined)
         setOpen(false)
     }
 
