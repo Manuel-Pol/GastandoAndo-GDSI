@@ -6,7 +6,6 @@ import { useForm, FormProvider } from 'react-hook-form'
 import { useState, useEffect } from 'react'
 import { EntityWithIdFields } from '@/types/baseEntities'
 import GroupForm from './GroupForm'
-import { User, UserFields } from '@/types/users'
 
 interface GroupalExpensesAddDialogProps {
     onAddGroup: (g: Group) => void
@@ -16,13 +15,12 @@ interface GroupalExpensesAddDialogProps {
 const GroupalExpensesAddDialog = ({ onAddGroup, friends }: GroupalExpensesAddDialogProps) => {
     const [open, setOpen] = useState<boolean>(false)
     const [img, setImg] = useState<File>()
-    const [members, setMembs] = useState<string[]>([])
 
     const defaultFormValues: Group = {
         [EntityWithIdFields.Id]: 0,
         [GroupFields.Name]: '',
         [GroupFields.Description]: '',
-        [GroupFields.Members]: []
+        [GroupFields.Members]: ['Vinicius']
     }
 
     const methods = useForm<Group>({
@@ -30,20 +28,10 @@ const GroupalExpensesAddDialog = ({ onAddGroup, friends }: GroupalExpensesAddDia
     })
 
     const onSubmitGroup = (group: Group) => {
-        const submitMembers: User[] = []
-        members.forEach((name, inx) => {
-            submitMembers.push({
-                [UserFields.Name]: name,
-                [UserFields.Friends]: [],
-                [EntityWithIdFields.Id]: inx
-            })
-        })
         const submitGroup: Group = {
             ...group,
-            [GroupFields.Image]: img,
-            [GroupFields.Members]: submitMembers
+            [GroupFields.Image]: img
         }
-
         onAddGroup(submitGroup)
         setImg(undefined)
         setOpen(false)

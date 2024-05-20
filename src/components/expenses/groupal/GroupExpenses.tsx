@@ -7,7 +7,7 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import GroupMovements from './GroupMovements'
 import { AlertCircle } from 'lucide-react'
 import { User, UserFields } from '@/types/users'
-import GroupalMembersCard from './GroupalMembersCard'
+import GroupMembersCard from './GroupMembersCard'
 
 const GroupExpenses = () => {
     const [currentGroups, setCurrentGroups] = useState<Group[]>([])
@@ -23,7 +23,6 @@ const GroupExpenses = () => {
     const handleAddGroup = (group: Group) => {
         const groupAdd = {
             ...group,
-            [GroupFields.Members]: [currUser],
             [EntityWithIdFields.Id]: currentGroups.length + 1
         }
         setCurrentGroups([...currentGroups, groupAdd])
@@ -92,10 +91,10 @@ const GroupExpenses = () => {
             {selectedGroup && !currentDeleted && (
                 <div className='col-span-1 bg-white rounded'>
                     <div className='flex flex-col gap-2 rounded'>
-                        <p className='text-white text-2xl rounded font-medium text-center bg-[#1C7549] m-1'>
+                        <p className='text-white text-2xl rounded font-medium text-center bg-[#1C7549] py-1'>
                             Integrantes
                         </p>
-                        <GroupalMembersCard members={selectedGroup?.[GroupFields.Members]}></GroupalMembersCard>
+                        <GroupMembersCard members={selectedGroup?.[GroupFields.Members]} />
                     </div>
                 </div>
             )}

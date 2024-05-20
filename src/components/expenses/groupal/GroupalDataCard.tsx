@@ -26,15 +26,15 @@ const GroupalDataCard = ({ groups, onSelect, selectedGroup, onSaveEdit, onDelete
                         onClick={() => onSelect(group)}
                         key={`group_${idx}`}
                     >
-                        <p className='font-medium'>{group[GroupFields.Name]}</p>
+                        <p className='font-medium text-base'>{group[GroupFields.Name]}</p>
                         <div className='flex flex-row items-center gap-1'>
-                            <div className='rounded-full p-2 hover:bg-[#ccd3d8]'>
+                            <div className='rounded-full hover:bg-[#ccd3d8]'>
                                 <PreviewGroupDialog group={group} />
                             </div>
-                            <div className='rounded-full p-2 hover:bg-[#ccd3d8]'>
+                            <div className='rounded-full hover:bg-[#ccd3d8]'>
                                 <GroupEditDialog group={group} onSubmitEdit={onSaveEdit} />
                             </div>
-                            <div className='rounded-full p-2 hover:bg-[#ccd3d8]'>
+                            <div className='rounded-full p-3 hover:bg-[#ccd3d8]'>
                                 <Trash className='w-4 h-4' onClick={() => onDelete(group[EntityWithIdFields.Id])} />
                             </div>
                         </div>
