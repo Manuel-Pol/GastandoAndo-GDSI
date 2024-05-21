@@ -45,6 +45,16 @@ const GroupExpenses = () => {
         setCurrentGroups(newGroups)
     }
 
+    const deleteMember = (member: string) => {
+        console.log('llegue al deleteMember')
+        if (selectedGroup) {
+            console.log(member)
+            const newMembers = selectedGroup[GroupFields.Members].filter((m: string) => m !== member)
+            console.log(`${selectedGroup[GroupFields.Members]}\n${newMembers} `)
+            selectedGroup[GroupFields.Members] = newMembers
+        }
+    }
+
     const onSaveEdit = (group: Group) => {
         console.log('Entro al onSaveEdit')
         const newGroup = currentGroups.map(g => {
@@ -70,6 +80,7 @@ const GroupExpenses = () => {
                         selectedGroup={selectedGroup}
                         onSaveEdit={onSaveEdit}
                         onDelete={deleteGroup}
+                        friends={currUser[UserFields.Friends]}
                     />
                 </div>
             </div>
@@ -94,7 +105,7 @@ const GroupExpenses = () => {
                         <p className='text-white text-2xl rounded font-medium text-center bg-[#1C7549] py-1'>
                             Integrantes
                         </p>
-                        <GroupMembersCard members={selectedGroup?.[GroupFields.Members]} />
+                        <GroupMembersCard members={selectedGroup[GroupFields.Members]} onDelete={deleteMember} />
                     </div>
                 </div>
             )}

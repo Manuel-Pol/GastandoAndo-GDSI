@@ -10,9 +10,10 @@ import GroupForm from './GroupForm'
 interface GroupEditDialogProps {
     group: Group
     onSubmitEdit: (e: Group) => void
+    friends: string[]
 }
 
-const GroupEditDialog = ({ group, onSubmitEdit }: GroupEditDialogProps) => {
+const GroupEditDialog = ({ group, onSubmitEdit, friends }: GroupEditDialogProps) => {
     const [openEdit, setOpenEdit] = useState<boolean>(false)
     const [img, setImg] = useState<File | undefined>(group[GroupFields.Image])
 
@@ -61,7 +62,7 @@ const GroupEditDialog = ({ group, onSubmitEdit }: GroupEditDialogProps) => {
                     <DialogContent className='min-w-[400px] bg-white rounded'>
                         <DialogTitle className='text-black mb-2'>Editar Grupo</DialogTitle>
                         <FormProvider {...methods}>
-                            <GroupForm onTriggerImage={onTriggerImage} prevImg={img} />
+                            <GroupForm onTriggerImage={onTriggerImage} prevImg={img} friends={friends} />
                         </FormProvider>
                         <DialogFooter>
                             <DialogClose asChild>

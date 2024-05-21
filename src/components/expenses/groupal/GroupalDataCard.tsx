@@ -10,9 +10,10 @@ interface GroupDataCardProps {
     selectedGroup?: Group
     onSaveEdit: (group: Group) => void
     onDelete: (groupId: number) => void
+    friends: string[]
 }
 
-const GroupalDataCard = ({ groups, onSelect, selectedGroup, onSaveEdit, onDelete }: GroupDataCardProps) => {
+const GroupalDataCard = ({ groups, onSelect, selectedGroup, onSaveEdit, onDelete, friends }: GroupDataCardProps) => {
     return (
         <div className='w-full'>
             {groups.length !== 0 ? (
@@ -32,7 +33,7 @@ const GroupalDataCard = ({ groups, onSelect, selectedGroup, onSaveEdit, onDelete
                                 <PreviewGroupDialog group={group} />
                             </div>
                             <div className='rounded-full hover:bg-[#ccd3d8]'>
-                                <GroupEditDialog group={group} onSubmitEdit={onSaveEdit} />
+                                <GroupEditDialog group={group} onSubmitEdit={onSaveEdit} friends={friends} />
                             </div>
                             <div className='rounded-full p-3 hover:bg-[#ccd3d8]'>
                                 <Trash className='w-4 h-4' onClick={() => onDelete(group[EntityWithIdFields.Id])} />
