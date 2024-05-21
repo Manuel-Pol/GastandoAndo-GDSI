@@ -61,7 +61,7 @@ const GroupEditDialog = ({ group, onSubmitEdit }: GroupEditDialogProps) => {
                     <DialogContent className='min-w-[400px] bg-white rounded'>
                         <DialogTitle className='text-black mb-2'>Editar Grupo</DialogTitle>
                         <FormProvider {...methods}>
-                            <GroupForm onTriggerImage={onTriggerImage} prevImg={img} />
+                            <GroupForm onTriggerImage={onTriggerImage} prevImg={img} friends={group[GroupFields.Members]}/>
                         </FormProvider>
                         <DialogFooter>
                             <DialogClose asChild>
