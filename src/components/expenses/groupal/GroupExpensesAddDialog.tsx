@@ -7,17 +7,18 @@ import { useState, useEffect } from 'react'
 import { EntityWithIdAndDescription, EntityWithIdAndDescriptionFields, EntityWithIdFields } from '@/types/baseEntities'
 import GroupForm from './GroupForm'
 
-interface GroupalExpensesAddDialogProps {
+interface GroupExpensesAddDialogProps {
     onAddGroup: (g: Group) => void
     friends: EntityWithIdAndDescription[]
 }
 
-const GroupalExpensesAddDialog = ({ onAddGroup, friends }: GroupalExpensesAddDialogProps) => {
+const GroupExpensesAddDialog = ({ onAddGroup, friends }: GroupExpensesAddDialogProps) => {
     const [open, setOpen] = useState<boolean>(false)
     const [img, setImg] = useState<File>()
-    const defaultMembers: EntityWithIdAndDescription[] = [{[EntityWithIdFields.Id]: 0, [EntityWithIdAndDescriptionFields.Description]: 'Vinicius'}]
+    const defaultMembers: EntityWithIdAndDescription[] = [
+        { [EntityWithIdFields.Id]: 0, [EntityWithIdAndDescriptionFields.Description]: 'Vinicius' }
+    ]
     const [members, setMembers] = useState<EntityWithIdAndDescription[]>(defaultMembers)
-
 
     const defaultFormValues: Group = {
         [EntityWithIdFields.Id]: 0,
@@ -50,10 +51,8 @@ const GroupalExpensesAddDialog = ({ onAddGroup, friends }: GroupalExpensesAddDia
 
     const onSelectMember = (member: EntityWithIdAndDescription, state: boolean) => {
         state
-        ? setMembers([...members, member])
-        : setMembers(members.filter(
-              value => value[EntityWithIdFields.Id] !== member[EntityWithIdFields.Id]
-          ))
+            ? setMembers([...members, member])
+            : setMembers(members.filter(value => value[EntityWithIdFields.Id] !== member[EntityWithIdFields.Id]))
     }
 
     return (
@@ -73,7 +72,12 @@ const GroupalExpensesAddDialog = ({ onAddGroup, friends }: GroupalExpensesAddDia
                     <DialogContent className='min-w-[400px] bg-white rounded'>
                         <DialogTitle className='text-black'>Crear grupo</DialogTitle>
                         <FormProvider {...methods}>
-                            <GroupForm onTriggerImage={onTriggerImage} friends={friends} selectedMembers={members} onSelectMember={onSelectMember}/>
+                            <GroupForm
+                                onTriggerImage={onTriggerImage}
+                                friends={friends}
+                                selectedMembers={members}
+                                onSelectMember={onSelectMember}
+                            />
                         </FormProvider>
                         <DialogFooter>
                             <DialogClose asChild>
@@ -93,4 +97,4 @@ const GroupalExpensesAddDialog = ({ onAddGroup, friends }: GroupalExpensesAddDia
     )
 }
 
-export default GroupalExpensesAddDialog
+export default GroupExpensesAddDialog

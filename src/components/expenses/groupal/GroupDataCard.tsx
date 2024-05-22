@@ -12,7 +12,7 @@ interface GroupDataCardProps {
     onDelete: (groupId: number) => void
 }
 
-const GroupalDataCard = ({ groups, onSelect, selectedGroup, onSaveEdit, onDelete }: GroupDataCardProps) => {
+const GroupDataCard = ({ groups, onSelect, selectedGroup, onSaveEdit, onDelete }: GroupDataCardProps) => {
     return (
         <div className='w-full'>
             {groups.length !== 0 ? (
@@ -35,7 +35,10 @@ const GroupalDataCard = ({ groups, onSelect, selectedGroup, onSaveEdit, onDelete
                                 <GroupEditDialog group={group} onSubmitEdit={onSaveEdit} />
                             </div>
                             <div className='rounded-full p-3 hover:bg-[#ccd3d8]'>
-                                <Trash className='w-4 h-4' onClick={() => onDelete(group[EntityWithIdFields.Id])} />
+                                <Trash
+                                    className='w-4 h-4 text-red-600'
+                                    onClick={() => onDelete(group[EntityWithIdFields.Id])}
+                                />
                             </div>
                         </div>
                     </div>
@@ -53,4 +56,4 @@ const GroupalDataCard = ({ groups, onSelect, selectedGroup, onSaveEdit, onDelete
     )
 }
 
-export default GroupalDataCard
+export default GroupDataCard

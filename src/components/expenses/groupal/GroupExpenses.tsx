@@ -1,12 +1,13 @@
 import { EntityWithIdFields } from '@/types/baseEntities'
 import { useEffect, useState } from 'react'
 import { Group, GroupFields, defaultFriends } from '@/types/groupalExpenses'
-import GroupalExpensesAddDialog from './GroupalExpensesAddDialog'
-import GroupalDataCard from './GroupalDataCard'
+import GroupExpensesAddDialog from './GroupExpensesAddDialog'
+import GroupDataCard from './GroupDataCard'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import GroupMovements from './GroupMovements'
 import { AlertCircle } from 'lucide-react'
 import GroupMembersCard from './GroupMembersCard'
+import { GroupAddMemberDialog } from './GroupAddMemberDialog'
 
 const GroupExpenses = () => {
     const [currentGroups, setCurrentGroups] = useState<Group[]>([])
@@ -53,7 +54,9 @@ const GroupExpenses = () => {
         if (selectedGroup) {
             const newGroup: Group = {
                 ...selectedGroup,
-                [GroupFields.Members]: selectedGroup[GroupFields.Members].filter((m) => m[EntityWithIdFields.Id] !== memberId)
+                [GroupFields.Members]: selectedGroup[GroupFields.Members].filter(
+                    m => m[EntityWithIdFields.Id] !== memberId
+                )
             }
             onSaveEdit(newGroup)
             setSelectedGroup(newGroup)
@@ -66,9 +69,9 @@ const GroupExpenses = () => {
                 <div className='flex flex-col gap-2'>
                     <div className='flex flex-row justify-between items-center mb-2'>
                         <p className='text-2xl font-medium'>Grupos</p>
-                        <GroupalExpensesAddDialog onAddGroup={handleAddGroup} friends={defaultFriends} />
+                        <GroupExpensesAddDialog onAddGroup={handleAddGroup} friends={defaultFriends} />
                     </div>
-                    <GroupalDataCard
+                    <GroupDataCard
                         groups={currentGroups}
                         onSelect={onClickGroup}
                         selectedGroup={selectedGroup}
@@ -95,10 +98,14 @@ const GroupExpenses = () => {
             {selectedGroup && !currentDeleted && (
                 <div className='col-span-1 bg-white rounded'>
                     <div className='flex flex-col gap-2 rounded'>
-                        <p className='text-white text-2xl rounded font-medium text-center bg-[#1C7549] py-1'>
-                            Integrantes
-                        </p>
-                        <GroupMembersCard members={selectedGroup?.[GroupFields.Members]} onRemoveMember={onDeleteMember}/>
+                        <div className='text-white text-2xl rounded font-medium flex items-center justify-between bg-[#1C7549] py-1 px-4'>
+                            <p>Integrantes</p>
+                            <GroupAddMemberDialog />
+                        </div>
+                        <GroupMembersCard
+                            members={selectedGroup?.[GroupFields.Members]}
+                            onRemoveMember={onDeleteMember}
+                        />
                     </div>
                 </div>
             )}

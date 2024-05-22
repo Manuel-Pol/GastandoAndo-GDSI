@@ -1,8 +1,8 @@
-import { EntityWithIdAndDescription, EntityWithIdAndDescriptionFields, EntityWithIdFields } from "@/types/baseEntities"
-import { Trash } from "lucide-react"
+import { EntityWithIdAndDescription, EntityWithIdAndDescriptionFields, EntityWithIdFields } from '@/types/baseEntities'
+import { UserMinus } from 'lucide-react'
 
 interface GroupalMembersCardProps {
-    members: EntityWithIdAndDescription[],
+    members: EntityWithIdAndDescription[]
     onRemoveMember: (id: number) => void
 }
 
@@ -15,11 +15,14 @@ const GroupMembersCard = ({ members, onRemoveMember }: GroupalMembersCardProps) 
                     key={`member_${idx}`}
                 >
                     <p className='font-medium'>{member[EntityWithIdAndDescriptionFields.Description]}</p>
-                    {member[EntityWithIdFields.Id] !== 0 &&
-                        <div className='rounded-full p-3 hover:bg-[#ccd3d8] cursor-pointer'>
-                            <Trash className='w-4 h-4' onClick={() => onRemoveMember(member[EntityWithIdFields.Id])} />
+                    {member[EntityWithIdFields.Id] !== 0 && (
+                        <div className='rounded-full p-3 hover:bg-[#e2e2e2] cursor-pointer'>
+                            <UserMinus
+                                className='w-4 h-4 text-red-600'
+                                onClick={() => onRemoveMember(member[EntityWithIdFields.Id])}
+                            />
                         </div>
-                    }
+                    )}
                 </div>
             ))}
         </div>
