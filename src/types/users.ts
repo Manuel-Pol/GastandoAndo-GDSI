@@ -1,4 +1,4 @@
-import { EntityWithId } from './baseEntities'
+import { EntityWithId, EntityWithIdAndDescription } from './baseEntities'
 
 export enum UserFields {
     Name = 'nombre',
@@ -7,5 +7,5 @@ export enum UserFields {
 
 export interface User extends EntityWithId {
     [UserFields.Name]: string
-    [UserFields.Friends]: string[]
+    [UserFields.Friends]: EntityWithIdAndDescription[]
 }

@@ -6,16 +6,20 @@ import { GroupFields } from '@/types/groupalExpenses'
 import { useEffect } from 'react'
 import * as ScrollArea from '@radix-ui/react-scroll-area'
 import { Checkbox } from '@/components/ui/checkbox'
+import { EntityWithIdAndDescription, EntityWithIdAndDescriptionFields, EntityWithIdFields } from '@/types/baseEntities'
 
 interface GroupFormProps {
     onTriggerImage: (img: File) => void
-    prevImg?: File
-    friends: string[]
+    prevImg?: File,
+    friends: EntityWithIdAndDescription[],
+    selectedMembers: EntityWithIdAndDescription[],
+    onSelectMember: (member: EntityWithIdAndDescription, state: boolean) => void
 }
 
-const GroupForm = ({ onTriggerImage, prevImg, friends }: GroupFormProps) => {
+const GroupForm = ({ onTriggerImage, prevImg, friends, selectedMembers, onSelectMember }: GroupFormProps) => {
     const methods = useFormContext()
     const watchFile = methods.watch(GroupFields.Image)
+    
 
     useEffect(() => {
         if (watchFile) onTriggerImage(watchFile)
@@ -75,13 +79,7 @@ const GroupForm = ({ onTriggerImage, prevImg, friends }: GroupFormProps) => {
                         </FormItem>
                     )}
                 />
-                <FormField
-                    control={methods.control}
-                    name={GroupFields.Members}
-                    render={() => (
-                        <FormItem>
-                            <FormLabel>Invite a los integrantes del grupo</FormLabel>
-                            <FormControl>
+                            <p className='font-medium text-lg'>Invite a los integrantes del grupo</p>
                                 <ScrollArea.Root className='w-[200px] h-[150px] rounded-md overflow-hidden border border-input bg-transparent'>
                                     <ScrollArea.Viewport className='w-full h-full rounded'>
                                         <div className='py-[15px] px-5'>
@@ -90,27 +88,21 @@ const GroupForm = ({ onTriggerImage, prevImg, friends }: GroupFormProps) => {
                                             </div>
                                             {friends.map(friend => (
                                                 <FormField
-                                                    key={friend}
+                                                    key={friend[EntityWithIdFields.Id]}
                                                     control={methods.control}
                                                     name={GroupFields.Members}
-                                                    render={({ field }) => {
+                                                    render={() => {
                                                         return (
                                                             <FormItem
-                                                                key={friend}
+                                                                key={friend[EntityWithIdFields.Id]}
                                                                 className='flex flex-row justify-between space-y-3 items-center'
                                                             >
-                                                                <FormLabel className='font-normal'>{friend}</FormLabel>
+                                                                <FormLabel className='font-normal'>{friend[EntityWithIdAndDescriptionFields.Description]}</FormLabel>
                                                                 <FormControl>
                                                                     <Checkbox
-                                                                        checked={field.value?.includes(friend) || false}
+                                                                        checked={selectedMembers.includes(friend) || false}
                                                                         onCheckedChange={checked => {
-                                                                            const currentValue = field.value || []
-                                                                            const newValue = checked
-                                                                                ? [...currentValue, friend]
-                                                                                : currentValue.filter(
-                                                                                      value => value !== friend
-                                                                                  )
-                                                                            field.onChange(newValue)
+                                                                            onSelectMember(friend, !!checked)
                                                                         }}
                                                                     />
                                                                 </FormControl>
@@ -128,11 +120,6 @@ const GroupForm = ({ onTriggerImage, prevImg, friends }: GroupFormProps) => {
                                         <ScrollArea.Thumb className="flex-1 bg-neutral-700 rounded-[10px] relative hover:bg-neutral-600 before:content-[''] before:absolute before:top-1/2 before:left-1/2 before:-translate-x-1/2 before:-translate-y-1/2 before:w-full before:h-full before:min-w-[44px] before:min-h-[44px]" />
                                     </ScrollArea.Scrollbar>
                                 </ScrollArea.Root>
-                            </FormControl>
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                />
             </div>
         </Form>
     )

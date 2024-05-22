@@ -1,24 +1,17 @@
 import { EntityWithIdFields } from '@/types/baseEntities'
 import { useEffect, useState } from 'react'
-import { Group, GroupFields } from '@/types/groupalExpenses'
+import { Group, GroupFields, defaultFriends } from '@/types/groupalExpenses'
 import GroupalExpensesAddDialog from './GroupalExpensesAddDialog'
 import GroupalDataCard from './GroupalDataCard'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import GroupMovements from './GroupMovements'
 import { AlertCircle } from 'lucide-react'
-import { User, UserFields } from '@/types/users'
 import GroupMembersCard from './GroupMembersCard'
 
 const GroupExpenses = () => {
     const [currentGroups, setCurrentGroups] = useState<Group[]>([])
     const [selectedGroup, setSelectedGroup] = useState<Group | undefined>(undefined)
     const [currentDeleted, setCurrentDeleted] = useState<boolean>(false)
-
-    const currUser: User = {
-        [UserFields.Name]: 'Vinicius',
-        [UserFields.Friends]: ['Kross', 'Valverde', 'Militao', 'Rodrygo', 'Courtoa', 'Carbajal', 'Modric', 'Mbappe'],
-        [EntityWithIdFields.Id]: 0
-    }
 
     const handleAddGroup = (group: Group) => {
         const groupAdd = {
@@ -46,7 +39,6 @@ const GroupExpenses = () => {
     }
 
     const onSaveEdit = (group: Group) => {
-        console.log('Entro al onSaveEdit')
         const newGroup = currentGroups.map(g => {
             if (g[EntityWithIdFields.Id] === group[EntityWithIdFields.Id]) return group
 
@@ -54,15 +46,27 @@ const GroupExpenses = () => {
         })
 
         setCurrentGroups(newGroup)
+        setSelectedGroup(undefined)
+    }
+
+    const onDeleteMember = (memberId: number) => {
+        if (selectedGroup) {
+            const newGroup: Group = {
+                ...selectedGroup,
+                [GroupFields.Members]: selectedGroup[GroupFields.Members].filter((m) => m[EntityWithIdFields.Id] !== memberId)
+            }
+            onSaveEdit(newGroup)
+            setSelectedGroup(newGroup)
+        }
     }
 
     return (
-        <div className='grid grid-cols-4 gap-6 justify-center w-full'>
+        <div className='grid grid-cols-4 gap-6 justify-center items-start w-full'>
             <div className='col-span-1 bg-white rounded p-4'>
                 <div className='flex flex-col gap-2'>
                     <div className='flex flex-row justify-between items-center mb-2'>
                         <p className='text-2xl font-medium'>Grupos</p>
-                        <GroupalExpensesAddDialog onAddGroup={handleAddGroup} friends={currUser[UserFields.Friends]} />
+                        <GroupalExpensesAddDialog onAddGroup={handleAddGroup} friends={defaultFriends} />
                     </div>
                     <GroupalDataCard
                         groups={currentGroups}
@@ -94,7 +98,7 @@ const GroupExpenses = () => {
                         <p className='text-white text-2xl rounded font-medium text-center bg-[#1C7549] py-1'>
                             Integrantes
                         </p>
-                        <GroupMembersCard members={selectedGroup?.[GroupFields.Members]} />
+                        <GroupMembersCard members={selectedGroup?.[GroupFields.Members]} onRemoveMember={onDeleteMember}/>
                     </div>
                 </div>
             )}

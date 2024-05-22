@@ -4,23 +4,26 @@ import { Button } from '@/components/ui/button'
 import { CirclePlusIcon } from 'lucide-react'
 import { useForm, FormProvider } from 'react-hook-form'
 import { useState, useEffect } from 'react'
-import { EntityWithIdFields } from '@/types/baseEntities'
+import { EntityWithIdAndDescription, EntityWithIdAndDescriptionFields, EntityWithIdFields } from '@/types/baseEntities'
 import GroupForm from './GroupForm'
 
 interface GroupalExpensesAddDialogProps {
     onAddGroup: (g: Group) => void
-    friends: string[]
+    friends: EntityWithIdAndDescription[]
 }
 
 const GroupalExpensesAddDialog = ({ onAddGroup, friends }: GroupalExpensesAddDialogProps) => {
     const [open, setOpen] = useState<boolean>(false)
     const [img, setImg] = useState<File>()
+    const defaultMembers: EntityWithIdAndDescription[] = [{[EntityWithIdFields.Id]: 0, [EntityWithIdAndDescriptionFields.Description]: 'Vinicius'}]
+    const [members, setMembers] = useState<EntityWithIdAndDescription[]>(defaultMembers)
+
 
     const defaultFormValues: Group = {
         [EntityWithIdFields.Id]: 0,
         [GroupFields.Name]: '',
         [GroupFields.Description]: '',
-        [GroupFields.Members]: ['Vinicius']
+        [GroupFields.Members]: defaultMembers
     }
 
     const methods = useForm<Group>({
@@ -30,10 +33,12 @@ const GroupalExpensesAddDialog = ({ onAddGroup, friends }: GroupalExpensesAddDia
     const onSubmitGroup = (group: Group) => {
         const submitGroup: Group = {
             ...group,
-            [GroupFields.Image]: img
+            [GroupFields.Image]: img,
+            [GroupFields.Members]: members
         }
         onAddGroup(submitGroup)
         setImg(undefined)
+        setMembers(defaultMembers)
         setOpen(false)
     }
 
@@ -42,6 +47,14 @@ const GroupalExpensesAddDialog = ({ onAddGroup, friends }: GroupalExpensesAddDia
     }, [open])
 
     const onTriggerImage = (newImg: File) => setImg(newImg)
+
+    const onSelectMember = (member: EntityWithIdAndDescription, state: boolean) => {
+        state
+        ? setMembers([...members, member])
+        : setMembers(members.filter(
+              value => value[EntityWithIdFields.Id] !== member[EntityWithIdFields.Id]
+          ))
+    }
 
     return (
         <div>
@@ -60,7 +73,7 @@ const GroupalExpensesAddDialog = ({ onAddGroup, friends }: GroupalExpensesAddDia
                     <DialogContent className='min-w-[400px] bg-white rounded'>
                         <DialogTitle className='text-black'>Crear grupo</DialogTitle>
                         <FormProvider {...methods}>
-                            <GroupForm onTriggerImage={onTriggerImage} friends={friends} />
+                            <GroupForm onTriggerImage={onTriggerImage} friends={friends} selectedMembers={members} onSelectMember={onSelectMember}/>
                         </FormProvider>
                         <DialogFooter>
                             <DialogClose asChild>

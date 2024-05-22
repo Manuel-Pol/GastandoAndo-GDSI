@@ -2,9 +2,9 @@ import { useEffect, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Edit, Save } from 'lucide-react'
 import { Dialog, DialogContent, DialogClose, DialogTitle, DialogTrigger, DialogFooter } from '@/components/ui/dialog'
-import { EntityWithIdFields } from '@/types/baseEntities'
+import { EntityWithIdFields, EntityWithIdAndDescription } from '@/types/baseEntities'
 import { FormProvider, useForm } from 'react-hook-form'
-import { Group, GroupFields } from '@/types/groupalExpenses'
+import { Group, GroupFields, defaultFriends } from '@/types/groupalExpenses'
 import GroupForm from './GroupForm'
 
 interface GroupEditDialogProps {
@@ -15,6 +15,7 @@ interface GroupEditDialogProps {
 const GroupEditDialog = ({ group, onSubmitEdit }: GroupEditDialogProps) => {
     const [openEdit, setOpenEdit] = useState<boolean>(false)
     const [img, setImg] = useState<File | undefined>(group[GroupFields.Image])
+    const [members, setMembers] = useState<EntityWithIdAndDescription[]>(group[GroupFields.Members])
 
     const onEditExp = () => setOpenEdit(true)
 
@@ -30,10 +31,11 @@ const GroupEditDialog = ({ group, onSubmitEdit }: GroupEditDialogProps) => {
         defaultValues: defaultFormValues
     })
 
-    const onSubmitExpense = (data: Group) => {
+    const onSubmitGroup = (data: Group) => {
         const submitData: Group = {
             ...data,
-            [GroupFields.Image]: img
+            [GroupFields.Image]: img,
+            [GroupFields.Members]: members
         }
 
         onSubmitEdit(submitData)
@@ -44,10 +46,19 @@ const GroupEditDialog = ({ group, onSubmitEdit }: GroupEditDialogProps) => {
         if (openEdit) {
             methods.reset(defaultFormValues)
             setImg(group[GroupFields.Image])
+            setMembers(group[GroupFields.Members])
         }
     }, [openEdit])
 
     const onTriggerImage = (newImg: File) => setImg(newImg)
+
+    const onSelectMember = (member: EntityWithIdAndDescription, state: boolean) => {
+        state
+        ? setMembers([...members, member])
+        : setMembers(members.filter(
+              value => value[EntityWithIdFields.Id] !== member[EntityWithIdFields.Id]
+          ))
+    }
 
     return (
         <div>
@@ -61,12 +72,14 @@ const GroupEditDialog = ({ group, onSubmitEdit }: GroupEditDialogProps) => {
                     <DialogContent className='min-w-[400px] bg-white rounded'>
                         <DialogTitle className='text-black mb-2'>Editar Grupo</DialogTitle>
                         <FormProvider {...methods}>
-                            <GroupForm onTriggerImage={onTriggerImage} prevImg={img} friends={group[GroupFields.Members]}/>
+                            <GroupForm onTriggerImage={onTriggerImage} prevImg={img} friends={defaultFriends}
+                                       onSelectMember={onSelectMember} selectedMembers={members}
+                            />
                         </FormProvider>
                         <DialogFooter>
                             <DialogClose asChild>
                                 <Button
-                                    onClick={methods.handleSubmit(onSubmitExpense)}
+                                    onClick={methods.handleSubmit(onSubmitGroup)}
                                     disabled={!methods.watch(GroupFields.Name)}
                                 >
                                     <Save className='mr-2 items-center' /> Guardar
