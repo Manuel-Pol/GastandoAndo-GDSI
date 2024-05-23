@@ -19,7 +19,7 @@ export const SignUp = () => {
         <div>
             <Dialog>
                 <DialogTrigger asChild>
-                    <Button className='rounded bg-[#E4EFE7] text-[#082615] hover:bg-[#E4EFE7] hover:text-[#082615] drop-shadow-md'>
+                    <Button className='rounded bg-[#f5f5f5] text-[#082615] hover:bg-[#f5f5f5] hover:text-[#082615] drop-shadow-md'>
                         Registrarse
                     </Button>
                 </DialogTrigger>

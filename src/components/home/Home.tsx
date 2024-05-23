@@ -13,8 +13,8 @@ const HomeLanding: React.FC = () => {
     }
 
     return (
-        <div className='flex flex-col items-center justify-center h-full py-12'>
-            <h1 className='text-5xl font-bold mb-8 text-center'>Gastando Ando</h1>
+        <div className='flex flex-col items-center justify-center h-full py-12 gap-8'>
+            <h1 className='text-7xl font-serif font-semibold text-[#0e3d26]'>Gastando Ando</h1>
             <div className='flex flex-col space-y-8'>
                 <button
                     onClick={goToPersonalExpenses}
