@@ -1,36 +1,17 @@
-import React from 'react'
-import { useNavigate } from 'react-router-dom'
-
-const HomeLanding: React.FC = () => {
-    const navigate = useNavigate()
-
-    const goToPersonalExpenses = () => {
-        navigate('/individual')
-    }
-
-    const goToGroupExpenses = () => {
-        navigate('/group')
-    }
-
+export const HomeLanding = () => {
     return (
-        <div className='flex flex-col items-center justify-center h-full py-12'>
-            <h1 className='text-5xl font-bold mb-8 text-center'>Gastando Ando</h1>
-            <div className='flex flex-col space-y-8'>
-                <button
-                    onClick={goToPersonalExpenses}
-                    className='bg-[#1c7549] hover:bg-[#175e3a] text-white font-bold py-2 px-4 rounded'
-                >
-                    Ir a Gastos Personales
-                </button>
-                <button
-                    onClick={goToGroupExpenses}
-                    className='bg-[#1c7549] hover:bg-[#175e3a] text-white font-bold py-2 px-4 rounded mt-4'
-                >
-                    Ir a Gastos Grupales
-                </button>
+        <div className='flex justify-between pt-16 px-24'>
+            <div className='space-y-4'>
+                <h2 className='text-4xl font-serif font-semibold text-[#0e3d26]'>
+                    Organizá tus gastos <br />
+                    grupales e individuales
+                </h2>
+                <p className='text-ellipsis'>
+                    Lleva un registro de tus gastos y saldos compartidos
+                    <br /> con compañeros de piso, viajes, grupos, amigos y familiares.
+                </p>
             </div>
+            <h1 className='text-5xl'>GASTANDO ANDO</h1>
         </div>
     )
 }
-
-export default HomeLanding

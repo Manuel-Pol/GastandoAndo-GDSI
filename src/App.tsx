@@ -1,10 +1,10 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Home from './components/home/Home'
-import HomeLanding from './HomeLanding'
 import LayoutLogged from './components/layouts/LayoutLogged'
 import LayoutNotLogged from './components/layouts/LayoutNotLogged'
 import PersonalExpenses from './components/expenses/personal/PersonalExpenses'
 import GroupExpenses from './components/expenses/groupal/GroupExpenses'
+import { HomeLanding } from './HomeLanding'
 
 function App() {
     return (
