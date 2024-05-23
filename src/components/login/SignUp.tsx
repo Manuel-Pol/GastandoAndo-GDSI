@@ -1,16 +1,14 @@
-import { useNavigate } from 'react-router-dom'
-import { Button } from '../ui/button'
 import { Dialog, DialogClose, DialogContent, DialogFooter, DialogTitle, DialogTrigger } from '../ui/dialog'
-
+import { Button } from '../ui/button'
 import { FormProvider, useForm } from 'react-hook-form'
+import { useNavigate } from 'react-router-dom'
 import React from 'react'
 import { UserContext } from '@/userContext'
 
-const Login = () => {
+export const SignUp = () => {
     const methods = useForm()
 
     const navigate = useNavigate()
-
     const { setUsername } = React.useContext(UserContext)
 
     const goToHome = () => {
@@ -21,10 +19,12 @@ const Login = () => {
         <div>
             <Dialog>
                 <DialogTrigger asChild>
-                    <Button className='border-none text-white'>Ingresar</Button>
+                    <Button className='rounded bg-[#E4EFE7] text-[#082615] hover:bg-[#E4EFE7] hover:text-[#082615] drop-shadow-md'>
+                        Registrarse
+                    </Button>
                 </DialogTrigger>
                 <DialogContent className='min-w-[400px] bg-white rounded'>
-                    <DialogTitle className='text-black'>Ingresar</DialogTitle>
+                    <DialogTitle className='text-black'>Registrarse</DialogTitle>
                     <FormProvider {...methods}>
                         <form className='space-y-4'>
                             <input
@@ -40,6 +40,11 @@ const Login = () => {
                                 placeholder='Contraseña'
                                 className='w-full p-2 border border-gray-300 rounded-lg'
                             />
+                            <input
+                                type='password'
+                                placeholder='Repetir contraseña'
+                                className='w-full p-2 border border-gray-300 rounded-lg'
+                            />
                         </form>
                     </FormProvider>
                     <DialogFooter>
@@ -48,7 +53,7 @@ const Login = () => {
                                 className='bg-[#1C7549] rounded text-white hover:text-white hover:bg-[#185537]'
                                 onClick={goToHome}
                             >
-                                Ingresar
+                                Registrarse
                             </Button>
                         </DialogClose>
                     </DialogFooter>
@@ -58,4 +63,4 @@ const Login = () => {
     )
 }
 
-export default Login
+export default SignUp
