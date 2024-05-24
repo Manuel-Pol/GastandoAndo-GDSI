@@ -45,11 +45,9 @@ const GroupExpensesAddDialog = ({ onAddGroup, friends }: GroupExpensesAddDialogP
     }
 
     useEffect(() => {
-        if (open) {
-            methods.reset(defaultFormValues)
-            setImg(undefined)
-            setMembers(defaultMembers)
-        }
+        methods.reset(defaultFormValues)
+        setImg(undefined)
+        setMembers(defaultMembers)
     }, [open])
 
     const onTriggerImage = (newImg: File) => setImg(newImg)

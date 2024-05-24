@@ -24,7 +24,8 @@ const GroupEditDialog = ({ group, onSubmitEdit }: GroupEditDialogProps) => {
         [GroupFields.Description]: group[GroupFields.Description],
         [GroupFields.Name]: group[GroupFields.Name],
         [GroupFields.Members]: group[GroupFields.Members],
-        [GroupFields.Image]: group[GroupFields.Image]
+        [GroupFields.Image]: group[GroupFields.Image],
+        [GroupFields.Movements]: group[GroupFields.Movements]
     }
 
     const methods = useForm<Group>({

@@ -20,6 +20,7 @@ const GroupExpenses = () => {
             [EntityWithIdFields.Id]: currentGroups.length + 1
         }
         setCurrentGroups([...currentGroups, groupAdd])
+        setSelectedGroup(groupAdd)
     }
 
     const onClickGroup = (g: Group) => setSelectedGroup(g)
@@ -40,13 +41,13 @@ const GroupExpenses = () => {
     }
 
     const onSaveEdit = (group: Group) => {
-        const newGroup = currentGroups.map(g => {
+        const newGroups = currentGroups.map(g => {
             if (g[EntityWithIdFields.Id] === group[EntityWithIdFields.Id]) return group
 
             return g
         })
 
-        setCurrentGroups(newGroup)
+        setCurrentGroups(newGroups)
         setSelectedGroup(undefined)
     }
 
@@ -62,6 +63,7 @@ const GroupExpenses = () => {
             setSelectedGroup(newGroup)
         }
     }
+
 
     return (
         <div className='grid grid-cols-4 gap-6 justify-center items-start w-full'>
@@ -82,7 +84,7 @@ const GroupExpenses = () => {
             </div>
             <div className='col-span-2'>
                 {selectedGroup && !currentDeleted ? (
-                    <GroupMovements group={selectedGroup} />
+                    <GroupMovements group={selectedGroup} updateGroups={onSaveEdit}/>
                 ) : (
                     <div className='w-full'>
                         <Alert variant='default' className='bg-white rounded-xl space-y-2 p-6'>
