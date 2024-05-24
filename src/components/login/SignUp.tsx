@@ -3,7 +3,7 @@ import { Button } from '../ui/button'
 import { FormProvider, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import React from 'react'
-import { UserContext } from '@/userContext'
+import { UserContext } from '@/utils/contexts/userContext'
 
 export const SignUp = () => {
     const methods = useForm()

@@ -26,17 +26,19 @@ const GroupDataCard = ({ groups, onSelect, selectedGroup, onSaveEdit, onDelete }
                         onClick={() => onSelect(group)}
                         key={`group_${idx}`}
                     >
-                        {group[GroupFields.Image] ? (
-                            <img
-                                src={URL.createObjectURL(group[GroupFields.Image])}
-                                className='w-8 h-8 rounded-full cursor-pointer'
-                            />
-                        ) : (
-                            <Avatar className='bg-[#1c7549] w-8 h-8 rounded-full cursor-pointer text-white'>
-                                <AvatarFallback>{group[GroupFields.Name].charAt(0).toUpperCase()}</AvatarFallback>
-                            </Avatar>
-                        )}
-                        <p className='font-medium text-base truncate'>{group[GroupFields.Name]}</p>
+                        <div className='flex flex-row items-center space-x-2'>
+                            {group[GroupFields.Image] ? (
+                                <img
+                                    src={URL.createObjectURL(group[GroupFields.Image])}
+                                    className='w-12 h-12 rounded-full cursor-pointer'
+                                />
+                            ) : (
+                                <Avatar className='bg-[#1c7549] w-12 h-12 rounded-full cursor-pointer text-white text-lg'>
+                                    <AvatarFallback>{group[GroupFields.Name].charAt(0).toUpperCase()}</AvatarFallback>
+                                </Avatar>
+                            )}
+                            <p className='font-medium text-base truncate'>{group[GroupFields.Name]}</p>
+                        </div>
 
                         <div className='flex flex-row items-center gap-1'>
                             <div className='rounded-full hover:bg-[#ccd3d8]'>

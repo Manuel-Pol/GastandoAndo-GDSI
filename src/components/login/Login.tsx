@@ -4,7 +4,7 @@ import { Dialog, DialogClose, DialogContent, DialogFooter, DialogTitle, DialogTr
 
 import { FormProvider, useForm } from 'react-hook-form'
 import React from 'react'
-import { UserContext } from '@/userContext'
+import { UserContext } from '@/utils/contexts/userContext'
 
 const Login = () => {
     const methods = useForm()

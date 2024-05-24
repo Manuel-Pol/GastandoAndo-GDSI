@@ -1,5 +1,5 @@
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
-import { UserContext } from '@/userContext'
+import { UserContext } from '@/utils/contexts/userContext'
 import React from 'react'
 import { Outlet } from 'react-router-dom'
 

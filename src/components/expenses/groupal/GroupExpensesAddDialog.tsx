@@ -44,15 +44,21 @@ const GroupExpensesAddDialog = ({ onAddGroup, friends }: GroupExpensesAddDialogP
     }
 
     useEffect(() => {
-        if (open) methods.reset(defaultFormValues)
+        if (open) {
+            methods.reset(defaultFormValues)
+            setImg(undefined)
+            setMembers(defaultMembers)
+        }
     }, [open])
 
     const onTriggerImage = (newImg: File) => setImg(newImg)
 
-    const onSelectMember = (member: EntityWithIdAndDescription, state: boolean) => {
-        state
-            ? setMembers([...members, member])
-            : setMembers(members.filter(value => value[EntityWithIdFields.Id] !== member[EntityWithIdFields.Id]))
+    const onSelectMember = (member: EntityWithIdAndDescription) => {
+        setMembers([...members, member])
+    }
+
+    const onUnselectMember = (member: EntityWithIdAndDescription) => {
+        setMembers(members.filter(value => value[EntityWithIdFields.Id] !== member[EntityWithIdFields.Id]))
     }
 
     return (
@@ -77,6 +83,7 @@ const GroupExpensesAddDialog = ({ onAddGroup, friends }: GroupExpensesAddDialogP
                                 friends={friends}
                                 selectedMembers={members}
                                 onSelectMember={onSelectMember}
+                                onUnselectMember={onUnselectMember}
                             />
                         </FormProvider>
                         <DialogFooter>

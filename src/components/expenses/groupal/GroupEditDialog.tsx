@@ -52,12 +52,12 @@ const GroupEditDialog = ({ group, onSubmitEdit }: GroupEditDialogProps) => {
 
     const onTriggerImage = (newImg: File) => setImg(newImg)
 
-    const onSelectMember = (member: EntityWithIdAndDescription, state: boolean) => {
-        state
-        ? setMembers([...members, member])
-        : setMembers(members.filter(
-              value => value[EntityWithIdFields.Id] !== member[EntityWithIdFields.Id]
-          ))
+    const onSelectMember = (member: EntityWithIdAndDescription) => {
+        setMembers([...members, member])
+    }
+
+    const onUnselectMember = (member: EntityWithIdAndDescription) => {
+        setMembers(members.filter(value => value[EntityWithIdFields.Id] !== member[EntityWithIdFields.Id]))
     }
 
     return (
@@ -73,7 +73,7 @@ const GroupEditDialog = ({ group, onSubmitEdit }: GroupEditDialogProps) => {
                         <DialogTitle className='text-black mb-2'>Editar Grupo</DialogTitle>
                         <FormProvider {...methods}>
                             <GroupForm onTriggerImage={onTriggerImage} prevImg={img} friends={defaultFriends}
-                                       onSelectMember={onSelectMember} selectedMembers={members}
+                                       onSelectMember={onSelectMember} selectedMembers={members} onUnselectMember={onUnselectMember}
                             />
                         </FormProvider>
                         <DialogFooter>
