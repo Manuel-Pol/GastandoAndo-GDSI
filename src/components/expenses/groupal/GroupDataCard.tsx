@@ -26,14 +26,14 @@ const GroupDataCard = ({ groups, onSelect, selectedGroup, onSaveEdit, onDelete }
                         onClick={() => onSelect(group)}
                         key={`group_${idx}`}
                     >
-                        <div className='flex flex-row items-center space-x-2'>
+                        <div className='flex flex-row items-center space-x-3'>
                             {group[GroupFields.Image] ? (
                                 <img
                                     src={URL.createObjectURL(group[GroupFields.Image])}
                                     className='w-12 h-12 rounded-full cursor-pointer'
                                 />
                             ) : (
-                                <Avatar className='bg-[#1c7549] w-12 h-12 rounded-full cursor-pointer text-white text-lg'>
+                                <Avatar className='bg-[#1c7549] w-10 h-10 rounded-full cursor-pointer text-white text-lg'>
                                     <AvatarFallback>{group[GroupFields.Name].charAt(0).toUpperCase()}</AvatarFallback>
                                 </Avatar>
                             )}
@@ -47,10 +47,10 @@ const GroupDataCard = ({ groups, onSelect, selectedGroup, onSaveEdit, onDelete }
                             <div className='rounded-full p-3 hover:bg-[#ccd3d8]'>
                                 <Trash
                                     className='w-4 h-4 text-red-600'
-                                    onClick={(event) => {
-                                        event.preventDefault();
-                                        event.stopPropagation(); // Evitar la propagación del evento al contenedor del grupo
-                                        onDelete(group[EntityWithIdFields.Id]);
+                                    onClick={event => {
+                                        event.preventDefault()
+                                        event.stopPropagation() // Evitar la propagación del evento al contenedor del grupo
+                                        onDelete(group[EntityWithIdFields.Id])
                                     }}
                                 />
                             </div>

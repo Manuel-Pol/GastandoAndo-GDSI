@@ -1,17 +1,16 @@
-import { Group, GroupFields } from "@/types/groupalExpenses";
-import { ExpensesInterface } from "@/types/personalExpenses";
-import { useEffect, useState } from "react";
-import DialogAddGroupMovement from "./DialogAddGroupMovement";
-import PersonalExpensesDataCard from "../personal/PersonalExpensesDataCard";
-import { EntityWithIdFields } from "@/types/baseEntities";
-
+import { Group, GroupFields } from '@/types/groupalExpenses'
+import { ExpensesInterface } from '@/types/personalExpenses'
+import { useEffect, useState } from 'react'
+import DialogAddGroupMovement from './DialogAddGroupMovement'
+import PersonalExpensesDataCard from '../personal/PersonalExpensesDataCard'
+import { EntityWithIdFields } from '@/types/baseEntities'
 
 interface GroupMovementsProps {
-    group: Group,
+    group: Group
     updateGroups: (g: Group) => void
 }
 
-const GroupMovements = ({group, updateGroups}: GroupMovementsProps) => {
+const GroupMovements = ({ group, updateGroups }: GroupMovementsProps) => {
     const [movements, setMovements] = useState<ExpensesInterface[]>(group[GroupFields.Movements])
 
     useEffect(() => {
@@ -22,7 +21,7 @@ const GroupMovements = ({group, updateGroups}: GroupMovementsProps) => {
         setMovements(updatedMovements)
         const groupUpdated: Group = {
             ...group,
-            [GroupFields.Movements]: updatedMovements 
+            [GroupFields.Movements]: updatedMovements
         }
 
         updateGroups(groupUpdated)
@@ -49,20 +48,18 @@ const GroupMovements = ({group, updateGroups}: GroupMovementsProps) => {
     }
 
     return (
-        <div className="bg-white rounded p-4 w-full flex flex-col gap-6">
+        <div className='bg-white rounded p-4 w-full flex flex-col gap-6'>
             <div className='flex flex-row justify-between'>
-                <p className="font-medium text-2xl">{`Movimientos de ${group[GroupFields.Name]}`}</p>
-                <DialogAddGroupMovement onAddMovement={handleAddMovement}/>
+                <p className='font-medium text-2xl'>{`Movimientos de ${group[GroupFields.Name]}`}</p>
+                <DialogAddGroupMovement onAddMovement={handleAddMovement} friends={group[GroupFields.Members]} />
             </div>
             <PersonalExpensesDataCard
-                    expenses={movements}
-                    triggerDeleteExp={onDeleteMovement}
-                    onSaveEdit={onSaveEdit}
+                expenses={movements}
+                triggerDeleteExp={onDeleteMovement}
+                onSaveEdit={onSaveEdit}
             />
         </div>
     )
 }
-
-
 
 export default GroupMovements

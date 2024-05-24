@@ -6,22 +6,27 @@ import { GroupFields } from '@/types/groupalExpenses'
 import { useEffect, useState } from 'react'
 import { EntityWithIdAndDescription } from '@/types/baseEntities'
 import Multiselect from '@/components/custom/Multiselect'
-import { ExpensesInterfaceFields } from '@/types/personalExpenses'
 
 interface GroupFormProps {
     onTriggerImage: (img: File) => void
-    prevImg?: File,
-    friends: EntityWithIdAndDescription[],
-    selectedMembers: EntityWithIdAndDescription[],
-    onSelectMember: (member: EntityWithIdAndDescription) => void,
+    prevImg?: File
+    friends: EntityWithIdAndDescription[]
+    selectedMembers: EntityWithIdAndDescription[]
+    onSelectMember: (member: EntityWithIdAndDescription) => void
     onUnselectMember: (member: EntityWithIdAndDescription) => void
 }
 
-const GroupForm = ({ onTriggerImage, prevImg, friends, selectedMembers, onSelectMember, onUnselectMember }: GroupFormProps) => {
+const GroupForm = ({
+    onTriggerImage,
+    prevImg,
+    friends,
+    selectedMembers,
+    onSelectMember,
+    onUnselectMember
+}: GroupFormProps) => {
     const methods = useFormContext()
     const watchFile = methods.watch(GroupFields.Image)
     const [img, setImg] = useState<string | ArrayBuffer | null>(null)
-    
 
     useEffect(() => {
         if (watchFile) onTriggerImage(watchFile)
@@ -30,15 +35,14 @@ const GroupForm = ({ onTriggerImage, prevImg, friends, selectedMembers, onSelect
     useEffect(() => {
         if (prevImg) {
             methods.setValue(GroupFields.Image, prevImg)
-            const reader = new FileReader();
-            
+            const reader = new FileReader()
+
             reader.onloadend = () => {
-                setImg(reader.result);
-            };
-            
-            reader.readAsDataURL(prevImg);
+                setImg(reader.result)
+            }
+
+            reader.readAsDataURL(prevImg)
         }
-        
     }, [prevImg])
 
     return (
@@ -76,11 +80,11 @@ const GroupForm = ({ onTriggerImage, prevImg, friends, selectedMembers, onSelect
                     render={({ field: { value, onChange, ...fieldProps } }) => (
                         <FormItem>
                             <FormLabel>Imagen</FormLabel>
-                            {img && 
+                            {img && (
                                 <div className='w-full'>
-                                    <img src={img.toString()} className='w-[25%] block ml-auto mr-auto'/>
+                                    <img src={img.toString()} className='w-[25%] block ml-auto mr-auto' />
                                 </div>
-                            }
+                            )}
                             <FormControl>
                                 <Input
                                     className='cursor-pointer'
@@ -94,17 +98,19 @@ const GroupForm = ({ onTriggerImage, prevImg, friends, selectedMembers, onSelect
                         </FormItem>
                     )}
                 />
-                            <p className='font-medium text-lg'>Invite a los integrantes del grupo</p>
-                            <FormField control={methods.control}
-                                       name={GroupFields.Members}
-                                       render={({ field: { value, onChange, ...fieldProps }}) => (
-                                            <Multiselect options={friends}
-                                                         selectedOptions={selectedMembers} 
-                                                         onSelect={onSelectMember}
-                                                         onUnselect={onUnselectMember}
-                                            />
-                                       )}
-                            />
+                <p className='font-medium text-lg'>Invite a los integrantes del grupo</p>
+                <FormField
+                    control={methods.control}
+                    name={GroupFields.Members}
+                    render={({ field: { value, onChange, ...fieldProps } }) => (
+                        <Multiselect
+                            options={friends}
+                            selectedOptions={selectedMembers}
+                            onSelect={onSelectMember}
+                            onUnselect={onUnselectMember}
+                        />
+                    )}
+                />
             </div>
         </Form>
     )

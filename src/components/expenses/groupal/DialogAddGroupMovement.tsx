@@ -1,33 +1,32 @@
 import { Dialog, DialogContent, DialogClose, DialogTitle, DialogTrigger, DialogFooter } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
 import { CirclePlusIcon } from 'lucide-react'
-import { ExpenseType, ExpensesInterface, ExpensesInterfaceFields, RecurrenceTypeCodes } from '@/types/personalExpenses'
+import { ExpensesInterface, ExpensesInterfaceFields } from '@/types/personalExpenses'
 import { useEffect, useState } from 'react'
 import { useForm, FormProvider } from 'react-hook-form'
-import { EntityWithIdFields } from '@/types/baseEntities'
-import PersonalExpensesAddNewForm from '../personal/PersonalExpensesAddNewForm'
-
+import { EntityWithIdAndDescription, EntityWithIdAndDescriptionFields, EntityWithIdFields } from '@/types/baseEntities'
+import GroupExpensesAddNewForm from './GroupExpensesAddNewForm'
+import { GroupExpensesInterface, GroupExpensesInterfaceFields } from '@/types/groupalExpenses'
 
 interface DialogAddGroupMovementProps {
     onAddMovement: (m: ExpensesInterface) => void
+    friends: EntityWithIdAndDescription[]
 }
 
-
-const DialogAddGroupMovement = ({onAddMovement}: DialogAddGroupMovementProps) => {
+const DialogAddGroupMovement = ({ onAddMovement, friends }: DialogAddGroupMovementProps) => {
     const [open, setOpen] = useState<boolean>(false)
-    const [isExpense, setIsExpense] = useState<ExpenseType>(ExpenseType.Gasto)
-    const [recurr, setRecurr] = useState<RecurrenceTypeCodes>(RecurrenceTypeCodes.Singular)
-    const [img, setImg] = useState<File>()
+    const defaultDebtors: EntityWithIdAndDescription[] = [
+        { [EntityWithIdFields.Id]: 0, [EntityWithIdAndDescriptionFields.Description]: '' }
+    ]
+    const [debtors, setDebtors] = useState<EntityWithIdAndDescription[]>(defaultDebtors)
 
-    const defaultFormValues: ExpensesInterface = {
+    const defaultFormValues: GroupExpensesInterface = {
         [EntityWithIdFields.Id]: 0,
-        [ExpensesInterfaceFields.Image]: undefined,
-        [ExpensesInterfaceFields.Amount]: undefined,
-        [ExpensesInterfaceFields.Description]: '',
-        [ExpensesInterfaceFields.Title]: '',
-        [ExpensesInterfaceFields.IsExpense]: ExpenseType.Gasto,
-        [ExpensesInterfaceFields.Date]: new Date(),
-        [ExpensesInterfaceFields.Recurrence]: RecurrenceTypeCodes.Singular
+        [GroupExpensesInterfaceFields.Title]: '',
+        [GroupExpensesInterfaceFields.Description]: '',
+        [GroupExpensesInterfaceFields.Amount]: undefined,
+        [GroupExpensesInterfaceFields.Payers]: [],
+        [GroupExpensesInterfaceFields.Debtors]: []
     }
 
     const methods = useForm<ExpensesInterface>({
@@ -37,33 +36,30 @@ const DialogAddGroupMovement = ({onAddMovement}: DialogAddGroupMovementProps) =>
     useEffect(() => {
         if (open) {
             methods.reset(defaultFormValues)
-            setIsExpense(ExpenseType.Gasto)
-            setRecurr(RecurrenceTypeCodes.Singular)
         }
     }, [open])
 
     const onSubmitMovement = (data: ExpensesInterface) => {
         const submitData: ExpensesInterface = {
-            ...data,
-            [ExpensesInterfaceFields.IsExpense]: isExpense,
-            [ExpensesInterfaceFields.Recurrence]: recurr,
-            [ExpensesInterfaceFields.Image]: img
+            ...data
         }
 
         onAddMovement(submitData)
         setOpen(false)
     }
 
-    const onChangeExpense = (expT: ExpenseType) => setIsExpense(expT)
+    const onSelectDebtor = (debtor: EntityWithIdAndDescription) => {
+        setDebtors([...debtors, debtor])
+    }
 
-    const onChangeRecurrence = (newRecurr: RecurrenceTypeCodes) => setRecurr(newRecurr)
-
-    const onTriggerImage = (newImg: File) => setImg(newImg)
+    const onUnselectDebtor = (debtor: EntityWithIdAndDescription) => {
+        setDebtors(debtors.filter(value => value[EntityWithIdFields.Id] !== debtor[EntityWithIdFields.Id]))
+    }
 
     return (
         <div>
             <Dialog>
-            <DialogTrigger asChild>
+                <DialogTrigger asChild>
                     <Button
                         className='bg-[#1b2766] hover:bg-[#1b2766] rounded text-white py-4'
                         onClick={() => {
@@ -77,10 +73,11 @@ const DialogAddGroupMovement = ({onAddMovement}: DialogAddGroupMovementProps) =>
                     <DialogContent className='min-w-[400px] bg-white rounded'>
                         <DialogTitle className='text-black'>Nuevo movimiento grupal</DialogTitle>
                         <FormProvider {...methods}>
-                            <PersonalExpensesAddNewForm
-                                    onTriggerExpense={onChangeExpense}
-                                    onTriggerImage={onTriggerImage}
-                                    onTriggerRecurrence={onChangeRecurrence}
+                            <GroupExpensesAddNewForm
+                                friends={friends}
+                                selectedDebtors={debtors}
+                                onSelectDebtor={onSelectDebtor}
+                                onUnselectDebtor={onUnselectDebtor}
                             />
                         </FormProvider>
                         <DialogFooter>
@@ -100,6 +97,5 @@ const DialogAddGroupMovement = ({onAddMovement}: DialogAddGroupMovementProps) =>
         </div>
     )
 }
-
 
 export default DialogAddGroupMovement
