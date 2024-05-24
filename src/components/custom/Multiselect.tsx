@@ -63,15 +63,17 @@ const Multiselect = ({ options, selectedOptions, onSelect, onUnselect }: Multise
                 </button>
                 </Badge>
           ))}
-          <CommandInput
-            ref={inputRef}
-            value={inputValue}
-            onValueChange={setInputValue}
-            onBlur={() => setOpen(false)}
-            onFocus={() => setOpen(true)}
-            placeholder="Buscar amigos..."
-            className="ml-2 outline-none placeholder:text-muted-foreground flex-1"
-          />
+          <div className='w-full'>
+            <CommandInput
+              ref={inputRef}
+              value={inputValue}
+              onValueChange={setInputValue}
+              onBlur={() => setOpen(false)}
+              onFocus={() => setOpen(true)}
+              placeholder="Buscar amigos..."
+              className="ml-2 outline-none placeholder:text-muted-foreground flex-1"
+            />
+          </div>
         </div>
       </div>
       {open && filteredOptions.length > 0 && (
