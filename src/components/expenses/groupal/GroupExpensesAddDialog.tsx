@@ -24,6 +24,7 @@ const GroupExpensesAddDialog = ({ onAddGroup, friends }: GroupExpensesAddDialogP
         [EntityWithIdFields.Id]: 0,
         [GroupFields.Name]: '',
         [GroupFields.Description]: '',
+        [GroupFields.Movements]: [],
         [GroupFields.Members]: defaultMembers
     }
 

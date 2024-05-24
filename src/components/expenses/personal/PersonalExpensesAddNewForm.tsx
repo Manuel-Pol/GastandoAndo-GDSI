@@ -5,7 +5,7 @@ import { ExpensesInterfaceFields, ExpenseType, RecurrenceTypeCodes } from '@/typ
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { useFormContext } from 'react-hook-form'
 import { DatePicker } from './DatePicker'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 interface PersonalExpensesAddNewFormProps {
     onTriggerExpense: (expT: ExpenseType) => void
@@ -22,6 +22,7 @@ const PersonalExpensesAddNewForm = ({
 }: PersonalExpensesAddNewFormProps) => {
     const methods = useFormContext()
     const watchFile = methods.watch(ExpensesInterfaceFields.Image)
+    const [img, setImg] = useState<string | ArrayBuffer | null>(null)
 
     useEffect(() => {
         if (watchFile) onTriggerImage(watchFile)
@@ -30,6 +31,13 @@ const PersonalExpensesAddNewForm = ({
     useEffect(() => {
         if (prevImg) {
             methods.setValue(ExpensesInterfaceFields.Image, prevImg)
+            const reader = new FileReader();
+            
+            reader.onloadend = () => {
+                setImg(reader.result);
+            };
+            
+            reader.readAsDataURL(prevImg);
         }
     }, [prevImg])
 
@@ -67,16 +75,38 @@ const PersonalExpensesAddNewForm = ({
                     name={ExpensesInterfaceFields.Image}
                     render={({ field: { value, onChange, ...fieldProps } }) => (
                         <FormItem>
-                            <FormLabel>Imagen</FormLabel>
-                            <FormControl>
-                                <Input
-                                    {...fieldProps}
-                                    type='file'
-                                    accept='image/*, application/pdf'
-                                    onChange={event => onChange(event.target.files && event.target.files[0])}
-                                />
-                            </FormControl>
-                            <FormMessage />
+                            {img ?
+                                <div className='space-y-2'>
+                                    <div className='flex flex-row space-x-4 items-center'>
+                                        <FormLabel>Imagen</FormLabel>
+                                        <FormControl>
+                                            <Input
+                                                {...fieldProps}
+                                                type='file'
+                                                accept='image/*, application/pdf'
+                                                onChange={event => onChange(event.target.files && event.target.files[0])}
+                                            />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </div>
+                                    <div className='w-full'>
+                                        <img src={img.toString()} className='w-[20%] block ml-auto mr-auto'/>
+                                    </div>
+                                </div>
+                                :
+                                <>
+                                    <FormLabel>Imagen</FormLabel>
+                                    <FormControl>
+                                        <Input
+                                            {...fieldProps}
+                                            type='file'
+                                            accept='image/*, application/pdf'
+                                            onChange={event => onChange(event.target.files && event.target.files[0])}
+                                        />
+                                    </FormControl>
+                                    <FormMessage />
+                                </>
+                            }
                         </FormItem>
                     )}
                 />

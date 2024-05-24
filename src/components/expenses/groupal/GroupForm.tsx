@@ -3,9 +3,10 @@ import { FormField, FormItem, FormLabel, FormControl, FormMessage, Form } from '
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { GroupFields } from '@/types/groupalExpenses'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { EntityWithIdAndDescription } from '@/types/baseEntities'
 import Multiselect from '@/components/custom/Multiselect'
+import { ExpensesInterfaceFields } from '@/types/personalExpenses'
 
 interface GroupFormProps {
     onTriggerImage: (img: File) => void
@@ -19,6 +20,7 @@ interface GroupFormProps {
 const GroupForm = ({ onTriggerImage, prevImg, friends, selectedMembers, onSelectMember, onUnselectMember }: GroupFormProps) => {
     const methods = useFormContext()
     const watchFile = methods.watch(GroupFields.Image)
+    const [img, setImg] = useState<string | ArrayBuffer | null>(null)
     
 
     useEffect(() => {
@@ -28,7 +30,15 @@ const GroupForm = ({ onTriggerImage, prevImg, friends, selectedMembers, onSelect
     useEffect(() => {
         if (prevImg) {
             methods.setValue(GroupFields.Image, prevImg)
+            const reader = new FileReader();
+            
+            reader.onloadend = () => {
+                setImg(reader.result);
+            };
+            
+            reader.readAsDataURL(prevImg);
         }
+        
     }, [prevImg])
 
     return (
@@ -66,6 +76,11 @@ const GroupForm = ({ onTriggerImage, prevImg, friends, selectedMembers, onSelect
                     render={({ field: { value, onChange, ...fieldProps } }) => (
                         <FormItem>
                             <FormLabel>Imagen</FormLabel>
+                            {img && 
+                                <div className='w-full'>
+                                    <img src={img.toString()} className='w-[25%] block ml-auto mr-auto'/>
+                                </div>
+                            }
                             <FormControl>
                                 <Input
                                     className='cursor-pointer'

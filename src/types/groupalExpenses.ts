@@ -1,16 +1,19 @@
 import { EntityWithId, EntityWithIdAndDescription, EntityWithIdAndDescriptionFields, EntityWithIdFields } from './baseEntities'
+import { ExpensesInterface } from './personalExpenses'
 
 export enum GroupFields {
     Name = 'nombre',
     Description = 'descripcion',
     Members = 'integrantes',
+    Movements = 'movimientos',
     Image = 'imagen'
 }
 
 export interface Group extends EntityWithId {
     [GroupFields.Name]: string
     [GroupFields.Description]: string
-    [GroupFields.Members]: EntityWithIdAndDescription[]
+    [GroupFields.Members]: EntityWithIdAndDescription[],
+    [GroupFields.Movements]: ExpensesInterface[],
     [GroupFields.Image]?: File
 }
 

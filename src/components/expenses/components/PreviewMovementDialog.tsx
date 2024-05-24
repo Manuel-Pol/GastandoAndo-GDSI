@@ -57,7 +57,11 @@ const PreviewMovementDialog = ({movement}: PreviewMovementDialogProps) => {
                         </div>
                         <div className='flex flex-col gap-6 justify-center'>
                             <p className='text-lg font-medium'>{dateFormatter.toShortDate(movement[ExpensesInterfaceFields.Date])}</p>
-                            {img && <img src={img.toString()} />}
+                            {img && 
+                                <div className='w-full'>
+                                    <img src={img.toString()} className='w-[80%] block ml-auto mr-auto'/>
+                                </div>
+                            }
                             <div>
                                 <p className='font-medium'>{movement[ExpensesInterfaceFields.Description]}</p>
                             </div>
