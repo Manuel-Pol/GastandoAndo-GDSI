@@ -47,7 +47,11 @@ const GroupDataCard = ({ groups, onSelect, selectedGroup, onSaveEdit, onDelete }
                             <div className='rounded-full p-3 hover:bg-[#ccd3d8]'>
                                 <Trash
                                     className='w-4 h-4 text-red-600'
-                                    onClick={() => onDelete(group[EntityWithIdFields.Id])}
+                                    onClick={(event) => {
+                                        event.preventDefault();
+                                        event.stopPropagation(); // Evitar la propagación del evento al contenedor del grupo
+                                        onDelete(group[EntityWithIdFields.Id]);
+                                    }}
                                 />
                             </div>
                         </div>
