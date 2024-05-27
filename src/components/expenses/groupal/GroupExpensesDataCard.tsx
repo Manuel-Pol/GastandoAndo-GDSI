@@ -9,6 +9,7 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import PreviewGroupExpenseDialog from './PreviewGroupExpense'
 import GroupExpensesEditDialog from './GroupExpensesEditDialog'
 import { EntityWithIdAndDescription } from '@/types/baseEntities'
+import { stringFormatter } from '@/utils/formatters/stringFormatter'
 
 interface GroupExpensesDataCardProps {
     expenses: GroupExpensesInterface[]
@@ -53,7 +54,7 @@ const GroupExpensesDataCard = ({ expenses, triggerDeleteExp, onSaveEdit, friends
                                         <p className='text-xl font-medium'>
                                             $
                                             {numberFormatter.toStringWithDecimals(
-                                                exp[GroupExpensesInterfaceFields.Amount]
+                                                parseFloat(exp[GroupExpensesInterfaceFields.Amount] ?? 0)
                                             )}
                                         </p>
                                         <div className='flex flex-row items-center'>
