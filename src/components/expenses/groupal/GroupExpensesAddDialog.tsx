@@ -3,9 +3,10 @@ import { Group, GroupFields } from '@/types/groupalExpenses'
 import { Button } from '@/components/ui/button'
 import { CirclePlusIcon } from 'lucide-react'
 import { useForm, FormProvider } from 'react-hook-form'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useContext } from 'react'
 import { EntityWithIdAndDescription, EntityWithIdAndDescriptionFields, EntityWithIdFields } from '@/types/baseEntities'
 import GroupForm from './GroupForm'
+import { UserContext } from '@/utils/contexts/userContext'
 
 interface GroupExpensesAddDialogProps {
     onAddGroup: (g: Group) => void
@@ -15,9 +16,10 @@ interface GroupExpensesAddDialogProps {
 const GroupExpensesAddDialog = ({ onAddGroup, friends }: GroupExpensesAddDialogProps) => {
     const [open, setOpen] = useState<boolean>(false)
     const [img, setImg] = useState<File>()
+    const { username } = useContext(UserContext) // Obtener el nombre de usuario del contexto
 
     const defaultMembers: EntityWithIdAndDescription[] = [
-        { [EntityWithIdFields.Id]: 0, [EntityWithIdAndDescriptionFields.Description]: 'Vinicius' }
+        { [EntityWithIdFields.Id]: 0, [EntityWithIdAndDescriptionFields.Description]: username } // Utilizar el nombre de usuario obtenido del contexto
     ]
     const [members, setMembers] = useState<EntityWithIdAndDescription[]>(defaultMembers)
 
