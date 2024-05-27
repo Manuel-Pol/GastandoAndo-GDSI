@@ -6,6 +6,7 @@ import { useFormContext } from 'react-hook-form'
 import { GroupExpensesInterfaceFields } from '@/types/groupalExpenses'
 import Multiselect from '@/components/custom/Multiselect'
 import { EntityWithIdAndDescription } from '@/types/baseEntities'
+import { DateField } from '@/components/forms/DateField'
 
 interface GroupFormProps {
     friends: EntityWithIdAndDescription[]
@@ -62,6 +63,7 @@ const GroupExpensesAddNewForm = ({ friends, selectedDebtors, onSelectDebtor, onU
                         </FormItem>
                     )}
                 />
+                <DateField label='Fecha' control={methods.control} name={GroupExpensesInterfaceFields.Date} />
                 <p className='font-medium text-lg'>Seleccione entre quienes dividir el gasto</p>
                 <FormField
                     control={methods.control}

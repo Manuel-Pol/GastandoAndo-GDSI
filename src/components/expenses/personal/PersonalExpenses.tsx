@@ -32,7 +32,7 @@ const PersonalExpenses = () => {
 
     return (
         <div className='flex justify-center'>
-            <div className='flex flex-col gap-8 items-center w-full max-w-xl'>
+            <div className='flex flex-col gap-8 items-center w-full max-w-3xl'>
                 <div className='w-full flex space-x-24 items-center justify-between'>
                     <p className='text-6xl font-medium'>Movimientos</p>
                     <PersonalExpensesAddNewDialog onAddExpense={onAddExpense} />

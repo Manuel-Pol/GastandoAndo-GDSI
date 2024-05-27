@@ -20,7 +20,7 @@ const PreviewGroupExpenseDialog = ({expense}: PreviewGroupExpenseDialogProps) =>
         <div>
             <Dialog>
                 <DialogTrigger asChild>
-                <Button variant='outline' size='icon' className='rounded-full border-none' onClick={onViewExp}>
+                <Button variant='outline' size='icon' className='rounded-full border-none p-3 hover:bg-[#ccd3d8]' onClick={onViewExp}>
                         <ExternalLink className='h-4 w-4' color='#438924' />
                     </Button>
                 </DialogTrigger>
@@ -36,7 +36,7 @@ const PreviewGroupExpenseDialog = ({expense}: PreviewGroupExpenseDialogProps) =>
                                 <p className='font-medium'>{expense[GroupExpensesInterfaceFields.Description]}</p>
                             </div>
                                 <p className='text-3xl font-medium text-center'>{`+ $ ${numberFormatter.toStringWithDecimals(
-                                                    expense[GroupExpensesInterfaceFields.Amount] ?? 0
+                                                    parseFloat(expense[GroupExpensesInterfaceFields.Amount] ?? 0)
                                 )}`}
                                 </p>
                             

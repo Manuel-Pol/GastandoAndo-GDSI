@@ -10,6 +10,7 @@ import { dateFormatter } from "@/utils/formatters/dateFormatter";
 import PreviewGroupExpenseDialog from "./PreviewGroupExpense";
 import GroupExpensesEditDialog from "./GroupExpensesEditDialog";
 import { EntityWithIdAndDescription } from "@/types/baseEntities";
+import { stringFormatter } from "@/utils/formatters/stringFormatter";
 
 interface GroupExpensesDataCardProps {
     expenses: GroupExpensesInterface[],
@@ -36,16 +37,16 @@ const GroupExpensesDataCard = ({expenses, triggerDeleteExp, onSaveEdit, friends}
                                         <div className='flex flex-col'>
                                             <h4 className='font-semibold'>{exp[GroupExpensesInterfaceFields.Title]}</h4>
                                             <h6 className='font-semibold text-gray-400'>
-                                                {exp[GroupExpensesInterfaceFields.Description]}
+                                                {stringFormatter.cutIfHaveMoreThan(exp[GroupExpensesInterfaceFields.Description], 23)}
                                             </h6>
                                         </div>
                                     </div>
-                                    <div className='flex flex-row items-center space-x-4'>
+                                    <div className='flex flex-row items-center space-x-2'>
                                         <p className='text-xl font-medium'>{`$ ${numberFormatter.toStringWithDecimals(
-                                                    exp[GroupExpensesInterfaceFields.Amount] ?? 0
+                                                    parseFloat(exp[GroupExpensesInterfaceFields.Amount] ?? 0)
                                             )}`}
                                         </p>
-                                        <div className='flex flex-row items-center relative left-5'>
+                                        <div className='flex flex-row items-center'>
                                             <PreviewGroupExpenseDialog expense={exp} />
                                             <GroupExpensesEditDialog expense={exp} onSaveEdit={onSaveEdit} friends={friends}/>
                                             <Button

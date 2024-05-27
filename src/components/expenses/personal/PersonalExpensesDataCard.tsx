@@ -11,6 +11,7 @@ import { numberFormatter } from '@/utils/formatters/numberFormatter'
 import PreviewMovementDialog from '../components/PreviewMovementDialog'
 import { getExpenseRecurrence } from '@/utils/mappers/movementMappers'
 import { dateFormatter } from '@/utils/formatters/dateFormatter'
+import { stringFormatter } from '@/utils/formatters/stringFormatter'
 
 interface PersonalExpensesDataCardProps {
     expenses: ExpensesInterface[]
@@ -50,29 +51,29 @@ const PersonalExpensesDataCard = ({ expenses, triggerDeleteExp, onSaveEdit }: Pe
                                                 </Badge>
                                             </div>
                                             <h6 className='font-semibold text-gray-400'>
-                                                {exp[ExpensesInterfaceFields.Description]}
+                                                {stringFormatter.cutIfHaveMoreThan(exp[ExpensesInterfaceFields.Description], 44)}
                                             </h6>
                                         </div>
                                     </div>
-                                    <div className='flex flex-row items-center space-x-4'>
+                                    <div className='flex flex-row items-center space-x-2'>
                                         <div>
                                             {exp[ExpensesInterfaceFields.IsExpense] === ExpenseType.Gasto ? (
                                                 <p className='text-xl text-red-500'>{`- $ ${numberFormatter.toStringWithDecimals(
-                                                    exp[ExpensesInterfaceFields.Amount] ?? 0
+                                                    parseFloat(exp[ExpensesInterfaceFields.Amount] ?? 0)
                                                 )}`}</p>
                                             ) : (
                                                 <p className='text-xl text-green-600'>{`+ $ ${numberFormatter.toStringWithDecimals(
-                                                    exp[ExpensesInterfaceFields.Amount] ?? 0
+                                                    parseFloat(exp[ExpensesInterfaceFields.Amount] ?? 0)
                                                 )}`}</p>
                                             )}
                                         </div>
-                                        <div className='flex flex-row items-center relative left-5'>
+                                        <div className='flex flex-row items-center relative'>
                                             <PreviewMovementDialog movement={exp} />
                                             <PersonalExpensesEditDialog expense={exp} onSubmitEdit={onSaveEdit} />
                                             <Button
                                                 variant='outline'
                                                 size='icon'
-                                                className='rounded-full border-none'
+                                                className='rounded-full border-none p-3 hover:bg-[#ccd3d8]'
                                                 onClick={() => onDelExp(exp)}
                                             >
                                                 <Trash2 className='h-4 w-4' color='#EF4444' />

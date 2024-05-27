@@ -66,7 +66,7 @@ const PersonalExpensesEditDialog = ({ expense, onSubmitEdit }: PersonalExpensesE
         <div>
             <Dialog>
                 <DialogTrigger asChild>
-                    <Button variant='outline' size='icon' className='rounded-full border-none' onClick={onEditExp}>
+                    <Button variant='outline' size='icon' className='rounded-full border-none p-3 hover:bg-[#ccd3d8]' onClick={onEditExp}>
                         <Edit className='h-4 w-4' color='#3B82F6' />
                     </Button>
                 </DialogTrigger>
