@@ -17,20 +17,17 @@ const GroupEditDialog = ({ group, onSubmitEdit }: GroupEditDialogProps) => {
     const [img, setImg] = useState<File | undefined>(group[GroupFields.Image])
     const [members, setMembers] = useState<EntityWithIdAndDescription[]>(group[GroupFields.Members])
 
+    const methods = useForm<Group>()
+
+    useEffect(() => {
+        if (openEdit) {
+            methods.reset(group)
+            setImg(group[GroupFields.Image])
+            setMembers(group[GroupFields.Members])
+        }
+    }, [openEdit])
+
     const onEditExp = () => setOpenEdit(true)
-
-    const defaultFormValues: Group = {
-        [EntityWithIdFields.Id]: group[EntityWithIdFields.Id],
-        [GroupFields.Description]: group[GroupFields.Description],
-        [GroupFields.Name]: group[GroupFields.Name],
-        [GroupFields.Members]: group[GroupFields.Members],
-        [GroupFields.Image]: group[GroupFields.Image],
-        [GroupFields.Movements]: group[GroupFields.Movements]
-    }
-
-    const methods = useForm<Group>({
-        defaultValues: defaultFormValues
-    })
 
     const onSubmitGroup = (data: Group) => {
         const submitData: Group = {
@@ -43,15 +40,10 @@ const GroupEditDialog = ({ group, onSubmitEdit }: GroupEditDialogProps) => {
         setOpenEdit(false)
     }
 
-    useEffect(() => {
-        if (openEdit) {
-            methods.reset(defaultFormValues)
-            setImg(group[GroupFields.Image])
-            setMembers(group[GroupFields.Members])
-        }
-    }, [openEdit])
-
-    const onTriggerImage = (newImg: File) => setImg(newImg)
+    const onTriggerImage = (newImg: File) => {
+        setImg(newImg)
+        methods.setValue(GroupFields.Image, newImg)
+    }
 
     const onSelectMember = (member: EntityWithIdAndDescription) => {
         setMembers([...members, member])
@@ -73,8 +65,13 @@ const GroupEditDialog = ({ group, onSubmitEdit }: GroupEditDialogProps) => {
                     <DialogContent className='min-w-[400px] bg-white rounded'>
                         <DialogTitle className='text-black mb-2'>Editar Grupo</DialogTitle>
                         <FormProvider {...methods}>
-                            <GroupForm onTriggerImage={onTriggerImage} prevImg={img} friends={defaultFriends}
-                                       onSelectMember={onSelectMember} selectedMembers={members} onUnselectMember={onUnselectMember}
+                            <GroupForm 
+                                onTriggerImage={onTriggerImage} 
+                                prevImg={img} 
+                                friends={defaultFriends}
+                                onSelectMember={onSelectMember} 
+                                selectedMembers={members} 
+                                onUnselectMember={onUnselectMember}
                             />
                         </FormProvider>
                         <DialogFooter>

@@ -49,7 +49,16 @@ const GroupForm = ({
     return (
         <Form {...methods}>
             <div className='flex flex-col gap-4 justify-center'>
-                <TextField label='Titulo' name={GroupFields.Name} control={methods.control} />
+                <TextField 
+                    label='Titulo' 
+                    name={GroupFields.Name} 
+                    control={methods.control} 
+                    rules={{ 
+                        required: 'El título es obligatorio', 
+                        maxLength: { value: 20, message: 'El título no puede tener más de 20 caracteres' } 
+                    }}
+                    maxLength={20} // Pasa la longitud máxima aquí
+                />
 
                 <TextArea label='Descripcion' name={GroupFields.Description} control={methods.control} />
 

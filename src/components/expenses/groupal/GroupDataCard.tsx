@@ -4,6 +4,7 @@ import { Group, GroupFields } from '@/types/groupalExpenses'
 import { EntityWithIdFields } from '@/types/baseEntities'
 import GroupEditDialog from './GroupEditDialog'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
+
 interface GroupDataCardProps {
     groups: Group[]
     onSelect: (g: Group) => void
@@ -20,13 +21,13 @@ const GroupDataCard = ({ groups, onSelect, selectedGroup, onSaveEdit, onDelete }
                     <div
                         className={
                             selectedGroup && selectedGroup[EntityWithIdFields.Id] === group[EntityWithIdFields.Id]
-                                ? 'w-full flex flex-row items-center justify-between cursor-pointer bg-[#ebebeb] rounded px-4 py-2'
-                                : 'w-full flex flex-row items-center justify-between cursor-pointer hover:bg-[#ebebeb] rounded px-4 py-2'
+                                ? 'grid grid-cols-[auto,1fr,auto] items-center cursor-pointer bg-[#ebebeb] rounded px-4 py-2'
+                                : 'grid grid-cols-[auto,1fr,auto] items-center cursor-pointer hover:bg-[#ebebeb] rounded px-4 py-2'
                         }
                         onClick={() => onSelect(group)}
                         key={`group_${idx}`}
                     >
-                        <div className='flex flex-row items-center space-x-3'>
+                        <div className='flex items-center space-x-4'>
                             {group[GroupFields.Image] ? (
                                 <img
                                     src={URL.createObjectURL(group[GroupFields.Image])}
@@ -37,10 +38,10 @@ const GroupDataCard = ({ groups, onSelect, selectedGroup, onSaveEdit, onDelete }
                                     <AvatarFallback>{group[GroupFields.Name].charAt(0).toUpperCase()}</AvatarFallback>
                                 </Avatar>
                             )}
-                            <p className='font-medium text-base truncate'>{group[GroupFields.Name]}</p>
+                            <p className='font-medium text-base truncate max-w-[100px]'>{group[GroupFields.Name]}</p>
                         </div>
 
-                        <div className='flex flex-row items-center gap-1'>
+                        <div className='flex flex-row items-center justify-end space-x-1'>
                             <div className='rounded-full hover:bg-[#ccd3d8]'>
                                 <GroupEditDialog group={group} onSubmitEdit={onSaveEdit} />
                             </div>
