@@ -42,6 +42,7 @@ const GroupExpensesEditDialog = ({expense, friends, onSaveEdit} : GroupExpensesE
     const onSubmitExpense = (data: GroupExpensesInterface) => {
         const submitData: GroupExpensesInterface = {
             ...data,
+            [GroupExpensesInterfaceFields.Debtors]: debtors
         }
 
         onSaveEdit(submitData)
