@@ -1,6 +1,5 @@
 'use client'
 
-import * as React from 'react'
 import { Calendar as CalendarIcon } from 'lucide-react'
 
 import { cn } from '@/lib/utils'
@@ -8,9 +7,8 @@ import { Button } from '@/components/ui/button'
 import { Calendar } from '@/components/ui/calendar'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 import { ControllerRenderProps, FieldValues } from 'react-hook-form'
-import { ExpensesInterfaceFields } from '@/types/personalExpenses'
 
-export function DatePicker(field: ControllerRenderProps<FieldValues, ExpensesInterfaceFields.Date>) {
+export function DatePicker(field: ControllerRenderProps<FieldValues>) {
     return (
         <Popover>
             <PopoverTrigger asChild>

@@ -1,11 +1,13 @@
-import { FormField, FormItem, FormLabel, FormControl, FormMessage, Form } from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
-import { Textarea } from '@/components/ui/textarea'
 import { ExpensesInterfaceFields, ExpenseType, RecurrenceTypeCodes } from '@/types/personalExpenses'
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { useFormContext } from 'react-hook-form'
-import { DatePicker } from './DatePicker'
+import { Form, useFormContext } from 'react-hook-form'
+
 import { useEffect, useState } from 'react'
+import { TextField } from '@/components/forms/TextField'
+import { TextArea } from '@/components/forms/TextArea'
+import { DateField } from '@/components/forms/DateField'
+import { FileField } from '@/components/forms/FileField'
+import { SelectField } from '@/components/forms/SelectField'
+import { getExpenseRecurrence } from '@/utils/mappers/movementMappers'
 
 interface PersonalExpensesAddNewFormProps {
     onTriggerExpense: (expT: ExpenseType) => void
@@ -31,205 +33,53 @@ const PersonalExpensesAddNewForm = ({
     useEffect(() => {
         if (prevImg) {
             methods.setValue(ExpensesInterfaceFields.Image, prevImg)
-            const reader = new FileReader();
-            
+            const reader = new FileReader()
+
             reader.onloadend = () => {
-                setImg(reader.result);
-            };
-            
-            reader.readAsDataURL(prevImg);
+                setImg(reader.result)
+            }
+
+            reader.readAsDataURL(prevImg)
         }
     }, [prevImg])
 
     return (
         <Form {...methods}>
             <div className='flex flex-col gap-2 justify-center'>
-                <FormField
-                    control={methods.control}
-                    name={ExpensesInterfaceFields.Title}
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>Titulo</FormLabel>
-                            <FormControl>
-                                <Input {...field} />
-                            </FormControl>
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                />
-                <FormField
-                    control={methods.control}
-                    name={ExpensesInterfaceFields.Description}
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>Descripcion</FormLabel>
-                            <FormControl>
-                                <Textarea {...field} />
-                            </FormControl>
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                />
-                <FormField
-                    control={methods.control}
-                    name={ExpensesInterfaceFields.Image}
-                    render={({ field: { value, onChange, ...fieldProps } }) => (
-                        <FormItem>
-                            {img ?
-                                <div className='space-y-2'>
-                                    <div className='flex flex-row space-x-4 items-center'>
-                                        <FormLabel>Imagen</FormLabel>
-                                        <FormControl>
-                                            <Input
-                                                {...fieldProps}
-                                                type='file'
-                                                accept='image/*, application/pdf'
-                                                onChange={event => onChange(event.target.files && event.target.files[0])}
-                                            />
-                                        </FormControl>
-                                        <FormMessage />
-                                    </div>
-                                    <div className='w-full'>
-                                        <img src={img.toString()} className='w-[20%] block ml-auto mr-auto'/>
-                                    </div>
-                                </div>
-                                :
-                                <>
-                                    <FormLabel>Imagen</FormLabel>
-                                    <FormControl>
-                                        <Input
-                                            {...fieldProps}
-                                            type='file'
-                                            accept='image/*, application/pdf'
-                                            onChange={event => onChange(event.target.files && event.target.files[0])}
-                                        />
-                                    </FormControl>
-                                    <FormMessage />
-                                </>
-                            }
-                        </FormItem>
-                    )}
-                />
-                <FormField
-                    control={methods.control}
+                <TextField label='Titulo' name={ExpensesInterfaceFields.Title} control={methods.control} />
+                <TextArea label='Descripcion' name={ExpensesInterfaceFields.Description} control={methods.control} />
+                <FileField control={methods.control} name={ExpensesInterfaceFields.Image} label='Imagen' img={img} />
+                <TextField
+                    label='Monto'
                     name={ExpensesInterfaceFields.Amount}
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel className='mr-2'>Monto</FormLabel>
-                            <div className='w-full'>
-                                <FormControl>
-                                    <Input placeholder='' {...field} startAdornment={<h5>$</h5>} />
-                                </FormControl>
-                            </div>
-                            <FormMessage />
-                        </FormItem>
-                    )}
+                    control={methods.control}
+                    adornment='$'
                 />
                 <div className='flex flex-row justify-between items-center'>
-                    <FormField
-                        rules={{ required: true }}
+                    <SelectField
                         control={methods.control}
                         name={ExpensesInterfaceFields.IsExpense}
-                        render={({ field }) => (
-                            <FormItem>
-                                <FormLabel>Tipo de movimiento</FormLabel>
-                                <FormControl>
-                                    <Select
-                                        onValueChange={(e: ExpenseType) => onTriggerExpense(e)}
-                                        defaultValue={methods.getValues(ExpensesInterfaceFields.IsExpense)}
-                                    >
-                                        <SelectTrigger className='w-[200px]'>
-                                            <SelectValue placeholder='Tipo de movimiento' />
-                                        </SelectTrigger>
-                                        <SelectContent className='bg-white'>
-                                            <SelectGroup>
-                                                <SelectItem className='cursor-pointer' value={ExpenseType.Gasto}>
-                                                    Gasto
-                                                </SelectItem>
-                                                <SelectItem className='cursor-pointer' value={ExpenseType.Ingreso}>
-                                                    Ingreso
-                                                </SelectItem>
-                                            </SelectGroup>
-                                        </SelectContent>
-                                    </Select>
-                                </FormControl>
-
-                                <FormMessage />
-                            </FormItem>
-                        )}
+                        label='Tipo de movimiento'
+                        values={[ExpenseType.Gasto, ExpenseType.Ingreso]}
+                        onValueChange={(e: ExpenseType) => onTriggerExpense(e)}
+                        defaultValue={methods.getValues(ExpensesInterfaceFields.IsExpense).toString()}
                     />
-                    <FormField
-                        rules={{ required: true }}
+                    <SelectField
                         control={methods.control}
                         name={ExpensesInterfaceFields.Recurrence}
-                        render={({ field }) => (
-                            <FormItem>
-                                <FormLabel>Frecuencia</FormLabel>
-                                <FormControl>
-                                    <Select
-                                        onValueChange={(e: string) => onTriggerRecurrence(parseInt(e))}
-                                        defaultValue={methods.getValues(ExpensesInterfaceFields.Recurrence).toString()}
-                                    >
-                                        <SelectTrigger className='w-[200px]'>
-                                            <SelectValue placeholder='Frecuencia' />
-                                        </SelectTrigger>
-                                        <SelectContent className='bg-white'>
-                                            <SelectGroup>
-                                                <SelectItem
-                                                    className='cursor-pointer'
-                                                    value={`${RecurrenceTypeCodes.Quarter}`}
-                                                >
-                                                    Trimestral
-                                                </SelectItem>
-                                                <SelectItem
-                                                    className='cursor-pointer'
-                                                    value={`${RecurrenceTypeCodes.Monthly}`}
-                                                >
-                                                    Mensual
-                                                </SelectItem>
-                                                <SelectItem
-                                                    className='cursor-pointer'
-                                                    value={`${RecurrenceTypeCodes.Weekly}`}
-                                                >
-                                                    Semanal
-                                                </SelectItem>
-                                                <SelectItem
-                                                    className='cursor-pointer'
-                                                    value={`${RecurrenceTypeCodes.Diary}`}
-                                                >
-                                                    Diario
-                                                </SelectItem>
-                                                <SelectItem
-                                                    className='cursor-pointer'
-                                                    value={`${RecurrenceTypeCodes.Singular}`}
-                                                >
-                                                    Singular
-                                                </SelectItem>
-                                            </SelectGroup>
-                                        </SelectContent>
-                                    </Select>
-                                </FormControl>
-
-                                <FormMessage />
-                            </FormItem>
-                        )}
+                        label='Frecuencia'
+                        onValueChange={(e: string) => onTriggerRecurrence(parseInt(e))}
+                        defaultValue={getExpenseRecurrence(RecurrenceTypeCodes.Singular)}
+                        values={[
+                            getExpenseRecurrence(RecurrenceTypeCodes.Quarter),
+                            getExpenseRecurrence(RecurrenceTypeCodes.Monthly),
+                            getExpenseRecurrence(RecurrenceTypeCodes.Weekly),
+                            getExpenseRecurrence(RecurrenceTypeCodes.Diary),
+                            getExpenseRecurrence(RecurrenceTypeCodes.Singular)
+                        ]}
                     />
                 </div>
-                <FormField
-                    control={methods.control}
-                    name={ExpensesInterfaceFields.Date}
-                    render={({ field }) => (
-                        <div className='space-y-2'>
-                            <FormLabel>Fecha</FormLabel>
-                            <FormItem>
-                                <FormControl>
-                                    <DatePicker {...field} />
-                                </FormControl>
-                                <FormMessage />
-                            </FormItem>
-                        </div>
-                    )}
-                />
+                <DateField control={methods.control} name={ExpensesInterfaceFields.Date} label='Fecha' />
             </div>
         </Form>
     )

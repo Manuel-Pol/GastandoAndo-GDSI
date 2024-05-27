@@ -11,8 +11,8 @@ export enum ExpensesInterfaceFields {
 }
 
 export enum ExpenseType {
-    Gasto = 'gasto',
-    Ingreso = 'ingreso'
+    Gasto = 'Gasto',
+    Ingreso = 'Ingreso'
 }
 
 export enum RecurrenceTypeCodes {

@@ -1,10 +1,9 @@
-import { RecurrenceTypeCodes } from "@/types/personalExpenses"
-
+import { RecurrenceTypeCodes } from '@/types/personalExpenses'
 
 export const getExpenseRecurrence = (freq: RecurrenceTypeCodes) => {
     switch (freq) {
         case RecurrenceTypeCodes.Singular:
-            return 'Singular'
+            return 'No recurrente'
         case RecurrenceTypeCodes.Diary:
             return 'Diario'
         case RecurrenceTypeCodes.Weekly:
@@ -15,6 +14,6 @@ export const getExpenseRecurrence = (freq: RecurrenceTypeCodes) => {
             return 'Trimestral'
 
         default:
-            return 'Singular'
+            return 'No recurrente'
     }
 }
