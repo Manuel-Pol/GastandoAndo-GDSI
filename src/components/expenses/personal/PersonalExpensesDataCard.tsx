@@ -9,7 +9,6 @@ import { ExpensesInterface, ExpenseType, ExpensesInterfaceFields } from '@/types
 import PersonalExpensesEditDialog from './PersonalExpensesEditDialog'
 import { numberFormatter } from '@/utils/formatters/numberFormatter'
 import PreviewMovementDialog from '../components/PreviewMovementDialog'
-import { getExpenseRecurrence } from '@/utils/mappers/movementMappers'
 import { dateFormatter } from '@/utils/formatters/dateFormatter'
 import { stringFormatter } from '@/utils/formatters/stringFormatter'
 
@@ -47,7 +46,7 @@ const PersonalExpensesDataCard = ({ expenses, triggerDeleteExp, onSaveEdit }: Pe
                                             <div className='flex flex-row space-x-4 items-center'>
                                                 <h4 className='font-semibold'>{exp[ExpensesInterfaceFields.Title]}</h4>
                                                 <Badge className='bg-[#e8ebe9]'>
-                                                    {getExpenseRecurrence(exp[ExpensesInterfaceFields.Recurrence])}
+                                                    {exp[ExpensesInterfaceFields.Recurrence]}
                                                 </Badge>
                                             </div>
                                             <h6 className='font-semibold text-gray-400'>

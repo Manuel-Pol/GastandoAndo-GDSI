@@ -50,7 +50,7 @@ const GroupMovements = ({ group, updateGroups }: GroupMovementsProps) => {
         <div className='bg-white rounded p-4 w-full flex flex-col gap-6'>
             <div className='flex flex-row justify-between'>
                 <p className='font-medium text-2xl'>{`Movimientos de ${group[GroupFields.Name]}`}</p>
-                <DialogAddGroupMovement onAddMovement={handleAddMovement} friends={group[GroupFields.Members]} />
+                <DialogAddGroupMovement onAddMovement={handleAddMovement} groupMembers={group[GroupFields.Members]} />
             </div>
             <GroupExpensesDataCard
                 expenses={movements}

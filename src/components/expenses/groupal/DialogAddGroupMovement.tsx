@@ -9,10 +9,10 @@ import { GroupExpensesInterface, GroupExpensesInterfaceFields } from '@/types/gr
 
 interface DialogAddGroupMovementProps {
     onAddMovement: (m: GroupExpensesInterface) => void
-    friends: EntityWithIdAndDescription[]
+    groupMembers: EntityWithIdAndDescription[]
 }
 
-const DialogAddGroupMovement = ({ onAddMovement, friends }: DialogAddGroupMovementProps) => {
+const DialogAddGroupMovement = ({ onAddMovement, groupMembers }: DialogAddGroupMovementProps) => {
     const [open, setOpen] = useState<boolean>(false)
     const defaultDebtors: EntityWithIdAndDescription[] = [
         { [EntityWithIdFields.Id]: 0, [EntityWithIdAndDescriptionFields.Description]: '' }
@@ -24,7 +24,7 @@ const DialogAddGroupMovement = ({ onAddMovement, friends }: DialogAddGroupMoveme
         [GroupExpensesInterfaceFields.Title]: '',
         [GroupExpensesInterfaceFields.Description]: '',
         [GroupExpensesInterfaceFields.Amount]: undefined,
-        [GroupExpensesInterfaceFields.Payers]: [],
+        [GroupExpensesInterfaceFields.Payer]: '',
         [GroupExpensesInterfaceFields.Debtors]: defaultDebtors,
         [GroupExpensesInterfaceFields.Date]: new Date()
     }
@@ -44,6 +44,8 @@ const DialogAddGroupMovement = ({ onAddMovement, friends }: DialogAddGroupMoveme
             ...data,
             [GroupExpensesInterfaceFields.Debtors]: debtors
         }
+
+        console.log(submitData)
 
         onAddMovement(submitData)
         setOpen(false)
@@ -75,7 +77,7 @@ const DialogAddGroupMovement = ({ onAddMovement, friends }: DialogAddGroupMoveme
                         <DialogTitle className='text-black'>Nuevo movimiento grupal</DialogTitle>
                         <FormProvider {...methods}>
                             <GroupExpensesAddNewForm
-                                friends={friends}
+                                groupMembers={groupMembers}
                                 selectedDebtors={debtors}
                                 onSelectDebtor={onSelectDebtor}
                                 onUnselectDebtor={onUnselectDebtor}
@@ -85,7 +87,7 @@ const DialogAddGroupMovement = ({ onAddMovement, friends }: DialogAddGroupMoveme
                             <DialogClose asChild>
                                 <Button
                                     className='rounded text-black hover:bg-neutral-300'
-                                    onClick={methods.handleSubmit(onSubmitMovement)}
+                                    onClick={methods.handleSubmit(onSubmitMovement, console.log)}
                                     disabled={!methods.watch(GroupExpensesInterfaceFields.Amount)}
                                 >
                                     <CirclePlusIcon className='mr-2 items-center' /> Aceptar

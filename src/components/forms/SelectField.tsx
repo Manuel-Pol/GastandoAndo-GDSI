@@ -1,26 +1,24 @@
-import { ControllerProps, FieldValues, Path, PathValue } from 'react-hook-form'
+import { ControllerProps, FieldValues } from 'react-hook-form'
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '../ui/form'
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '../ui/select'
 
 interface SelectFieldProps<TForm extends FieldValues> extends Omit<ControllerProps<TForm>, 'render'> {
     label: string
-    onValueChange: (value: PathValue<TForm, Path<TForm>>) => void
-    defaultValue?: PathValue<TForm, Path<TForm>> | undefined
     values: string[]
 }
 
 export const SelectField = <TForm extends FieldValues>(props: SelectFieldProps<TForm>) => {
-    const { control, name, label, defaultValue, onValueChange, values } = props
+    const { control, name, label, values } = props
     return (
         <FormField
             rules={{ required: true }}
             control={control}
             name={name}
-            render={() => (
+            render={({ field: { onChange, value } }) => (
                 <FormItem>
                     <FormLabel>{label}</FormLabel>
                     <FormControl>
-                        <Select onValueChange={onValueChange} defaultValue={defaultValue}>
+                        <Select onValueChange={onChange} value={value}>
                             <SelectTrigger className='w-[200px]'>
                                 <SelectValue placeholder={label} />
                             </SelectTrigger>
