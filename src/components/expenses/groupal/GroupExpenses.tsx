@@ -12,7 +12,6 @@ import { GroupAddMemberDialog } from './GroupAddMemberDialog'
 const GroupExpenses = () => {
     const [currentGroups, setCurrentGroups] = useState<Group[]>([])
     const [selectedGroup, setSelectedGroup] = useState<Group | undefined>(undefined)
-    const [currentDeleted, setCurrentDeleted] = useState<boolean>(false)
 
     const handleAddGroup = (group: Group) => {
         const groupAdd = {
@@ -25,16 +24,9 @@ const GroupExpenses = () => {
 
     const onClickGroup = (g: Group) => setSelectedGroup(g)
 
-    useEffect(() => {
-        if (selectedGroup) {
-            setCurrentDeleted(false)
-        }
-    }, [selectedGroup])
-
     const deleteGroup = (id: number) => {
         if (selectedGroup && selectedGroup[EntityWithIdFields.Id] === id) {
             setSelectedGroup(undefined)
-            setCurrentDeleted(true)
         }
         const newGroups = currentGroups.filter(g => g[EntityWithIdFields.Id] !== id)
         setCurrentGroups(newGroups)
@@ -48,7 +40,7 @@ const GroupExpenses = () => {
         })
 
         setCurrentGroups(newGroups)
-        setSelectedGroup(undefined)
+        onClickGroup(group)
     }
 
     const onDeleteMember = (memberId: number) => {
@@ -82,7 +74,7 @@ const GroupExpenses = () => {
                 </div>
             </div>
             <div className='col-span-2'>
-                {selectedGroup && !currentDeleted ? (
+                {selectedGroup ? (
                     <GroupMovements group={selectedGroup} updateGroups={onSaveEdit} />
                 ) : (
                     <div className='w-full'>
@@ -96,7 +88,7 @@ const GroupExpenses = () => {
                     </div>
                 )}
             </div>
-            {selectedGroup && !currentDeleted && (
+            {selectedGroup && (
                 <div className='col-span-1 bg-white rounded'>
                     <div className='flex flex-col gap-2 rounded'>
                         <div className='text-white text-2xl rounded font-medium flex items-center justify-between bg-[#1C7549] py-1 px-4'>

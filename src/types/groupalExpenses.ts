@@ -44,7 +44,7 @@ export const defaultFriends: EntityWithIdAndDescription[] = [
 export interface GroupExpensesInterface extends EntityWithId {
     [GroupExpensesInterfaceFields.Title]: string
     [GroupExpensesInterfaceFields.Description]: string
-    [GroupExpensesInterfaceFields.Amount]: number
+    [GroupExpensesInterfaceFields.Amount]?: number
     [GroupExpensesInterfaceFields.Payer]: string
     [GroupExpensesInterfaceFields.Debtors]: EntityWithIdAndDescription[]
     [GroupExpensesInterfaceFields.Date]: Date

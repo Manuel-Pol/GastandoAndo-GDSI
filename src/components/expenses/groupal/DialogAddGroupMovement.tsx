@@ -36,6 +36,7 @@ const DialogAddGroupMovement = ({ onAddMovement, groupMembers }: DialogAddGroupM
     useEffect(() => {
         if (open) {
             methods.reset(defaultFormValues)
+            setDebtors(defaultDebtors)
         }
     }, [open])
 
@@ -44,8 +45,6 @@ const DialogAddGroupMovement = ({ onAddMovement, groupMembers }: DialogAddGroupM
             ...data,
             [GroupExpensesInterfaceFields.Debtors]: debtors
         }
-
-        console.log(submitData)
 
         onAddMovement(submitData)
         setOpen(false)

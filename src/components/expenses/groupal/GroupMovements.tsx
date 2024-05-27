@@ -22,7 +22,6 @@ const GroupMovements = ({ group, updateGroups }: GroupMovementsProps) => {
             ...group,
             [GroupFields.Expenses]: updatedMovements
         }
-
         updateGroups(groupUpdated)
     }
 
