@@ -5,6 +5,7 @@ import LayoutNotLogged from './components/layouts/LayoutNotLogged'
 import PersonalExpenses from './components/expenses/personal/PersonalExpenses'
 import GroupExpenses from './components/expenses/groupal/GroupExpenses'
 import { HomeLanding } from './HomeLanding'
+import SavingsPage from './components/expenses/savings/SavingsPage'
 
 function App() {
     return (
@@ -18,6 +19,7 @@ function App() {
                         <Route path='home' element={<Home />} />
                         <Route path='individual' element={<PersonalExpenses />} />
                         <Route path='group' element={<GroupExpenses />} />
+                        <Route path='savings' element={<SavingsPage />} />
                     </Route>
                 </Routes>
             </BrowserRouter>
