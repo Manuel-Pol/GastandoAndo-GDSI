@@ -1,4 +1,4 @@
-import { ExpensesInterfaceFields, ExpenseType, RecurrenceTypeCodes } from '@/types/personalExpenses'
+import { ExpensesInterfaceFields, ExpenseType, RecurrenceType } from '@/types/personalExpenses'
 import { Form, useFormContext } from 'react-hook-form'
 
 import { useEffect, useState } from 'react'
@@ -7,21 +7,13 @@ import { TextArea } from '@/components/forms/TextArea'
 import { DateField } from '@/components/forms/DateField'
 import { FileField } from '@/components/forms/FileField'
 import { SelectField } from '@/components/forms/SelectField'
-import { getExpenseRecurrence } from '@/utils/mappers/movementMappers'
 
 interface PersonalExpensesAddNewFormProps {
-    onTriggerExpense: (expT: ExpenseType) => void
-    onTriggerRecurrence: (freq: RecurrenceTypeCodes) => void
     onTriggerImage: (img: File) => void
     prevImg?: File
 }
 
-const PersonalExpensesAddNewForm = ({
-    onTriggerExpense,
-    onTriggerRecurrence,
-    onTriggerImage,
-    prevImg
-}: PersonalExpensesAddNewFormProps) => {
+const PersonalExpensesAddNewForm = ({ onTriggerImage, prevImg }: PersonalExpensesAddNewFormProps) => {
     const methods = useFormContext()
     const watchFile = methods.watch(ExpensesInterfaceFields.Image)
     const [img, setImg] = useState<string | ArrayBuffer | null>(null)
@@ -61,21 +53,17 @@ const PersonalExpensesAddNewForm = ({
                         name={ExpensesInterfaceFields.IsExpense}
                         label='Tipo de movimiento'
                         values={[ExpenseType.Gasto, ExpenseType.Ingreso]}
-                        onValueChange={(e: ExpenseType) => onTriggerExpense(e)}
-                        defaultValue={methods.getValues(ExpensesInterfaceFields.IsExpense).toString()}
                     />
                     <SelectField
                         control={methods.control}
                         name={ExpensesInterfaceFields.Recurrence}
                         label='Frecuencia'
-                        onValueChange={(e: string) => onTriggerRecurrence(parseInt(e))}
-                        defaultValue={getExpenseRecurrence(RecurrenceTypeCodes.Singular)}
                         values={[
-                            getExpenseRecurrence(RecurrenceTypeCodes.Quarter),
-                            getExpenseRecurrence(RecurrenceTypeCodes.Monthly),
-                            getExpenseRecurrence(RecurrenceTypeCodes.Weekly),
-                            getExpenseRecurrence(RecurrenceTypeCodes.Diary),
-                            getExpenseRecurrence(RecurrenceTypeCodes.Singular)
+                            RecurrenceType.Quarter,
+                            RecurrenceType.Monthly,
+                            RecurrenceType.Weekly,
+                            RecurrenceType.Diary,
+                            RecurrenceType.Singular
                         ]}
                     />
                 </div>

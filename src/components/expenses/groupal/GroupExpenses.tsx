@@ -64,7 +64,6 @@ const GroupExpenses = () => {
         }
     }
 
-
     return (
         <div className='grid grid-cols-4 gap-6 justify-center items-start w-full'>
             <div className='col-span-1 bg-white rounded p-4'>
@@ -84,7 +83,7 @@ const GroupExpenses = () => {
             </div>
             <div className='col-span-2'>
                 {selectedGroup && !currentDeleted ? (
-                    <GroupMovements group={selectedGroup} updateGroups={onSaveEdit}/>
+                    <GroupMovements group={selectedGroup} updateGroups={onSaveEdit} />
                 ) : (
                     <div className='w-full'>
                         <Alert variant='default' className='bg-white rounded-xl space-y-2 p-6'>

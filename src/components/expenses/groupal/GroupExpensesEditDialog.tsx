@@ -1,19 +1,19 @@
-import { EntityWithIdAndDescription, EntityWithIdFields } from "@/types/baseEntities";
-import { GroupExpensesInterface, GroupExpensesInterfaceFields } from "@/types/groupalExpenses";
-import { useEffect, useState } from "react";
+import { EntityWithIdAndDescription, EntityWithIdFields } from '@/types/baseEntities'
+import { GroupExpensesInterface, GroupExpensesInterfaceFields } from '@/types/groupalExpenses'
+import { useEffect, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Edit, Save } from 'lucide-react'
 import { Dialog, DialogContent, DialogClose, DialogTitle, DialogTrigger, DialogFooter } from '@/components/ui/dialog'
-import { FormProvider, useForm } from "react-hook-form";
-import GroupExpensesAddNewForm from "./GroupExpensesAddNewForm";
+import { FormProvider, useForm } from 'react-hook-form'
+import GroupExpensesAddNewForm from './GroupExpensesAddNewForm'
 
 interface GroupExpensesEditDialogProps {
-    expense: GroupExpensesInterface,
-    friends: EntityWithIdAndDescription[],
+    expense: GroupExpensesInterface
+    friends: EntityWithIdAndDescription[]
     onSaveEdit: (exp: GroupExpensesInterface) => void
 }
 
-const GroupExpensesEditDialog = ({expense, friends, onSaveEdit} : GroupExpensesEditDialogProps) => {
+const GroupExpensesEditDialog = ({ expense, friends, onSaveEdit }: GroupExpensesEditDialogProps) => {
     const [openEdit, setOpenEdit] = useState<boolean>(false)
     const [debtors, setDebtors] = useState<EntityWithIdAndDescription[]>(expense[GroupExpensesInterfaceFields.Debtors])
 
@@ -31,7 +31,7 @@ const GroupExpensesEditDialog = ({expense, friends, onSaveEdit} : GroupExpensesE
         [GroupExpensesInterfaceFields.Description]: expense[GroupExpensesInterfaceFields.Description],
         [GroupExpensesInterfaceFields.Title]: expense[GroupExpensesInterfaceFields.Title],
         [GroupExpensesInterfaceFields.Debtors]: expense[GroupExpensesInterfaceFields.Debtors],
-        [GroupExpensesInterfaceFields.Payers]: expense[GroupExpensesInterfaceFields.Payers],
+        [GroupExpensesInterfaceFields.Payer]: expense[GroupExpensesInterfaceFields.Payer],
         [GroupExpensesInterfaceFields.Date]: expense[GroupExpensesInterfaceFields.Date]
     }
 
@@ -58,7 +58,6 @@ const GroupExpensesEditDialog = ({expense, friends, onSaveEdit} : GroupExpensesE
 
     const onEditExp = () => setOpenEdit(true)
 
-
     return (
         <div>
             <Dialog>
@@ -72,7 +71,7 @@ const GroupExpensesEditDialog = ({expense, friends, onSaveEdit} : GroupExpensesE
                         <DialogTitle className='text-black mb-2'>Editar Movimiento</DialogTitle>
                         <FormProvider {...methods}>
                             <GroupExpensesAddNewForm
-                                friends={friends}
+                                groupMembers={friends}
                                 selectedDebtors={debtors}
                                 onSelectDebtor={onSelectDebtor}
                                 onUnselectDebtor={onUnselectDebtor}
@@ -94,6 +93,5 @@ const GroupExpensesEditDialog = ({expense, friends, onSaveEdit} : GroupExpensesE
         </div>
     )
 }
-
 
 export default GroupExpensesEditDialog

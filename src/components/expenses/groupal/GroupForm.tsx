@@ -1,11 +1,12 @@
 import { useFormContext } from 'react-hook-form'
-import { FormField, FormItem, FormLabel, FormControl, FormMessage, Form } from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
-import { Textarea } from '@/components/ui/textarea'
+import { Form } from '@/components/ui/form'
 import { GroupFields } from '@/types/groupalExpenses'
 import { useEffect, useState } from 'react'
 import { EntityWithIdAndDescription } from '@/types/baseEntities'
-import Multiselect from '@/components/custom/Multiselect'
+import { MultiselectField } from '@/components/forms/MultiselectField'
+import { FileField } from '@/components/forms/FileField'
+import { TextArea } from '@/components/forms/TextArea'
+import { TextField } from '@/components/forms/TextField'
 
 interface GroupFormProps {
     onTriggerImage: (img: File) => void
@@ -48,68 +49,20 @@ const GroupForm = ({
     return (
         <Form {...methods}>
             <div className='flex flex-col gap-4 justify-center'>
-                <FormField
-                    control={methods.control}
-                    name={GroupFields.Name}
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>Titulo</FormLabel>
-                            <FormControl>
-                                <Input {...field} />
-                            </FormControl>
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                />
-                <FormField
-                    control={methods.control}
-                    name={GroupFields.Description}
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>Descripcion</FormLabel>
-                            <FormControl>
-                                <Textarea {...field} />
-                            </FormControl>
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                />
-                <FormField
-                    control={methods.control}
-                    name={GroupFields.Image}
-                    render={({ field: { value, onChange, ...fieldProps } }) => (
-                        <FormItem>
-                            <FormLabel>Imagen</FormLabel>
-                            {img && (
-                                <div className='w-full'>
-                                    <img src={img.toString()} className='w-[25%] block ml-auto mr-auto' />
-                                </div>
-                            )}
-                            <FormControl>
-                                <Input
-                                    className='cursor-pointer'
-                                    {...fieldProps}
-                                    type='file'
-                                    accept='image/*, application/pdf'
-                                    onChange={event => onChange(event.target.files && event.target.files[0])}
-                                />
-                            </FormControl>
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                />
-                <p className='font-medium text-lg'>Invite a los integrantes del grupo</p>
-                <FormField
+                <TextField label='Titulo' name={GroupFields.Name} control={methods.control} />
+
+                <TextArea label='Descripcion' name={GroupFields.Description} control={methods.control} />
+
+                <FileField control={methods.control} name={GroupFields.Image} label='Imagen' img={img} />
+
+                <MultiselectField
                     control={methods.control}
                     name={GroupFields.Members}
-                    render={({ field: { value, onChange, ...fieldProps } }) => (
-                        <Multiselect
-                            options={friends}
-                            selectedOptions={selectedMembers}
-                            onSelect={onSelectMember}
-                            onUnselect={onUnselectMember}
-                        />
-                    )}
+                    label='Seleccione los integrantes del grupo'
+                    values={friends}
+                    selected={selectedMembers}
+                    onSelect={onSelectMember}
+                    onUnselect={onUnselectMember}
                 />
             </div>
         </Form>

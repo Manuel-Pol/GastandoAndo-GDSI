@@ -15,6 +15,7 @@ interface GroupExpensesAddDialogProps {
 const GroupExpensesAddDialog = ({ onAddGroup, friends }: GroupExpensesAddDialogProps) => {
     const [open, setOpen] = useState<boolean>(false)
     const [img, setImg] = useState<File>()
+
     const defaultMembers: EntityWithIdAndDescription[] = [
         { [EntityWithIdFields.Id]: 0, [EntityWithIdAndDescriptionFields.Description]: 'Vinicius' }
     ]

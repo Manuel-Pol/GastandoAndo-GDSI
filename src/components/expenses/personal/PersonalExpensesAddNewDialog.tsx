@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button'
-import { ExpenseType, ExpensesInterface, ExpensesInterfaceFields, RecurrenceTypeCodes } from '@/types/personalExpenses'
+import { ExpenseType, ExpensesInterface, ExpensesInterfaceFields, RecurrenceType } from '@/types/personalExpenses'
 import { Dialog, DialogContent, DialogClose, DialogTitle, DialogTrigger, DialogFooter } from '@/components/ui/dialog'
 import { CirclePlusIcon } from 'lucide-react'
 import { useState, useEffect } from 'react'
@@ -13,8 +13,6 @@ interface PersonalExpensesAddNewDialogProps {
 
 const PersonalExpensesAddNewDialog = ({ onAddExpense }: PersonalExpensesAddNewDialogProps) => {
     const [open, setOpen] = useState<boolean>(false)
-    const [isExpense, setIsExpense] = useState<ExpenseType>(ExpenseType.Gasto)
-    const [recurr, setRecurr] = useState<RecurrenceTypeCodes>(RecurrenceTypeCodes.Singular)
     const [img, setImg] = useState<File>()
 
     const defaultFormValues: ExpensesInterface = {
@@ -25,7 +23,7 @@ const PersonalExpensesAddNewDialog = ({ onAddExpense }: PersonalExpensesAddNewDi
         [ExpensesInterfaceFields.Title]: '',
         [ExpensesInterfaceFields.IsExpense]: ExpenseType.Gasto,
         [ExpensesInterfaceFields.Date]: new Date(),
-        [ExpensesInterfaceFields.Recurrence]: RecurrenceTypeCodes.Singular
+        [ExpensesInterfaceFields.Recurrence]: RecurrenceType.Singular
     }
 
     const methods = useForm<ExpensesInterface>({
@@ -35,25 +33,18 @@ const PersonalExpensesAddNewDialog = ({ onAddExpense }: PersonalExpensesAddNewDi
     useEffect(() => {
         if (open) {
             methods.reset(defaultFormValues)
-            setIsExpense(ExpenseType.Gasto)
-            setRecurr(RecurrenceTypeCodes.Singular)
         }
     }, [open])
 
     const onSubmitExpense = (data: ExpensesInterface) => {
         const submitData: ExpensesInterface = {
             ...data,
-            [ExpensesInterfaceFields.IsExpense]: isExpense,
-            [ExpensesInterfaceFields.Recurrence]: recurr,
             [ExpensesInterfaceFields.Image]: img
         }
 
         onAddExpense(submitData)
         setOpen(false)
     }
-    const onChangeExpense = (expT: ExpenseType) => setIsExpense(expT)
-
-    const onChangeRecurrence = (newRecurr: RecurrenceTypeCodes) => setRecurr(newRecurr)
 
     const onTriggerImage = (newImg: File) => setImg(newImg)
 
@@ -74,11 +65,7 @@ const PersonalExpensesAddNewDialog = ({ onAddExpense }: PersonalExpensesAddNewDi
                     <DialogContent className='min-w-[400px] bg-white rounded'>
                         <DialogTitle className='text-black'>Agregar Movimiento</DialogTitle>
                         <FormProvider {...methods}>
-                            <PersonalExpensesAddNewForm
-                                onTriggerExpense={onChangeExpense}
-                                onTriggerImage={onTriggerImage}
-                                onTriggerRecurrence={onChangeRecurrence}
-                            />
+                            <PersonalExpensesAddNewForm onTriggerImage={onTriggerImage} />
                         </FormProvider>
                         <DialogFooter>
                             <DialogClose asChild>

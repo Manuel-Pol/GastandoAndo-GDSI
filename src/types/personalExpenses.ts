@@ -7,7 +7,7 @@ export enum ExpensesInterfaceFields {
     Amount = 'monto',
     IsExpense = 'esGasto',
     Date = 'fecha',
-    Recurrence = 'codRecurrencia'
+    Recurrence = 'recurrencia'
 }
 
 export enum ExpenseType {
@@ -15,12 +15,12 @@ export enum ExpenseType {
     Ingreso = 'Ingreso'
 }
 
-export enum RecurrenceTypeCodes {
-    Quarter = 1,
-    Monthly = 2,
-    Weekly = 3,
-    Diary = 4,
-    Singular = 5
+export enum RecurrenceType {
+    Quarter = 'Trimestral',
+    Monthly = 'Mensual',
+    Weekly = 'Semanal',
+    Diary = 'Diario',
+    Singular = 'No recurrente'
 }
 
 export interface ExpensesInterface extends EntityWithId {
@@ -30,5 +30,5 @@ export interface ExpensesInterface extends EntityWithId {
     [ExpensesInterfaceFields.Amount]?: number
     [ExpensesInterfaceFields.IsExpense]: ExpenseType
     [ExpensesInterfaceFields.Date]: Date
-    [ExpensesInterfaceFields.Recurrence]: RecurrenceTypeCodes
+    [ExpensesInterfaceFields.Recurrence]: RecurrenceType
 }
