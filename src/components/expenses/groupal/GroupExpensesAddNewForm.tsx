@@ -62,7 +62,7 @@ const GroupExpensesAddNewForm = ({ friends, selectedDebtors, onSelectDebtor, onU
                         </FormItem>
                     )}
                 />
-                <p className='font-medium text-lg'>Entre quienes dividir el gasto</p>
+                <p className='font-medium text-lg'>Seleccione entre quienes dividir el gasto</p>
                 <FormField
                     control={methods.control}
                     name={GroupExpensesInterfaceFields.Debtors}

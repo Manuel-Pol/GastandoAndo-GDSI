@@ -58,11 +58,11 @@ const PersonalExpensesDataCard = ({ expenses, triggerDeleteExp, onSaveEdit }: Pe
                                         <div>
                                             {exp[ExpensesInterfaceFields.IsExpense] === ExpenseType.Gasto ? (
                                                 <p className='text-xl text-red-500'>{`- $ ${numberFormatter.toStringWithDecimals(
-                                                    parseFloat(exp[ExpensesInterfaceFields.Amount])
+                                                    exp[ExpensesInterfaceFields.Amount] ?? 0
                                                 )}`}</p>
                                             ) : (
                                                 <p className='text-xl text-green-600'>{`+ $ ${numberFormatter.toStringWithDecimals(
-                                                    parseFloat(exp[ExpensesInterfaceFields.Amount])
+                                                    exp[ExpensesInterfaceFields.Amount] ?? 0
                                                 )}`}</p>
                                             )}
                                         </div>

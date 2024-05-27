@@ -4,13 +4,12 @@ import {
     EntityWithIdAndDescriptionFields,
     EntityWithIdFields
 } from './baseEntities'
-import { ExpensesInterface } from './personalExpenses'
 
 export enum GroupFields {
     Name = 'nombre',
     Description = 'descripcion',
     Members = 'integrantes',
-    Movements = 'movimientos',
+    Expenses = 'gastos',
     Image = 'imagen'
 }
 
@@ -19,14 +18,15 @@ export enum GroupExpensesInterfaceFields {
     Description = 'descripcion',
     Amount = 'monto',
     Payers = 'pagadores',
-    Debtors = 'deudores'
+    Debtors = 'deudores',
+    Date = 'fecha'
 }
 
 export interface Group extends EntityWithId {
     [GroupFields.Name]: string
     [GroupFields.Description]: string
     [GroupFields.Members]: EntityWithIdAndDescription[]
-    [GroupFields.Movements]: ExpensesInterface[]
+    [GroupFields.Expenses]: GroupExpensesInterface[]
     [GroupFields.Image]?: File
 }
 
@@ -47,4 +47,5 @@ export interface GroupExpensesInterface extends EntityWithId {
     [GroupExpensesInterfaceFields.Amount]?: number
     [GroupExpensesInterfaceFields.Payers]: EntityWithIdAndDescription[]
     [GroupExpensesInterfaceFields.Debtors]: EntityWithIdAndDescription[]
+    [GroupExpensesInterfaceFields.Date]: Date
 }

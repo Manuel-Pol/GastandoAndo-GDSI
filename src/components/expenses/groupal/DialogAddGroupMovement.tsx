@@ -1,7 +1,6 @@
 import { Dialog, DialogContent, DialogClose, DialogTitle, DialogTrigger, DialogFooter } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
 import { CirclePlusIcon } from 'lucide-react'
-import { ExpensesInterface, ExpensesInterfaceFields } from '@/types/personalExpenses'
 import { useEffect, useState } from 'react'
 import { useForm, FormProvider } from 'react-hook-form'
 import { EntityWithIdAndDescription, EntityWithIdAndDescriptionFields, EntityWithIdFields } from '@/types/baseEntities'
@@ -9,7 +8,7 @@ import GroupExpensesAddNewForm from './GroupExpensesAddNewForm'
 import { GroupExpensesInterface, GroupExpensesInterfaceFields } from '@/types/groupalExpenses'
 
 interface DialogAddGroupMovementProps {
-    onAddMovement: (m: ExpensesInterface) => void
+    onAddMovement: (m: GroupExpensesInterface) => void
     friends: EntityWithIdAndDescription[]
 }
 
@@ -26,10 +25,11 @@ const DialogAddGroupMovement = ({ onAddMovement, friends }: DialogAddGroupMoveme
         [GroupExpensesInterfaceFields.Description]: '',
         [GroupExpensesInterfaceFields.Amount]: undefined,
         [GroupExpensesInterfaceFields.Payers]: [],
-        [GroupExpensesInterfaceFields.Debtors]: []
+        [GroupExpensesInterfaceFields.Debtors]: defaultDebtors,
+        [GroupExpensesInterfaceFields.Date]: new Date()
     }
 
-    const methods = useForm<ExpensesInterface>({
+    const methods = useForm<GroupExpensesInterface>({
         defaultValues: defaultFormValues
     })
 
@@ -39,9 +39,10 @@ const DialogAddGroupMovement = ({ onAddMovement, friends }: DialogAddGroupMoveme
         }
     }, [open])
 
-    const onSubmitMovement = (data: ExpensesInterface) => {
-        const submitData: ExpensesInterface = {
-            ...data
+    const onSubmitMovement = (data: GroupExpensesInterface) => {
+        const submitData: GroupExpensesInterface = {
+            ...data,
+            [GroupExpensesInterfaceFields.Debtors]: debtors
         }
 
         onAddMovement(submitData)
@@ -85,7 +86,7 @@ const DialogAddGroupMovement = ({ onAddMovement, friends }: DialogAddGroupMoveme
                                 <Button
                                     className='rounded text-black hover:bg-neutral-300'
                                     onClick={methods.handleSubmit(onSubmitMovement)}
-                                    disabled={!methods.watch(ExpensesInterfaceFields.Amount)}
+                                    disabled={!methods.watch(GroupExpensesInterfaceFields.Amount)}
                                 >
                                     <CirclePlusIcon className='mr-2 items-center' /> Aceptar
                                 </Button>

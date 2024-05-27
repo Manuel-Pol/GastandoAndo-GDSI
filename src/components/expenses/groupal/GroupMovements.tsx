@@ -1,9 +1,8 @@
-import { Group, GroupFields } from '@/types/groupalExpenses'
-import { ExpensesInterface } from '@/types/personalExpenses'
+import { Group, GroupExpensesInterface, GroupFields } from '@/types/groupalExpenses'
 import { useEffect, useState } from 'react'
 import DialogAddGroupMovement from './DialogAddGroupMovement'
-import PersonalExpensesDataCard from '../personal/PersonalExpensesDataCard'
 import { EntityWithIdFields } from '@/types/baseEntities'
+import GroupExpensesDataCard from './GroupExpensesDataCard'
 
 interface GroupMovementsProps {
     group: Group
@@ -11,33 +10,33 @@ interface GroupMovementsProps {
 }
 
 const GroupMovements = ({ group, updateGroups }: GroupMovementsProps) => {
-    const [movements, setMovements] = useState<ExpensesInterface[]>(group[GroupFields.Movements])
+    const [movements, setMovements] = useState<GroupExpensesInterface[]>(group[GroupFields.Expenses])
 
     useEffect(() => {
-        setMovements(group[GroupFields.Movements])
+        setMovements(group[GroupFields.Expenses])
     }, [group])
 
-    const handleUpdateInGroup = (updatedMovements: ExpensesInterface[]) => {
+    const handleUpdateInGroup = (updatedMovements: GroupExpensesInterface[]) => {
         setMovements(updatedMovements)
         const groupUpdated: Group = {
             ...group,
-            [GroupFields.Movements]: updatedMovements
+            [GroupFields.Expenses]: updatedMovements
         }
 
         updateGroups(groupUpdated)
     }
 
-    const handleAddMovement = (mov: ExpensesInterface) => {
+    const handleAddMovement = (mov: GroupExpensesInterface) => {
         const newMovements = [...movements, mov]
         handleUpdateInGroup(newMovements)
     }
 
-    const onDeleteMovement = (mov: ExpensesInterface) => {
+    const onDeleteMovement = (mov: GroupExpensesInterface) => {
         const newMovements = movements.filter(m => m[EntityWithIdFields.Id] !== mov[EntityWithIdFields.Id])
         handleUpdateInGroup(newMovements)
     }
 
-    const onSaveEdit = (mov: ExpensesInterface) => {
+    const onSaveEdit = (mov: GroupExpensesInterface) => {
         const newMovements = movements.map(m => {
             if (m[EntityWithIdFields.Id] === mov[EntityWithIdFields.Id]) return mov
 
@@ -53,10 +52,11 @@ const GroupMovements = ({ group, updateGroups }: GroupMovementsProps) => {
                 <p className='font-medium text-2xl'>{`Movimientos de ${group[GroupFields.Name]}`}</p>
                 <DialogAddGroupMovement onAddMovement={handleAddMovement} friends={group[GroupFields.Members]} />
             </div>
-            <PersonalExpensesDataCard
+            <GroupExpensesDataCard
                 expenses={movements}
                 triggerDeleteExp={onDeleteMovement}
                 onSaveEdit={onSaveEdit}
+                friends={group[GroupFields.Members]}
             />
         </div>
     )
