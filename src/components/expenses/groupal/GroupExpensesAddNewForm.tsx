@@ -7,6 +7,7 @@ import { TextField } from '@/components/forms/TextField'
 import { TextArea } from '@/components/forms/TextArea'
 import { SelectField } from '@/components/forms/SelectField'
 import { MultiselectField } from '@/components/forms/MultiselectField'
+import { useEffect, useState } from 'react'
 
 interface GroupFormProps {
     groupMembers: EntityWithIdAndDescription[]
@@ -22,6 +23,14 @@ const GroupExpensesAddNewForm = ({
     onUnselectDebtor
 }: GroupFormProps) => {
     const methods = useFormContext()
+
+    const watchPayer = methods.watch(GroupExpensesInterfaceFields.Payer)
+    const [members, setMembers] = useState<EntityWithIdAndDescription[]>(groupMembers)
+
+    useEffect(() => {
+        if (watchPayer)
+            setMembers(members.filter(m => m[EntityWithIdAndDescriptionFields.Description] !== watchPayer) )
+    }, [watchPayer])
 
     return (
         <Form {...methods}>
@@ -48,7 +57,7 @@ const GroupExpensesAddNewForm = ({
                     control={methods.control}
                     name={GroupExpensesInterfaceFields.Debtors}
                     label='Seleccione entre quienes dividir el gasto'
-                    values={groupMembers}
+                    values={members}
                     selected={selectedDebtors}
                     onSelect={onSelectDebtor}
                     onUnselect={onUnselectDebtor}

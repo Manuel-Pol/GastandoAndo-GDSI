@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button'
 import { CirclePlusIcon } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { useForm, FormProvider } from 'react-hook-form'
-import { EntityWithIdAndDescription, EntityWithIdAndDescriptionFields, EntityWithIdFields } from '@/types/baseEntities'
+import { EntityWithIdAndDescription, EntityWithIdFields } from '@/types/baseEntities'
 import GroupExpensesAddNewForm from './GroupExpensesAddNewForm'
 import { GroupExpensesInterface, GroupExpensesInterfaceFields } from '@/types/groupalExpenses'
 
@@ -14,9 +14,7 @@ interface DialogAddGroupMovementProps {
 
 const DialogAddGroupMovement = ({ onAddMovement, groupMembers }: DialogAddGroupMovementProps) => {
     const [open, setOpen] = useState<boolean>(false)
-    const defaultDebtors: EntityWithIdAndDescription[] = [
-        { [EntityWithIdFields.Id]: 0, [EntityWithIdAndDescriptionFields.Description]: '' }
-    ]
+    const defaultDebtors: EntityWithIdAndDescription[] = []
     const [debtors, setDebtors] = useState<EntityWithIdAndDescription[]>(defaultDebtors)
 
     const defaultFormValues: GroupExpensesInterface = {
@@ -24,7 +22,7 @@ const DialogAddGroupMovement = ({ onAddMovement, groupMembers }: DialogAddGroupM
         [GroupExpensesInterfaceFields.Title]: '',
         [GroupExpensesInterfaceFields.Description]: '',
         [GroupExpensesInterfaceFields.Amount]: undefined,
-        [GroupExpensesInterfaceFields.Payer]: '',
+        [GroupExpensesInterfaceFields.Payer]: "",
         [GroupExpensesInterfaceFields.Debtors]: defaultDebtors,
         [GroupExpensesInterfaceFields.Date]: new Date()
     }
