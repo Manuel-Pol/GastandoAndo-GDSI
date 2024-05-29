@@ -45,7 +45,7 @@ const AccordionItemGroupExpense = ({expense, onSaveEdit, friends, onDeleteExpens
                                             <p className='text-xl font-medium'>
                                                 $
                                                 {numberFormatter.toStringWithDecimals(
-                                                    expense[GroupExpensesInterfaceFields.Amount] ?? 0
+                                                    parseFloat(expense[GroupExpensesInterfaceFields.Amount] ?? 0)
                                                 )}
                                             </p>
                                             <div className='flex flex-row items-center'>
