@@ -1,18 +1,13 @@
-import { GroupExpensesInterface, GroupExpensesInterfaceFields } from "@/types/groupalExpenses";
+import { GroupExpensesInterface, GroupExpensesInterfaceFields } from '@/types/groupalExpenses'
 import GroupExpensesEditDialog from './GroupExpensesEditDialog'
 import { EntityWithIdAndDescription, EntityWithIdAndDescriptionFields, EntityWithIdFields } from '@/types/baseEntities'
 import { stringFormatter } from '@/utils/formatters/stringFormatter'
 import { Button } from '@/components/ui/button'
 import { Trash2 } from 'lucide-react'
 
-import {
-    Accordion,
-    AccordionContent,
-    AccordionItem,
-    AccordionTrigger,
-} from "@/components/ui/accordion"
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion'
 import { Card, CardContent } from '@/components/ui/card'
-import { numberFormatter } from "@/utils/formatters/numberFormatter";
+import { numberFormatter } from '@/utils/formatters/numberFormatter'
 
 interface AccordionItemGroupExpenseProps {
     expense: GroupExpensesInterface,
@@ -25,7 +20,7 @@ interface AccordionItemGroupExpenseProps {
 const AccordionItemGroupExpense = ({expense, onSaveEdit, friends, onDeleteExpense}: AccordionItemGroupExpenseProps) => {
     
     const calculateDebt = (exp: GroupExpensesInterface) => {
-        const totalDebt = exp[GroupExpensesInterfaceFields.Amount] / exp[GroupExpensesInterfaceFields.Debtors].length
+        const totalDebt = (exp[GroupExpensesInterfaceFields.Amount] ?? 0) / exp[GroupExpensesInterfaceFields.Debtors].length
         return numberFormatter.toStringWithDecimals(totalDebt)
     }
 
@@ -50,7 +45,7 @@ const AccordionItemGroupExpense = ({expense, onSaveEdit, friends, onDeleteExpens
                                             <p className='text-xl font-medium'>
                                                 $
                                                 {numberFormatter.toStringWithDecimals(
-                                                    parseFloat(expense[GroupExpensesInterfaceFields.Amount] ?? 0)
+                                                    expense[GroupExpensesInterfaceFields.Amount] ?? 0
                                                 )}
                                             </p>
                                             <div className='flex flex-row items-center'>

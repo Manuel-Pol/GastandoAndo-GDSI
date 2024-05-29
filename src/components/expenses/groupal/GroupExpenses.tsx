@@ -1,5 +1,5 @@
 import { EntityWithIdFields } from '@/types/baseEntities'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { Group, GroupFields, defaultFriends } from '@/types/groupalExpenses'
 import GroupExpensesAddDialog from './GroupExpensesAddDialog'
 import GroupDataCard from './GroupDataCard'
@@ -96,7 +96,7 @@ const GroupExpenses = () => {
                             <GroupAddMemberDialog />
                         </div>
                         <GroupMembersCard
-                            members={selectedGroup?.[GroupFields.Members]}
+                            group={selectedGroup}
                             onRemoveMember={onDeleteMember}
                         />
                     </div>
