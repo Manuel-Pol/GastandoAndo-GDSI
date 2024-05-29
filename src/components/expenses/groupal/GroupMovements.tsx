@@ -26,7 +26,11 @@ const GroupMovements = ({ group, updateGroups }: GroupMovementsProps) => {
     }
 
     const handleAddMovement = (mov: GroupExpensesInterface) => {
-        const newMovements = [...movements, mov]
+        const newMov = {
+            ...mov,
+            [EntityWithIdFields.Id]: movements.length + 1
+        }
+        const newMovements = [...movements, newMov]
         handleUpdateInGroup(newMovements)
     }
 
@@ -38,7 +42,6 @@ const GroupMovements = ({ group, updateGroups }: GroupMovementsProps) => {
     const onSaveEdit = (mov: GroupExpensesInterface) => {
         const newMovements = movements.map(m => {
             if (m[EntityWithIdFields.Id] === mov[EntityWithIdFields.Id]) return mov
-
             return m
         })
 
