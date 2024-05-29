@@ -30,7 +30,7 @@ const GroupDataCard = ({ groups, onSelect, selectedGroup, onSaveEdit, onDelete }
                         <div className='flex items-center space-x-4'>
                             {group[GroupFields.Image] ? (
                                 <img
-                                    src={URL.createObjectURL(group[GroupFields.Image])}
+                                    src={group[GroupFields.Image].toString()}
                                     className='w-12 h-12 rounded-full cursor-pointer'
                                 />
                             ) : (

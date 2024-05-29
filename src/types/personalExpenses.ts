@@ -26,7 +26,7 @@ export enum RecurrenceType {
 export interface ExpensesInterface extends EntityWithId {
     [ExpensesInterfaceFields.Title]: string
     [ExpensesInterfaceFields.Description]: string
-    [ExpensesInterfaceFields.Image]?: File
+    [ExpensesInterfaceFields.Image]?: string | ArrayBuffer | null
     [ExpensesInterfaceFields.Amount]?: number
     [ExpensesInterfaceFields.IsExpense]: ExpenseType
     [ExpensesInterfaceFields.Date]: Date

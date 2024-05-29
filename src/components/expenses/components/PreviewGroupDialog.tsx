@@ -16,13 +16,14 @@ const PreviewGroupDialog = ({ group }: PreviewGroupDialogProps) => {
 
     useEffect(() => {
         if (group[GroupFields.Image]) {
-            const reader = new FileReader()
+            setImg(group[GroupFields.Image])
+            // const reader = new FileReader()
 
-            reader.onloadend = () => {
-                setImg(reader.result)
-            }
+            // reader.onloadend = () => {
+            //     setImg(reader.result)
+            // }
 
-            reader.readAsDataURL(group[GroupFields.Image])
+            // reader.readAsDataURL(group[GroupFields.Image])
         }
     }, [group])
 

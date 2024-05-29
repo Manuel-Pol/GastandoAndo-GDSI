@@ -14,7 +14,7 @@ interface GroupEditDialogProps {
 
 const GroupEditDialog = ({ group, onSubmitEdit }: GroupEditDialogProps) => {
     const [openEdit, setOpenEdit] = useState<boolean>(false)
-    const [img, setImg] = useState<File | undefined>(group[GroupFields.Image])
+    const [img, setImg] = useState<string | ArrayBuffer | null | undefined>(group[GroupFields.Image])
     const [members, setMembers] = useState<EntityWithIdAndDescription[]>(group[GroupFields.Members])
 
     const methods = useForm<Group>()
@@ -40,7 +40,7 @@ const GroupEditDialog = ({ group, onSubmitEdit }: GroupEditDialogProps) => {
         setOpenEdit(false)
     }
 
-    const onTriggerImage = (newImg: File) => {
+    const onTriggerImage = (newImg: string | ArrayBuffer | null) => {
         setImg(newImg)
         methods.setValue(GroupFields.Image, newImg)
     }
@@ -65,12 +65,12 @@ const GroupEditDialog = ({ group, onSubmitEdit }: GroupEditDialogProps) => {
                     <DialogContent className='min-w-[400px] bg-white rounded'>
                         <DialogTitle className='text-black mb-2'>Editar Grupo</DialogTitle>
                         <FormProvider {...methods}>
-                            <GroupForm 
-                                onTriggerImage={onTriggerImage} 
-                                prevImg={img} 
+                            <GroupForm
+                                onTriggerImage={onTriggerImage}
+                                prevImg={img}
                                 friends={defaultFriends}
-                                onSelectMember={onSelectMember} 
-                                selectedMembers={members} 
+                                onSelectMember={onSelectMember}
+                                selectedMembers={members}
                                 onUnselectMember={onUnselectMember}
                             />
                         </FormProvider>

@@ -19,13 +19,14 @@ const PreviewMovementDialog = ({ movement }: PreviewMovementDialogProps) => {
 
     useEffect(() => {
         if (movement[ExpensesInterfaceFields.Image]) {
-            const reader = new FileReader()
+            setImg(movement[ExpensesInterfaceFields.Image])
+            // const reader = new FileReader()
 
-            reader.onloadend = () => {
-                setImg(reader.result)
-            }
+            // reader.onloadend = () => {
+            //     setImg(reader.result)
+            // }
 
-            reader.readAsDataURL(movement[ExpensesInterfaceFields.Image])
+            // reader.readAsDataURL(movement[ExpensesInterfaceFields.Image])
         }
     }, [movement])
 
@@ -33,7 +34,12 @@ const PreviewMovementDialog = ({ movement }: PreviewMovementDialogProps) => {
         <div>
             <Dialog>
                 <DialogTrigger asChild>
-                    <Button variant='outline' size='icon' className='rounded-full border-none p-3 hover:bg-[#ccd3d8]' onClick={onViewExp}>
+                    <Button
+                        variant='outline'
+                        size='icon'
+                        className='rounded-full border-none p-3 hover:bg-[#ccd3d8]'
+                        onClick={onViewExp}
+                    >
                         <ExternalLink className='h-4 w-4' color='#438924' />
                     </Button>
                 </DialogTrigger>

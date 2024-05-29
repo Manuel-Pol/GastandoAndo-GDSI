@@ -15,7 +15,7 @@ interface GroupExpensesAddDialogProps {
 
 const GroupExpensesAddDialog = ({ onAddGroup, friends }: GroupExpensesAddDialogProps) => {
     const [open, setOpen] = useState<boolean>(false)
-    const [img, setImg] = useState<File>()
+    const [img, setImg] = useState<string | ArrayBuffer | null>()
     const { username } = useContext(UserContext) // Obtener el nombre de usuario del contexto
 
     const defaultMembers: EntityWithIdAndDescription[] = [
@@ -53,7 +53,7 @@ const GroupExpensesAddDialog = ({ onAddGroup, friends }: GroupExpensesAddDialogP
         setMembers(defaultMembers)
     }, [open])
 
-    const onTriggerImage = (newImg: File) => setImg(newImg)
+    const onTriggerImage = (newImg: string | ArrayBuffer | null) => setImg(newImg)
 
     const onSelectMember = (member: EntityWithIdAndDescription) => {
         setMembers([...members, member])

@@ -3,31 +3,48 @@ import { ExpensesInterface } from '@/types/personalExpenses'
 import PersonalExpensesAddNewDialog from './PersonalExpensesAddNewDialog'
 import PersonalExpensesDataCard from './PersonalExpensesDataCard'
 import { EntityWithIdFields } from '@/types/baseEntities'
+import { dataPersonalExpenses, removeData, saveNewData, updateData } from '@/api/Data'
 
 const PersonalExpenses = () => {
-    const [expenses, setExpenses] = useState<ExpensesInterface[]>([])
+    const [expenses, setExpenses] = useState<ExpensesInterface[]>(Object.values(dataPersonalExpenses.data))
 
     const onAddExpense = (exp: ExpensesInterface) => {
         const expAdd: ExpensesInterface = {
             ...exp,
-            [EntityWithIdFields.Id]: expenses.length + 1
+            [EntityWithIdFields.Id]: dataPersonalExpenses.id
         }
-        setExpenses([...expenses, expAdd])
+        // setExpenses([...expenses, expAdd])
+        saveNewData(dataPersonalExpenses, expAdd[EntityWithIdFields.Id], expAdd)
+
+        const newExpenses = Object.values(dataPersonalExpenses.data)
+        setExpenses(newExpenses)
     }
 
     const onDeleteExpense = (exp: ExpensesInterface) => {
-        const newExpenses = expenses.filter(e => e[EntityWithIdFields.Id] !== exp[EntityWithIdFields.Id])
-        setExpenses(newExpenses)
+        if (exp[EntityWithIdFields.Id] in dataPersonalExpenses.data) {
+            removeData(dataPersonalExpenses, exp[EntityWithIdFields.Id])
+
+            const newExpenses = Object.values(dataPersonalExpenses.data)
+            setExpenses(newExpenses)
+        }
+        // const newExpenses = expenses.filter(e => e[EntityWithIdFields.Id] !== exp[EntityWithIdFields.Id])
+        // setExpenses(newExpenses)
     }
 
     const onSaveEdit = (exp: ExpensesInterface) => {
-        const newExpenses = expenses.map(e => {
-            if (e[EntityWithIdFields.Id] === exp[EntityWithIdFields.Id]) return exp
+        if (exp[EntityWithIdFields.Id] in dataPersonalExpenses.data) {
+            updateData(dataPersonalExpenses, exp[EntityWithIdFields.Id], exp)
 
-            return e
-        })
+            const newExpenses = Object.values(dataPersonalExpenses.data)
+            setExpenses(newExpenses)
+        }
+        // const newExpenses = expenses.map(e => {
+        //     if (e[EntityWithIdFields.Id] === exp[EntityWithIdFields.Id]) return exp
 
-        setExpenses(newExpenses)
+        //     return e
+        // })
+
+        // setExpenses(newExpenses)
     }
 
     return (

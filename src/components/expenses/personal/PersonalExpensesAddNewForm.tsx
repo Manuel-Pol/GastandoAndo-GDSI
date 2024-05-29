@@ -9,8 +9,8 @@ import { FileField } from '@/components/forms/FileField'
 import { SelectField } from '@/components/forms/SelectField'
 
 interface PersonalExpensesAddNewFormProps {
-    onTriggerImage: (img: File) => void
-    prevImg?: File
+    onTriggerImage: (img: string | ArrayBuffer | null) => void
+    prevImg?: string | ArrayBuffer | null
 }
 
 const PersonalExpensesAddNewForm = ({ onTriggerImage, prevImg }: PersonalExpensesAddNewFormProps) => {
@@ -19,19 +19,30 @@ const PersonalExpensesAddNewForm = ({ onTriggerImage, prevImg }: PersonalExpense
     const [img, setImg] = useState<string | ArrayBuffer | null>(null)
 
     useEffect(() => {
-        if (watchFile) onTriggerImage(watchFile)
+        if (watchFile && typeof watchFile !== 'string') {
+            const reader = new FileReader()
+
+            reader.onloadend = () => {
+                onTriggerImage(reader.result)
+            }
+
+            reader.readAsDataURL(watchFile)
+        }
+        // if (watchFile) onTriggerImage(watchFile)
     }, [watchFile])
 
     useEffect(() => {
         if (prevImg) {
             methods.setValue(ExpensesInterfaceFields.Image, prevImg)
-            const reader = new FileReader()
+            setImg(prevImg)
+            // methods.setValue(ExpensesInterfaceFields.Image, prevImg)
+            // const reader = new FileReader()
 
-            reader.onloadend = () => {
-                setImg(reader.result)
-            }
+            // reader.onloadend = () => {
+            //     setImg(reader.result)
+            // }
 
-            reader.readAsDataURL(prevImg)
+            // reader.readAsDataURL(prevImg)
         }
     }, [prevImg])
 

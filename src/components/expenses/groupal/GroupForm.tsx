@@ -9,8 +9,8 @@ import { TextArea } from '@/components/forms/TextArea'
 import { TextField } from '@/components/forms/TextField'
 
 interface GroupFormProps {
-    onTriggerImage: (img: File) => void
-    prevImg?: File
+    onTriggerImage: (img: string | ArrayBuffer | null) => void
+    prevImg?: string | ArrayBuffer | null
     friends: EntityWithIdAndDescription[]
     selectedMembers: EntityWithIdAndDescription[]
     onSelectMember: (member: EntityWithIdAndDescription) => void
@@ -30,32 +30,42 @@ const GroupForm = ({
     const [img, setImg] = useState<string | ArrayBuffer | null>(null)
 
     useEffect(() => {
-        if (watchFile) onTriggerImage(watchFile)
+        // if (watchFile) onTriggerImage(watchFile)
+        if (watchFile && typeof watchFile !== 'string') {
+            const reader = new FileReader()
+
+            reader.onloadend = () => {
+                onTriggerImage(reader.result)
+            }
+
+            reader.readAsDataURL(watchFile)
+        }
     }, [watchFile])
 
     useEffect(() => {
         if (prevImg) {
             methods.setValue(GroupFields.Image, prevImg)
-            const reader = new FileReader()
+            setImg(prevImg)
+            // const reader = new FileReader()
 
-            reader.onloadend = () => {
-                setImg(reader.result)
-            }
+            // reader.onloadend = () => {
+            //     setImg(reader.result)
+            // }
 
-            reader.readAsDataURL(prevImg)
+            // reader.readAsDataURL(prevImg)
         }
     }, [prevImg])
 
     return (
         <Form {...methods}>
             <div className='flex flex-col gap-4 justify-center'>
-                <TextField 
-                    label='Titulo' 
-                    name={GroupFields.Name} 
-                    control={methods.control} 
-                    rules={{ 
-                        required: 'El título es obligatorio', 
-                        maxLength: { value: 20, message: 'El título no puede tener más de 20 caracteres' } 
+                <TextField
+                    label='Titulo'
+                    name={GroupFields.Name}
+                    control={methods.control}
+                    rules={{
+                        required: 'El título es obligatorio',
+                        maxLength: { value: 20, message: 'El título no puede tener más de 20 caracteres' }
                     }}
                     maxLength={20} // Pasa la longitud máxima aquí
                 />

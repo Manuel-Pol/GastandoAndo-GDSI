@@ -50,7 +50,10 @@ const PersonalExpensesDataCard = ({ expenses, triggerDeleteExp, onSaveEdit }: Pe
                                                 </Badge>
                                             </div>
                                             <h6 className='font-semibold text-gray-400'>
-                                                {stringFormatter.cutIfHaveMoreThan(exp[ExpensesInterfaceFields.Description], 44)}
+                                                {stringFormatter.cutIfHaveMoreThan(
+                                                    exp[ExpensesInterfaceFields.Description],
+                                                    44
+                                                )}
                                             </h6>
                                         </div>
                                     </div>

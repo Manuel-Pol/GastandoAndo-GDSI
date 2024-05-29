@@ -8,18 +8,24 @@ import GroupMovements from './GroupMovements'
 import { AlertCircle } from 'lucide-react'
 import GroupMembersCard from './GroupMembersCard'
 import { GroupAddMemberDialog } from './GroupAddMemberDialog'
+import { dataGroups, removeData, saveNewData, updateData } from '@/api/Data'
 
 const GroupExpenses = () => {
-    const [currentGroups, setCurrentGroups] = useState<Group[]>([])
+    const [currentGroups, setCurrentGroups] = useState<Group[]>(Object.values(dataGroups.data))
     const [selectedGroup, setSelectedGroup] = useState<Group | undefined>(undefined)
 
     const handleAddGroup = (group: Group) => {
         const groupAdd = {
             ...group,
-            [EntityWithIdFields.Id]: currentGroups.length + 1
+            [EntityWithIdFields.Id]: dataGroups.id
         }
-        setCurrentGroups([...currentGroups, groupAdd])
+
+        saveNewData(dataGroups, groupAdd[EntityWithIdFields.Id], groupAdd)
+
+        setCurrentGroups(Object.values(dataGroups.data))
         setSelectedGroup(groupAdd)
+        // setCurrentGroups([...currentGroups, groupAdd])
+        // setSelectedGroup(groupAdd)
     }
 
     const onClickGroup = (g: Group) => setSelectedGroup(g)
@@ -28,18 +34,29 @@ const GroupExpenses = () => {
         if (selectedGroup && selectedGroup[EntityWithIdFields.Id] === id) {
             setSelectedGroup(undefined)
         }
-        const newGroups = currentGroups.filter(g => g[EntityWithIdFields.Id] !== id)
-        setCurrentGroups(newGroups)
+        if (id in dataGroups.data) {
+            removeData(dataGroups, id)
+            const newGroups = Object.values(dataGroups.data)
+            setCurrentGroups(newGroups)
+        }
+        // const newGroups = currentGroups.filter(g => g[EntityWithIdFields.Id] !== id)
+        // setCurrentGroups(newGroups)
     }
 
     const onSaveEdit = (group: Group) => {
-        const newGroups = currentGroups.map(g => {
-            if (g[EntityWithIdFields.Id] === group[EntityWithIdFields.Id]) return group
+        // const newGroups = currentGroups.map(g => {
+        //     if (g[EntityWithIdFields.Id] === group[EntityWithIdFields.Id]) return group
 
-            return g
-        })
+        //     return g
+        // })
 
-        setCurrentGroups(newGroups)
+        // setCurrentGroups(newGroups)
+        if (group[EntityWithIdFields.Id] in dataGroups.data) {
+            updateData(dataGroups, group[EntityWithIdFields.Id], group)
+
+            const newGroups = Object.values(dataGroups.data)
+            setCurrentGroups(newGroups)
+        }
         onClickGroup(group)
     }
 
@@ -95,10 +112,7 @@ const GroupExpenses = () => {
                             <p>Integrantes</p>
                             <GroupAddMemberDialog />
                         </div>
-                        <GroupMembersCard
-                            group={selectedGroup}
-                            onRemoveMember={onDeleteMember}
-                        />
+                        <GroupMembersCard group={selectedGroup} onRemoveMember={onDeleteMember} />
                     </div>
                 </div>
             )}

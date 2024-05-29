@@ -27,7 +27,7 @@ export interface Group extends EntityWithId {
     [GroupFields.Description]: string
     [GroupFields.Members]: EntityWithIdAndDescription[]
     [GroupFields.Expenses]: GroupExpensesInterface[]
-    [GroupFields.Image]?: File
+    [GroupFields.Image]?: string | ArrayBuffer | null
 }
 
 export const defaultFriends: EntityWithIdAndDescription[] = [

@@ -14,7 +14,7 @@ interface PersonalExpensesEditDialogProps {
 
 const PersonalExpensesEditDialog = ({ expense, onSubmitEdit }: PersonalExpensesEditDialogProps) => {
     const [openEdit, setOpenEdit] = useState<boolean>(false)
-    const [img, setImg] = useState<File | undefined>(expense[ExpensesInterfaceFields.Image])
+    const [img, setImg] = useState<string | ArrayBuffer | null | undefined>(expense[ExpensesInterfaceFields.Image])
 
     const onEditExp = () => setOpenEdit(true)
 
@@ -50,13 +50,18 @@ const PersonalExpensesEditDialog = ({ expense, onSubmitEdit }: PersonalExpensesE
         }
     }, [openEdit])
 
-    const onChangeImage = (img: File) => setImg(img)
+    const onChangeImage = (img: string | ArrayBuffer | null) => setImg(img)
 
     return (
         <div>
             <Dialog>
                 <DialogTrigger asChild>
-                    <Button variant='outline' size='icon' className='rounded-full border-none p-3 hover:bg-[#ccd3d8]' onClick={onEditExp}>
+                    <Button
+                        variant='outline'
+                        size='icon'
+                        className='rounded-full border-none p-3 hover:bg-[#ccd3d8]'
+                        onClick={onEditExp}
+                    >
                         <Edit className='h-4 w-4' color='#3B82F6' />
                     </Button>
                 </DialogTrigger>

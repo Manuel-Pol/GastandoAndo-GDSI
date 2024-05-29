@@ -13,7 +13,7 @@ interface PersonalExpensesAddNewDialogProps {
 
 const PersonalExpensesAddNewDialog = ({ onAddExpense }: PersonalExpensesAddNewDialogProps) => {
     const [open, setOpen] = useState<boolean>(false)
-    const [img, setImg] = useState<File>()
+    const [img, setImg] = useState<string | ArrayBuffer | null>()
 
     const defaultFormValues: ExpensesInterface = {
         [EntityWithIdFields.Id]: 0,
@@ -46,7 +46,7 @@ const PersonalExpensesAddNewDialog = ({ onAddExpense }: PersonalExpensesAddNewDi
         setOpen(false)
     }
 
-    const onTriggerImage = (newImg: File) => setImg(newImg)
+    const onTriggerImage = (newImg: string | ArrayBuffer | null) => setImg(newImg)
 
     return (
         <div>
