@@ -33,11 +33,11 @@ const GroupMembersCard = ({ group, onRemoveMember }: GroupalMembersCardProps) =>
         <div className='w-full'>
             {group?.[GroupFields.Members].map((member, idx) => (
                 <div
-                    className='w-full grid grid-cols-12 rounded px-4 py-2 items-center'
+                    className='w-full grid grid-cols-12 rounded px-4 py-2 items-center gap-2'
                     key={`member_${idx}`}
                 >
                     <p className='font-medium col-span-6 text-lg'>
-                        {member[EntityWithIdAndDescriptionFields.Description]}
+                        {stringFormatter.cutIfHaveMoreThan(member[EntityWithIdAndDescriptionFields.Description], 15)}
                     </p>
                     <div className='col-span-6 flex flex-row justify-between items-center'>
                         <p
