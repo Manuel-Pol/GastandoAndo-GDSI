@@ -8,7 +8,8 @@ import GroupMovements from './GroupMovements'
 import { AlertCircle } from 'lucide-react'
 import GroupMembersCard from './GroupMembersCard'
 import { GroupAddMemberDialog } from './GroupAddMemberDialog'
-import { dataGroups, removeData, saveNewData, updateData } from '@/api/Data'
+import { removeData, saveNewData, updateData } from '@/api/Data'
+import { dataGroups } from '@/api/GroupsData'
 
 const GroupExpenses = () => {
     const [currentGroups, setCurrentGroups] = useState<Group[]>(Object.values(dataGroups.data))
@@ -24,8 +25,6 @@ const GroupExpenses = () => {
 
         setCurrentGroups(Object.values(dataGroups.data))
         setSelectedGroup(groupAdd)
-        // setCurrentGroups([...currentGroups, groupAdd])
-        // setSelectedGroup(groupAdd)
     }
 
     const onClickGroup = (g: Group) => setSelectedGroup(g)
@@ -39,18 +38,9 @@ const GroupExpenses = () => {
             const newGroups = Object.values(dataGroups.data)
             setCurrentGroups(newGroups)
         }
-        // const newGroups = currentGroups.filter(g => g[EntityWithIdFields.Id] !== id)
-        // setCurrentGroups(newGroups)
     }
 
     const onSaveEdit = (group: Group) => {
-        // const newGroups = currentGroups.map(g => {
-        //     if (g[EntityWithIdFields.Id] === group[EntityWithIdFields.Id]) return group
-
-        //     return g
-        // })
-
-        // setCurrentGroups(newGroups)
         if (group[EntityWithIdFields.Id] in dataGroups.data) {
             updateData(dataGroups, group[EntityWithIdFields.Id], group)
 

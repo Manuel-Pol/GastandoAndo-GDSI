@@ -1,14 +1,6 @@
-import { Group } from '@/types/groupalExpenses'
-import { ExpensesInterface } from '@/types/personalExpenses'
-import { User } from '@/types/users'
+export type Data<T> = { [key: number]: T }
 
-type Data<T> = { [key: number]: T }
-
-type DB<T> = { storageKey: string; id: number; len: number; data: Data<T> }
-
-const PERSONAL_EXP_KEY = 'PersonalExp'
-const GROUPS_KEY = 'Groups'
-const USER_KEY = 'Users'
+export type DB<T> = { storageKey: string; id: number; len: number; data: Data<T>; names?: { [key: string]: number } }
 
 function dateReviver(key: string, value: string) {
     if (key === 'fecha') {
@@ -29,7 +21,10 @@ export const storeData = <T>(db: DB<T>) => {
     window.localStorage.setItem(db.storageKey, JSON.stringify(db))
 }
 
-export const saveNewData = <T>(db: DB<T>, id: number, newData: T) => {
+export const saveNewData = <T>(db: DB<T>, id: number, newData: T, name?: string) => {
+    if (name && db.names) {
+        db.names[name] = id
+    }
     db.data[id] = newData
     db.id += 1
     db.len += 1
@@ -53,36 +48,3 @@ export const removeData = <T>(db: DB<T>, id: number) => {
         storeData(db)
     }
 }
-
-const loadedPersonalExpenses = loadData(PERSONAL_EXP_KEY)
-const loadedGroups = loadData(GROUPS_KEY)
-const loadedUsers = loadData(USER_KEY)
-
-export var dataPersonalExpenses: DB<ExpensesInterface> = {
-    storageKey: PERSONAL_EXP_KEY,
-    id: loadedPersonalExpenses.id,
-    len: loadedPersonalExpenses.len,
-    data: loadedPersonalExpenses.data
-}
-
-export var dataGroups: DB<Group> = {
-    storageKey: GROUPS_KEY,
-    id: loadedGroups.id,
-    len: loadedGroups.len,
-    data: loadedGroups.data
-}
-
-export var dataUsers: DB<User> =
-    loadedUsers.id !== 0
-        ? {
-              storageKey: USER_KEY,
-              id: loadedUsers.id,
-              len: loadedUsers.len,
-              data: loadedUsers.data
-          }
-        : {
-              storageKey: USER_KEY,
-              id: 5,
-              len: 5,
-              data: loadedUsers.data
-          }

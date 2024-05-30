@@ -20,13 +20,6 @@ const PreviewMovementDialog = ({ movement }: PreviewMovementDialogProps) => {
     useEffect(() => {
         if (movement[ExpensesInterfaceFields.Image]) {
             setImg(movement[ExpensesInterfaceFields.Image])
-            // const reader = new FileReader()
-
-            // reader.onloadend = () => {
-            //     setImg(reader.result)
-            // }
-
-            // reader.readAsDataURL(movement[ExpensesInterfaceFields.Image])
         }
     }, [movement])
 

@@ -31,14 +31,10 @@ export interface Group extends EntityWithId {
 }
 
 export const defaultFriends: EntityWithIdAndDescription[] = [
-    { [EntityWithIdFields.Id]: 1, [EntityWithIdAndDescriptionFields.Description]: 'Kross' },
-    { [EntityWithIdFields.Id]: 2, [EntityWithIdAndDescriptionFields.Description]: 'Valverde' },
-    { [EntityWithIdFields.Id]: 3, [EntityWithIdAndDescriptionFields.Description]: 'Militao' },
-    { [EntityWithIdFields.Id]: 4, [EntityWithIdAndDescriptionFields.Description]: 'Rodrygo' },
-    { [EntityWithIdFields.Id]: 5, [EntityWithIdAndDescriptionFields.Description]: 'Courtois' },
-    { [EntityWithIdFields.Id]: 6, [EntityWithIdAndDescriptionFields.Description]: 'Carvajal' },
-    { [EntityWithIdFields.Id]: 7, [EntityWithIdAndDescriptionFields.Description]: 'Modric' },
-    { [EntityWithIdFields.Id]: 8, [EntityWithIdAndDescriptionFields.Description]: 'Mbappe' }
+    { [EntityWithIdFields.Id]: 1, [EntityWithIdAndDescriptionFields.Description]: 'Renzo Redeuda' },
+    { [EntityWithIdFields.Id]: 2, [EntityWithIdAndDescriptionFields.Description]: 'Debora Saldos' },
+    { [EntityWithIdFields.Id]: 3, [EntityWithIdAndDescriptionFields.Description]: 'Jazmin Grezhos' },
+    { [EntityWithIdFields.Id]: 4, [EntityWithIdAndDescriptionFields.Description]: 'Camila Presta' }
 ]
 
 export interface GroupExpensesInterface extends EntityWithId {

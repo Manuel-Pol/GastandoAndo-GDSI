@@ -3,7 +3,8 @@ import { ExpensesInterface } from '@/types/personalExpenses'
 import PersonalExpensesAddNewDialog from './PersonalExpensesAddNewDialog'
 import PersonalExpensesDataCard from './PersonalExpensesDataCard'
 import { EntityWithIdFields } from '@/types/baseEntities'
-import { dataPersonalExpenses, removeData, saveNewData, updateData } from '@/api/Data'
+import { removeData, saveNewData, updateData } from '@/api/Data'
+import { dataPersonalExpenses } from '@/api/PersonalExpensesData'
 
 const PersonalExpenses = () => {
     const [expenses, setExpenses] = useState<ExpensesInterface[]>(Object.values(dataPersonalExpenses.data))
@@ -13,7 +14,6 @@ const PersonalExpenses = () => {
             ...exp,
             [EntityWithIdFields.Id]: dataPersonalExpenses.id
         }
-        // setExpenses([...expenses, expAdd])
         saveNewData(dataPersonalExpenses, expAdd[EntityWithIdFields.Id], expAdd)
 
         const newExpenses = Object.values(dataPersonalExpenses.data)
@@ -27,8 +27,6 @@ const PersonalExpenses = () => {
             const newExpenses = Object.values(dataPersonalExpenses.data)
             setExpenses(newExpenses)
         }
-        // const newExpenses = expenses.filter(e => e[EntityWithIdFields.Id] !== exp[EntityWithIdFields.Id])
-        // setExpenses(newExpenses)
     }
 
     const onSaveEdit = (exp: ExpensesInterface) => {
@@ -38,13 +36,6 @@ const PersonalExpenses = () => {
             const newExpenses = Object.values(dataPersonalExpenses.data)
             setExpenses(newExpenses)
         }
-        // const newExpenses = expenses.map(e => {
-        //     if (e[EntityWithIdFields.Id] === exp[EntityWithIdFields.Id]) return exp
-
-        //     return e
-        // })
-
-        // setExpenses(newExpenses)
     }
 
     return (

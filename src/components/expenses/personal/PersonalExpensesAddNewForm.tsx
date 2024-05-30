@@ -28,21 +28,12 @@ const PersonalExpensesAddNewForm = ({ onTriggerImage, prevImg }: PersonalExpense
 
             reader.readAsDataURL(watchFile)
         }
-        // if (watchFile) onTriggerImage(watchFile)
     }, [watchFile])
 
     useEffect(() => {
         if (prevImg) {
             methods.setValue(ExpensesInterfaceFields.Image, prevImg)
             setImg(prevImg)
-            // methods.setValue(ExpensesInterfaceFields.Image, prevImg)
-            // const reader = new FileReader()
-
-            // reader.onloadend = () => {
-            //     setImg(reader.result)
-            // }
-
-            // reader.readAsDataURL(prevImg)
         }
     }, [prevImg])
 

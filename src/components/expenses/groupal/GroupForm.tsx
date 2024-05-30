@@ -30,7 +30,6 @@ const GroupForm = ({
     const [img, setImg] = useState<string | ArrayBuffer | null>(null)
 
     useEffect(() => {
-        // if (watchFile) onTriggerImage(watchFile)
         if (watchFile && typeof watchFile !== 'string') {
             const reader = new FileReader()
 
@@ -46,13 +45,6 @@ const GroupForm = ({
         if (prevImg) {
             methods.setValue(GroupFields.Image, prevImg)
             setImg(prevImg)
-            // const reader = new FileReader()
-
-            // reader.onloadend = () => {
-            //     setImg(reader.result)
-            // }
-
-            // reader.readAsDataURL(prevImg)
         }
     }, [prevImg])
 
