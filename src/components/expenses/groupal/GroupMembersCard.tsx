@@ -15,7 +15,7 @@ const GroupMembersCard = ({ group, onRemoveMember }: GroupalMembersCardProps) =>
         const debts: { [key: number]: number } = {};
 
         group[GroupFields.Expenses].forEach((expense: GroupExpensesInterface) => {
-            const amountPerDebtor = (expense[GroupExpensesInterfaceFields.Amount] ?? 0) / expense[GroupExpensesInterfaceFields.Debtors].length;
+            const amountPerDebtor = (expense[GroupExpensesInterfaceFields.Amount] ?? 0) / (expense[GroupExpensesInterfaceFields.Debtors].length + 1);
 
             expense[GroupExpensesInterfaceFields.Debtors].forEach(debtor => {
                 if (debts[debtor[EntityWithIdFields.Id]]) {

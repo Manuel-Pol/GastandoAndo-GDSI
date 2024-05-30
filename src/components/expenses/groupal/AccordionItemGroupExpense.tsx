@@ -20,7 +20,7 @@ interface AccordionItemGroupExpenseProps {
 const AccordionItemGroupExpense = ({expense, onSaveEdit, friends, onDeleteExpense}: AccordionItemGroupExpenseProps) => {
     
     const calculateDebt = (exp: GroupExpensesInterface) => {
-        const totalDebt = (exp[GroupExpensesInterfaceFields.Amount] ?? 0) / exp[GroupExpensesInterfaceFields.Debtors].length
+        const totalDebt = (exp[GroupExpensesInterfaceFields.Amount] ?? 0) / (exp[GroupExpensesInterfaceFields.Debtors].length + 1)
         return numberFormatter.toStringWithDecimals(totalDebt)
     }
 
