@@ -54,7 +54,7 @@ export const TextField = <TForm extends FieldValues>(props: TextFieldProps<TForm
                     <div style={{ color: exceedsLimit ? 'red' : 'inherit' }}>
                         {maxLength && <p>{maxLength - charCount} caracteres restantes</p>}
                     </div>
-                    {error && <FormMessage>{error.message}</FormMessage>}
+                    <FormMessage className='text-red-600'>{error?.message}</FormMessage>
                 </FormItem>
             )}
             rules={rules}

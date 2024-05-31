@@ -12,28 +12,26 @@ import { UserContext } from '@/utils/contexts/userContext'
 
 const schema = z
     .object({
-        email: z.string().email(),
-        password: z.string().min(6)
+        email: z
+            .string({ message: 'Este campo es obligatorio.' })
+            .email({ message: 'El email no es válido.' })
+            .refine(email => isRegistered(email), {
+                message: `No hay un usuario registrado con este email.`
+            }),
+        password: z
+            .string({ message: 'Este campo es obligatorio.' })
+            .min(6, { message: 'La contraseña debe tener al menos 6 caracteres.' })
     })
     .superRefine((data, ctx) => {
-        if (isRegistered(data.email)) {
-            console.log('el email esta registrado!')
-            if (dataUsers.names) {
-                const inputUserId = dataUsers.names[data.email]
-                if (isTruePassword(dataUsers.data[inputUserId][UserFields.Password], data.password)) {
-                    console.log('la contrasenia es correcta!')
-                } else {
-                    ctx.addIssue({
-                        code: z.ZodIssueCode.custom,
-                        message: `La contrasenia es incorrecta`
-                    })
-                }
+        if (dataUsers.names) {
+            const inputUserId = dataUsers.names[data.email]
+            if (!isTruePassword(dataUsers.data[inputUserId][UserFields.Password], data.password)) {
+                ctx.addIssue({
+                    code: z.ZodIssueCode.custom,
+                    message: `La contraseña es incorrecta.`,
+                    path: ['password']
+                })
             }
-        } else {
-            ctx.addIssue({
-                code: z.ZodIssueCode.custom,
-                message: `El email no existe.`
-            })
         }
     })
 
@@ -52,9 +50,6 @@ const Login = () => {
         navigate('/home')
     }
 
-    // Chequea que este registrado y que su contrasenia sea la correcta
-    // En caso de que cumpla, devuelve true y ya setea el nuevo usuario logueado,
-    // caso contrario devuelve false y queda el usuario por default
     const onLogin = (data: Schema) => {
         if (dataUsers.names) {
             const inputUserId = dataUsers.names[data.email]

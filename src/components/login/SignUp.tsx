@@ -14,22 +14,28 @@ import { UserContext } from '@/utils/contexts/userContext'
 
 const schema = z
     .object({
-        name: z.string(),
-        email: z.string().email(),
-        password: z.string().min(6),
-        confirm: z.string().min(6)
+        name: z.string({ message: 'Este campo es obligatorio.' }),
+        email: z.string({ message: 'Este campo es obligatorio.' }).email(),
+        password: z
+            .string({ message: 'Este campo es obligatorio.' })
+            .min(6, { message: 'La contraseña debe tener al menos 6 caracteres.' }),
+        confirm: z
+            .string({ message: 'Este campo es obligatorio.' })
+            .min(6, { message: 'La contraseña debe tener al menos 6 caracteres.' })
     })
     .superRefine((data, ctx) => {
         if (data.password !== data.confirm) {
             ctx.addIssue({
                 code: z.ZodIssueCode.custom,
-                message: `Las contrasenias no coinciden.`
+                message: `Las contraseñas no coinciden.`,
+                path: ['confirm']
             })
         }
         if (isRegistered(data.email)) {
             ctx.addIssue({
                 code: z.ZodIssueCode.custom,
-                message: `Ya hay un usuario registrado con ese email.`
+                message: `Ya hay un usuario registrado con este email.`,
+                path: ['email']
             })
         }
     })
@@ -72,12 +78,12 @@ export const SignUp = () => {
                     <DialogTitle className='text-black'>Registrarse</DialogTitle>
                     <FormProvider {...form}>
                         <TextField name={'name'} control={form.control} label='Nombre' />
-                        <TextField name={'email'} control={form.control} label='email' />
-                        <TextField name={'password'} control={form.control} label='Contrasenia' type='password' />
+                        <TextField name={'email'} control={form.control} label='Email' />
+                        <TextField name={'password'} control={form.control} label='Contraseña' type='password' />
                         <TextField
                             name={'confirm'}
                             control={form.control}
-                            label='Confirmar contrasenia'
+                            label='Confirmar contraseña'
                             type='password'
                         />
                     </FormProvider>

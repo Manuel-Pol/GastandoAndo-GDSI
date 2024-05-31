@@ -8,11 +8,22 @@ import { EntityWithIdAndDescription, EntityWithIdAndDescriptionFields, EntityWit
 import GroupForm from './GroupForm'
 import { UserContext } from '@/utils/contexts/userContext'
 import { UserFields } from '@/types/users'
+import { z } from 'zod'
+import { zodResolver } from '@hookform/resolvers/zod'
 
 interface GroupExpensesAddDialogProps {
     onAddGroup: (g: Group) => void
     friends: EntityWithIdAndDescription[]
 }
+
+const schema = z.object({
+    [GroupFields.Name]: z
+        .string({ message: 'Este campo es obligatorio.' })
+        .max(20, { message: 'El nombre debe tener menos de 20 caracteres.' }),
+    [GroupFields.Description]: z.string().optional(),
+    [GroupFields.Image]: z.string().optional(),
+    [GroupFields.Members]: z.array(z.object({ id: z.string(), description: z.string() })).optional()
+})
 
 const GroupExpensesAddDialog = ({ onAddGroup, friends }: GroupExpensesAddDialogProps) => {
     const [open, setOpen] = useState<boolean>(false)
@@ -24,32 +35,27 @@ const GroupExpensesAddDialog = ({ onAddGroup, friends }: GroupExpensesAddDialogP
     ]
     const [members, setMembers] = useState<EntityWithIdAndDescription[]>(defaultMembers)
 
-    const defaultFormValues: Group = {
-        [EntityWithIdFields.Id]: 0,
-        [GroupFields.Name]: '',
-        [GroupFields.Description]: '',
-        [GroupFields.Expenses]: [],
-        [GroupFields.Members]: defaultMembers
-    }
-
     const methods = useForm<Group>({
-        defaultValues: defaultFormValues
+        resolver: zodResolver(schema),
+        mode: 'onBlur'
     })
 
     const onSubmitGroup = (group: Group) => {
         const submitGroup: Group = {
             ...group,
             [GroupFields.Image]: img,
-            [GroupFields.Members]: members
+            [GroupFields.Members]: members,
+            [GroupFields.Expenses]: []
         }
         onAddGroup(submitGroup)
         setImg(undefined)
         setMembers(defaultMembers)
         setOpen(false)
+        methods.reset()
     }
 
     useEffect(() => {
-        methods.reset(defaultFormValues)
+        methods.reset()
         setImg(undefined)
         setMembers(defaultMembers)
     }, [open])

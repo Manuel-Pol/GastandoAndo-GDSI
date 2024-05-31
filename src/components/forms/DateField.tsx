@@ -12,14 +12,14 @@ export const DateField = <TForm extends FieldValues>(props: DateFieldProps<TForm
         <FormField
             control={control}
             name={name}
-            render={({ field }) => (
+            render={({ field, fieldState: { error } }) => (
                 <div className='space-y-2'>
                     <FormLabel>{label}</FormLabel>
                     <FormItem>
                         <FormControl>
                             <DatePicker {...field} />
                         </FormControl>
-                        <FormMessage />
+                        <FormMessage className='text-red-600'>{error?.message}</FormMessage>
                     </FormItem>
                 </div>
             )}

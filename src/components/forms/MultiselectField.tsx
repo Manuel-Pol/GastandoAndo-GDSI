@@ -1,6 +1,6 @@
 import { EntityWithIdAndDescription } from '@/types/baseEntities'
 import { ControllerProps, FieldValues } from 'react-hook-form'
-import { FormControl, FormField, FormItem, FormLabel } from '../ui/form'
+import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '../ui/form'
 import Multiselect from '../custom/Multiselect'
 
 interface MultiselectFieldProps<TForm extends FieldValues> extends Omit<ControllerProps<TForm>, 'render'> {
@@ -17,7 +17,7 @@ export const MultiselectField = <TForm extends FieldValues>(props: MultiselectFi
         <FormField
             control={control}
             name={name}
-            render={({ field: { value, onChange, ...fieldProps } }) => (
+            render={({ field: { value, onChange, ...fieldProps }, fieldState: { error } }) => (
                 <FormItem>
                     <FormLabel>{label}</FormLabel>
                     <FormControl>
@@ -28,6 +28,7 @@ export const MultiselectField = <TForm extends FieldValues>(props: MultiselectFi
                             onUnselect={onUnselect}
                         />
                     </FormControl>
+                    <FormMessage className='text-red-600'>{error?.message}</FormMessage>
                 </FormItem>
             )}
         />

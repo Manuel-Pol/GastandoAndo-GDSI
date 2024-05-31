@@ -6,34 +6,39 @@ import { useForm, FormProvider } from 'react-hook-form'
 import { EntityWithIdAndDescription, EntityWithIdFields } from '@/types/baseEntities'
 import GroupExpensesAddNewForm from './GroupExpensesAddNewForm'
 import { GroupExpensesInterface, GroupExpensesInterfaceFields } from '@/types/groupalExpenses'
+import { z } from 'zod'
+import { zodResolver } from '@hookform/resolvers/zod'
 
 interface DialogAddGroupMovementProps {
     onAddMovement: (m: GroupExpensesInterface) => void
     groupMembers: EntityWithIdAndDescription[]
 }
 
+const schema = z.object({
+    [GroupExpensesInterfaceFields.Title]: z.string({ message: 'Este campo es obligatorio.' }),
+    [GroupExpensesInterfaceFields.Description]: z.string().optional(),
+    [GroupExpensesInterfaceFields.Amount]: z.coerce
+        .number({ message: 'Este campo es obligatorio.' })
+        .positive({ message: 'El monto debe ser mayor a 0.' }),
+    [GroupExpensesInterfaceFields.Payer]: z.string({ message: 'Este campo es obligatorio.' }),
+    [GroupExpensesInterfaceFields.Debtors]: z
+        .array(z.string({ message: 'Este campo es obligatorio.' }), { message: 'Debe seleccionar al menos un deudor.' })
+        .min(1, { message: 'Debe seleccionar al menos un deudor.' })
+})
+
 const DialogAddGroupMovement = ({ onAddMovement, groupMembers }: DialogAddGroupMovementProps) => {
     const [open, setOpen] = useState<boolean>(false)
     const defaultDebtors: EntityWithIdAndDescription[] = []
     const [debtors, setDebtors] = useState<EntityWithIdAndDescription[]>(defaultDebtors)
 
-    const defaultFormValues: GroupExpensesInterface = {
-        [EntityWithIdFields.Id]: 0,
-        [GroupExpensesInterfaceFields.Title]: '',
-        [GroupExpensesInterfaceFields.Description]: '',
-        [GroupExpensesInterfaceFields.Amount]: undefined,
-        [GroupExpensesInterfaceFields.Payer]: "",
-        [GroupExpensesInterfaceFields.Debtors]: defaultDebtors,
-        [GroupExpensesInterfaceFields.Date]: new Date()
-    }
-
     const methods = useForm<GroupExpensesInterface>({
-        defaultValues: defaultFormValues
+        resolver: zodResolver(schema),
+        mode: 'onBlur'
     })
 
     useEffect(() => {
         if (open) {
-            methods.reset(defaultFormValues)
+            methods.reset()
             setDebtors(defaultDebtors)
         }
     }, [open])
@@ -46,6 +51,7 @@ const DialogAddGroupMovement = ({ onAddMovement, groupMembers }: DialogAddGroupM
 
         onAddMovement(submitData)
         setOpen(false)
+        methods.reset()
     }
 
     const onSelectDebtor = (debtor: EntityWithIdAndDescription) => {

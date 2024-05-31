@@ -14,7 +14,7 @@ export const SelectField = <TForm extends FieldValues>(props: SelectFieldProps<T
             rules={{ required: true }}
             control={control}
             name={name}
-            render={({ field: { onChange, value } }) => (
+            render={({ field: { onChange, value }, fieldState: { error } }) => (
                 <FormItem>
                     <FormLabel>{label}</FormLabel>
                     <FormControl>
@@ -33,7 +33,7 @@ export const SelectField = <TForm extends FieldValues>(props: SelectFieldProps<T
                             </SelectContent>
                         </Select>
                     </FormControl>
-                    <FormMessage />
+                    <FormMessage className='text-red-600'>{error?.message}</FormMessage>
                 </FormItem>
             )}
         />

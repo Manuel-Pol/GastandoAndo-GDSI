@@ -28,8 +28,7 @@ const GroupExpensesAddNewForm = ({
     const [members, setMembers] = useState<EntityWithIdAndDescription[]>(groupMembers)
 
     useEffect(() => {
-        if (watchPayer)
-            setMembers(members.filter(m => m[EntityWithIdAndDescriptionFields.Description] !== watchPayer) )
+        if (watchPayer) setMembers(members.filter(m => m[EntityWithIdAndDescriptionFields.Description] !== watchPayer))
     }, [watchPayer])
 
     return (

@@ -54,7 +54,7 @@ const defaultUsers: Data<User> = {
 
 const loadedUsers = loadData(USER_KEY)
 
-export var dataUsers: DB<User> =
+export const dataUsers: DB<User> =
     loadedUsers.id !== 0
         ? {
               storageKey: USER_KEY,
@@ -72,10 +72,10 @@ export var dataUsers: DB<User> =
           }
 
 export const isRegistered = (mail: string) => {
-    if (dataUsers.names) {
-        return mail in dataUsers.names
+    if (!dataUsers.names) {
+        return false
     }
-    return true
+    return mail in dataUsers.names
 }
 
 export const isTruePassword = (truePassword: string, inputPassword: string) => {
