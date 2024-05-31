@@ -7,11 +7,11 @@ interface TextFieldProps<TForm extends FieldValues> extends Omit<ControllerProps
     label: string
     adornment?: string
     maxLength?: number
+    type?: string
 }
 
-
 export const TextField = <TForm extends FieldValues>(props: TextFieldProps<TForm>) => {
-    const { label, control, name, adornment, rules, maxLength } = props
+    const { label, control, name, adornment, rules, maxLength, type } = props
     const [charCount, setCharCount] = useState(0)
     const [exceedsLimit, setExceedsLimit] = useState(false)
 
@@ -32,9 +32,10 @@ export const TextField = <TForm extends FieldValues>(props: TextFieldProps<TForm
                         {adornment ? (
                             <Input
                                 placeholder=''
+                                type={type ? type : 'text'}
                                 {...field}
                                 startAdornment={<h5>{adornment}</h5>}
-                                onChange={(e) => {
+                                onChange={e => {
                                     field.onChange(e)
                                     setCharCount(e.target.value.length)
                                 }}
@@ -42,7 +43,8 @@ export const TextField = <TForm extends FieldValues>(props: TextFieldProps<TForm
                         ) : (
                             <Input
                                 {...field}
-                                onChange={(e) => {
+                                type={type ? type : 'text'}
+                                onChange={e => {
                                     field.onChange(e)
                                     setCharCount(e.target.value.length)
                                 }}

@@ -1,10 +1,10 @@
 import { useState } from 'react'
 import { UserContext } from './userContext'
 import { currentUser } from '@/api/UsersData'
-import { UserFields } from '@/types/users'
+import { User } from '@/types/users'
 
 export const UserProvider = ({ children }) => {
-    const [username, setUsername] = useState(currentUser[UserFields.Name])
+    const [user, setUser] = useState<User>(currentUser)
 
-    return <UserContext.Provider value={{ username, setUsername }}>{children}</UserContext.Provider>
+    return <UserContext.Provider value={{ user, setUser }}>{children}</UserContext.Provider>
 }

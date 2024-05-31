@@ -5,18 +5,19 @@ import { EntityWithIdFields } from '@/types/baseEntities'
 const USER_KEY = 'Users'
 
 const defaultNames = {
-    'Manuel Pol': 0,
-    'Lorenzo Minervino': 1,
-    'Martin Reimundo': 2,
-    'Federico Camurri': 3,
-    'Alen Davies': 4,
-    'Pedro Gallino': 5
+    'fgastioni@fi.uba.ar': 0,
+    'rredeuda@fi.uba.ar': 1,
+    'dsaldos@fi.uba.ar': 2,
+    'jgrezhos@fi.uba.ar': 3,
+    'cpresta@fi.uba.ar': 4
 }
 
-export var currentUser: User = {
+export const currentUser: User = {
     [EntityWithIdFields.Id]: 0,
     [UserFields.Name]: 'Fernando Gastioni',
-    [UserFields.Friends]: [1, 2, 3, 4]
+    [UserFields.Friends]: [1, 2, 3, 4],
+    [UserFields.Mail]: 'fgastioni@fi.uba.ar',
+    [UserFields.Password]: 'gastioni'
 }
 
 const defaultUsers: Data<User> = {
@@ -24,22 +25,30 @@ const defaultUsers: Data<User> = {
     1: {
         [EntityWithIdFields.Id]: 1,
         [UserFields.Name]: 'Renzo Redeuda',
-        [UserFields.Friends]: [0, 2, 3, 4]
+        [UserFields.Friends]: [0, 2, 3, 4],
+        [UserFields.Mail]: 'rredeuda@fi.uba.ar',
+        [UserFields.Password]: 'redeuda'
     },
     2: {
         [EntityWithIdFields.Id]: 2,
         [UserFields.Name]: 'Debora Saldos',
-        [UserFields.Friends]: [0, 1, 3, 4]
+        [UserFields.Friends]: [0, 1, 3, 4],
+        [UserFields.Mail]: 'dsaldos@fi.uba.ar',
+        [UserFields.Password]: 'saldos'
     },
     3: {
         [EntityWithIdFields.Id]: 3,
         [UserFields.Name]: 'Jazmin Grezhos',
-        [UserFields.Friends]: [0, 1, 2, 4]
+        [UserFields.Friends]: [0, 1, 2, 4],
+        [UserFields.Mail]: 'jgrezhos@fi.uba.ar',
+        [UserFields.Password]: 'grezhos'
     },
     4: {
         [EntityWithIdFields.Id]: 4,
         [UserFields.Name]: 'Camila Presta',
-        [UserFields.Friends]: [0, 1, 2, 3]
+        [UserFields.Friends]: [0, 1, 2, 3],
+        [UserFields.Mail]: 'cpresta@fi.uba.ar',
+        [UserFields.Password]: 'presta'
     }
 }
 
@@ -56,8 +65,19 @@ export var dataUsers: DB<User> =
           }
         : {
               storageKey: USER_KEY,
-              id: 6,
-              len: 6,
+              id: 5,
+              len: 5,
               data: defaultUsers,
               names: defaultNames
           }
+
+export const isRegistered = (mail: string) => {
+    if (dataUsers.names) {
+        return mail in dataUsers.names
+    }
+    return true
+}
+
+export const isTruePassword = (truePassword: string, inputPassword: string) => {
+    return truePassword === inputPassword
+}

@@ -7,6 +7,7 @@ import { useState, useEffect, useContext } from 'react'
 import { EntityWithIdAndDescription, EntityWithIdAndDescriptionFields, EntityWithIdFields } from '@/types/baseEntities'
 import GroupForm from './GroupForm'
 import { UserContext } from '@/utils/contexts/userContext'
+import { UserFields } from '@/types/users'
 
 interface GroupExpensesAddDialogProps {
     onAddGroup: (g: Group) => void
@@ -16,10 +17,10 @@ interface GroupExpensesAddDialogProps {
 const GroupExpensesAddDialog = ({ onAddGroup, friends }: GroupExpensesAddDialogProps) => {
     const [open, setOpen] = useState<boolean>(false)
     const [img, setImg] = useState<string | ArrayBuffer | null>()
-    const { username } = useContext(UserContext) // Obtener el nombre de usuario del contexto
+    const { user } = useContext(UserContext) // Obtener el nombre de usuario del contexto
 
     const defaultMembers: EntityWithIdAndDescription[] = [
-        { [EntityWithIdFields.Id]: 0, [EntityWithIdAndDescriptionFields.Description]: username } // Utilizar el nombre de usuario obtenido del contexto
+        { [EntityWithIdFields.Id]: 0, [EntityWithIdAndDescriptionFields.Description]: user[UserFields.Name] } // Utilizar el nombre de usuario obtenido del contexto
     ]
     const [members, setMembers] = useState<EntityWithIdAndDescription[]>(defaultMembers)
 
