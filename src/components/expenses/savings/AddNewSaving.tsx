@@ -2,42 +2,63 @@ import { Dialog, DialogClose, DialogContent, DialogFooter, DialogTitle, DialogTr
 
 import { Button } from '@/components/ui/button'
 import { CirclePlusIcon } from 'lucide-react'
-import { Form, useForm } from 'react-hook-form'
+import { FormProvider, useForm } from 'react-hook-form'
 import { TextField } from '@/components/forms/TextField'
 import { Savings, SavingsFields } from '@/types/savings'
 import { TextArea } from '@/components/forms/TextArea'
 import { DateField } from '@/components/forms/DateField'
+import { z } from 'zod'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useEffect, useState } from 'react'
 
 interface AddNewSavingProps {
     onAddSaving: (exp: Savings) => void
 }
 
+const schema = z.object({
+    [SavingsFields.Title]: z.string({ message: 'Este campo es obligatorio.' }),
+    [SavingsFields.Description]: z.string().optional(),
+    [SavingsFields.Amount]: z.coerce
+        .number({ message: 'Este campo es obligatorio.' })
+        .positive({ message: 'El monto debe ser mayor a 0.' }),
+    [SavingsFields.Date]: z.date({ message: 'Este campo es obligatorio.' })
+})
+
 export const AddNewSaving = (props: AddNewSavingProps) => {
+    const [open, setOpen] = useState<boolean>(false)
     const { onAddSaving } = props
-    const form = useForm()
+    const form = useForm<Savings>({
+        resolver: zodResolver(schema),
+        mode: 'onBlur'
+    })
 
     const onSubmitSaving = (data: Savings) => {
-        const submitData: Savings = {
-            ...data
-        }
-
-        onAddSaving(submitData)
+        setOpen(false)
+        onAddSaving(data)
+        form.reset()
     }
+
+    useEffect(() => {
+        if (open) {
+            form.reset()
+        }
+    }, [open])
+
     return (
-        <Dialog>
+        <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
                 <Button className='bg-[#E34400] hover:bg-[#E34400] rounded text-white py-6'>
                     <CirclePlusIcon className='mr-2 text-white ' /> <p className='text-lg'>Agregar</p>
                 </Button>
             </DialogTrigger>
-            <DialogContent>
+            <DialogContent className='bg-white'>
                 <DialogTitle className='text-black'>Agregar Ahorro</DialogTitle>
-                <Form {...form}>
+                <FormProvider {...form}>
                     <TextField control={form.control} name={SavingsFields.Title} label='Titulo' />
                     <TextArea control={form.control} name={SavingsFields.Description} label='Descripcion' />
                     <TextField control={form.control} name={SavingsFields.Amount} label='Monto' adornment='$' />
                     <DateField control={form.control} name={SavingsFields.Date} label='Fecha objetivo' />
-                </Form>
+                </FormProvider>
                 <DialogFooter>
                     <DialogClose asChild>
                         <Button

@@ -36,7 +36,7 @@ const SavingsPage = () => {
                     <p className='text-6xl font-medium'>Ahorros</p>
                     <AddNewSaving onAddSaving={onAddSaving} />
                 </div>
-                {/* <SavingsCard savings={savings} triggerDeleteSaving={onDeleteSaving} onSaveEdit={onSaveEdit} /> */}
+                <SavingsCard savings={savings} triggerDeleteSaving={onDeleteSaving} onSaveEdit={onSaveEdit} />
             </div>
         </div>
     )
