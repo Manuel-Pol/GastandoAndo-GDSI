@@ -2,6 +2,7 @@ import { EntityWithIdFields } from '@/types/baseEntities'
 import { Savings } from '@/types/savings'
 import { useState } from 'react'
 import { AddNewSaving } from './AddNewSaving'
+import { SavingsDataCard } from './SavingsDataCard'
 
 const SavingsPage = () => {
     const [savings, setSavings] = useState<Savings[]>([])
@@ -31,12 +32,12 @@ const SavingsPage = () => {
 
     return (
         <div className='flex justify-center'>
-            <div className='flex flex-col gap-8 items-center w-full max-w-xl'>
+            <div className='flex flex-col gap-8 items-center w-full max-w-3xl'>
                 <div className='w-full flex space-x-24 items-center justify-between'>
                     <p className='text-6xl font-medium'>Ahorros</p>
                     <AddNewSaving onAddSaving={onAddSaving} />
                 </div>
-                <SavingsCard savings={savings} triggerDeleteSaving={onDeleteSaving} onSaveEdit={onSaveEdit} />
+                <SavingsDataCard savings={savings} triggerDelete={onDeleteSaving} onSaveEdit={onSaveEdit} />
             </div>
         </div>
     )
