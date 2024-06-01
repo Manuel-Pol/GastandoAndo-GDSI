@@ -21,7 +21,8 @@ const schema = z.object({
     [SavingsFields.Amount]: z.coerce
         .number({ message: 'Este campo es obligatorio.' })
         .positive({ message: 'El monto debe ser mayor a 0.' }),
-    [SavingsFields.Date]: z.date({ message: 'Este campo es obligatorio.' })
+    [SavingsFields.DateStart]: z.date({ message: 'Este campo es obligatorio.' }),
+    [SavingsFields.DateObjective]: z.date({ message: 'Este campo es obligatorio.' })
 })
 
 export const AddNewSaving = (props: AddNewSavingProps) => {
@@ -57,7 +58,8 @@ export const AddNewSaving = (props: AddNewSavingProps) => {
                     <TextField control={form.control} name={SavingsFields.Title} label='Titulo' />
                     <TextArea control={form.control} name={SavingsFields.Description} label='Descripcion' />
                     <TextField control={form.control} name={SavingsFields.Amount} label='Monto' adornment='$' />
-                    <DateField control={form.control} name={SavingsFields.Date} label='Fecha objetivo' />
+                    <DateField control={form.control} name={SavingsFields.DateStart} label='Fecha de inicio' />
+                    <DateField control={form.control} name={SavingsFields.DateObjective} label='Fecha objetivo' />
                 </FormProvider>
                 <DialogFooter>
                     <DialogClose asChild>

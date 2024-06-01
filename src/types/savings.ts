@@ -4,12 +4,14 @@ export enum SavingsFields {
     Title = 'titulo',
     Description = 'descripcion',
     Amount = 'monto',
-    Date = 'fecha'
+    DateObjective = 'fechaObjetivo',
+    DateStart = 'fechaInicio'
 }
 
 export interface Savings extends EntityWithId {
     [SavingsFields.Title]: string
     [SavingsFields.Description]: string
     [SavingsFields.Amount]: number
-    [SavingsFields.Date]: Date
+    [SavingsFields.DateObjective]: Date
+    [SavingsFields.DateStart]: Date
 }
