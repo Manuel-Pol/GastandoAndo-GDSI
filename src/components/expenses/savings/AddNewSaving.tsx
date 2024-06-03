@@ -12,7 +12,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useEffect, useState } from 'react'
 
 interface AddNewSavingProps {
-    onAddSaving: (exp: Savings) => void
+    onAddSaving: (saving: Savings) => void
 }
 
 const schema = z.object({
