@@ -1,5 +1,5 @@
 import { Progress } from '@radix-ui/react-progress'
-import { EntityWithId } from './baseEntities'
+import { EntityWithUserId } from './baseEntities'
 
 export enum SavingsFields {
     Title = 'titulo',
@@ -19,7 +19,7 @@ export interface Progress {
     [ProgressFields.Date]: Date
 }
 
-export interface Savings extends EntityWithId {
+export interface Savings extends EntityWithUserId {
     [SavingsFields.Title]: string
     [SavingsFields.Description]: string
     [SavingsFields.Amount]: number
