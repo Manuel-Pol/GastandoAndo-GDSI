@@ -1,4 +1,4 @@
-import { Group, GroupExpensesInterface, GroupFields } from '@/types/groupalExpenses'
+import { Group, GroupExpensesInterface, GroupExpensesInterfaceFields, GroupFields, GroupMember, GroupMemberFields } from '@/types/groupalExpenses'
 import { useEffect, useState } from 'react'
 import DialogAddGroupMovement from './DialogAddGroupMovement'
 import { EntityWithIdFields } from '@/types/baseEntities'
@@ -16,36 +16,122 @@ const GroupMovements = ({ group, updateGroups }: GroupMovementsProps) => {
         setMovements(group[GroupFields.Expenses])
     }, [group])
 
-    const handleUpdateInGroup = (updatedMovements: GroupExpensesInterface[]) => {
+    const handleUpdateInGroup = (updatedMovements: GroupExpensesInterface[], membersToUpdate?: GroupMember[]) => {
         setMovements(updatedMovements)
         const groupUpdated: Group = {
             ...group,
+            [GroupFields.Members]: membersToUpdate ?? group[GroupFields.Members],
             [GroupFields.Expenses]: updatedMovements
         }
         updateGroups(groupUpdated)
     }
 
     const handleAddMovement = (mov: GroupExpensesInterface) => {
+        const debt = (mov[GroupExpensesInterfaceFields.Amount] ?? 0) / (mov[GroupExpensesInterfaceFields.Debtors].length + 1)
+        const adv = (mov[GroupExpensesInterfaceFields.Amount] ?? 0) - debt
+
+        const debtorsUpdated = mov[GroupExpensesInterfaceFields.Debtors].map((d) => {
+            return {
+                ...d,
+                [GroupMemberFields.Amount]: debt
+            }
+        })
+
+        const payerUpdated = {
+            ...mov[GroupExpensesInterfaceFields.Payer],
+            [GroupMemberFields.Amount]: adv
+        }
+
+        const membersUpdated = group[GroupFields.Members].map((m) => {
+            const matchDebtor = debtorsUpdated.find((d) => d[EntityWithIdFields.Id] == m[EntityWithIdFields.Id])
+            return {
+                ...m,
+                [GroupMemberFields.Amount]: matchDebtor ? m[GroupMemberFields.Amount] - matchDebtor[GroupMemberFields.Amount] : m[GroupMemberFields.Amount] + payerUpdated[GroupMemberFields.Amount]
+            }
+        })
+
         const newMov = {
             ...mov,
+            [GroupExpensesInterfaceFields.Payer]: payerUpdated,
+            [GroupExpensesInterfaceFields.Debtors]: debtorsUpdated,
             [EntityWithIdFields.Id]: movements.length + 1
         }
+
         const newMovements = [...movements, newMov]
-        handleUpdateInGroup(newMovements)
+        handleUpdateInGroup(newMovements, membersUpdated)
     }
-
+    
     const onDeleteMovement = (mov: GroupExpensesInterface) => {
-        const newMovements = movements.filter(m => m[EntityWithIdFields.Id] !== mov[EntityWithIdFields.Id])
-        handleUpdateInGroup(newMovements)
-    }
+        const membersUpdated = group[GroupFields.Members].map((m) => {
+            const matchDebtor = mov[GroupExpensesInterfaceFields.Debtors].find((d) => d[EntityWithIdFields.Id] == m[EntityWithIdFields.Id])
+            return {
+                ...m,
+                [GroupMemberFields.Amount]: matchDebtor ? m[GroupMemberFields.Amount] + matchDebtor[GroupMemberFields.Amount] 
+                : m[GroupMemberFields.Amount] - mov[GroupExpensesInterfaceFields.Payer][GroupMemberFields.Amount]
+            }
+        })
+        
 
-    const onSaveEdit = (mov: GroupExpensesInterface) => {
+        const newMovements = movements.filter(m => m[EntityWithIdFields.Id] !== mov[EntityWithIdFields.Id])
+        handleUpdateInGroup(newMovements, membersUpdated)
+    }
+    
+    const handleUpdateMovement = (mov: GroupExpensesInterface) => {
+        const debt = (mov[GroupExpensesInterfaceFields.Amount] ?? 0) / (mov[GroupExpensesInterfaceFields.Debtors].length + 1)
+        const adv = (mov[GroupExpensesInterfaceFields.Amount] ?? 0) - debt
+        const moveToEdit = movements.find((moves) => moves[EntityWithIdFields.Id] == mov[EntityWithIdFields.Id])
+        const debtToEdit = (moveToEdit?.[GroupExpensesInterfaceFields.Amount] ?? 0) / ((moveToEdit?.[GroupExpensesInterfaceFields.Debtors].length ?? 0) + 1)
+        const advToEdit = (moveToEdit?.[GroupExpensesInterfaceFields.Amount] ?? 0) - debtToEdit
+
+        const prevDebtorsUpdated = moveToEdit?.[GroupExpensesInterfaceFields.Debtors].map((d) => {
+            return {
+                ...d,
+                [GroupMemberFields.Amount]: debtToEdit
+            }
+        })
+
+        const prevMembersInitialize = group[GroupFields.Members].map((member) => {
+            const matchDebtor = prevDebtorsUpdated?.find((d) => d[EntityWithIdFields.Id] == member[EntityWithIdFields.Id])
+            return {
+                ...member,
+                [GroupMemberFields.Amount]: matchDebtor ? member[GroupMemberFields.Amount] + debtToEdit
+                : member[GroupMemberFields.Amount] - advToEdit
+            }
+        })
+
+        const debtorsUpdated = mov[GroupExpensesInterfaceFields.Debtors].map((d) => {
+            return {
+                ...d,
+                [GroupMemberFields.Amount]: debt
+            }
+        })
+
+        const payerUpdated = {
+            ...mov[GroupExpensesInterfaceFields.Payer],
+            [GroupMemberFields.Amount]: adv
+        }
+
+        const membersUpdated = prevMembersInitialize.map((m) => {
+            const matchDebtor = debtorsUpdated.find((d) => d[EntityWithIdFields.Id] == m[EntityWithIdFields.Id])
+            return {
+                ...m,
+                [GroupMemberFields.Amount]: matchDebtor ? m[GroupMemberFields.Amount] - matchDebtor[GroupMemberFields.Amount] 
+                : m[GroupMemberFields.Amount] + payerUpdated[GroupMemberFields.Amount]
+            }
+        })
+
+        const newMov = {
+            ...mov,
+            [GroupExpensesInterfaceFields.Payer]: payerUpdated,
+            [GroupExpensesInterfaceFields.Debtors]: debtorsUpdated
+        }
+
         const newMovements = movements.map(m => {
-            if (m[EntityWithIdFields.Id] === mov[EntityWithIdFields.Id]) return mov
+            if (m[EntityWithIdFields.Id] === mov[EntityWithIdFields.Id]) return newMov
             return m
         })
 
-        handleUpdateInGroup(newMovements)
+        handleUpdateInGroup(newMovements, membersUpdated)
     }
 
     return (
@@ -57,7 +143,7 @@ const GroupMovements = ({ group, updateGroups }: GroupMovementsProps) => {
             <GroupExpensesDataCard
                 expenses={movements}
                 triggerDeleteExp={onDeleteMovement}
-                onSaveEdit={onSaveEdit}
+                onSaveEdit={handleUpdateMovement}
                 friends={group[GroupFields.Members]}
             />
         </div>

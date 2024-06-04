@@ -3,15 +3,15 @@ import { Button } from '@/components/ui/button'
 import { CirclePlusIcon } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { useForm, FormProvider } from 'react-hook-form'
-import { EntityWithIdAndDescription, EntityWithIdFields } from '@/types/baseEntities'
+import { EntityWithIdAndDescription, EntityWithIdAndDescriptionFields, EntityWithIdFields } from '@/types/baseEntities'
 import GroupExpensesAddNewForm from './GroupExpensesAddNewForm'
-import { GroupExpensesInterface, GroupExpensesInterfaceFields } from '@/types/groupalExpenses'
+import { GroupExpensesInterface, GroupExpensesInterfaceFields, GroupMember, GroupMemberFields } from '@/types/groupalExpenses'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 
 interface DialogAddGroupMovementProps {
     onAddMovement: (m: GroupExpensesInterface) => void
-    groupMembers: EntityWithIdAndDescription[]
+    groupMembers: GroupMember[]
 }
 
 const schema = z.object({
@@ -20,16 +20,14 @@ const schema = z.object({
     [GroupExpensesInterfaceFields.Amount]: z.coerce
         .number({ message: 'Este campo es obligatorio.' })
         .positive({ message: 'El monto debe ser mayor a 0.' }),
-    [GroupExpensesInterfaceFields.Payer]: z.string({ message: 'Este campo es obligatorio.' }),
-    [GroupExpensesInterfaceFields.Debtors]: z
-        .array(z.string({ message: 'Este campo es obligatorio.' }), { message: 'Debe seleccionar al menos un deudor.' })
-        .min(1, { message: 'Debe seleccionar al menos un deudor.' })
+    [GroupExpensesInterfaceFields.Payer]: z.string({ message: 'Este campo es obligatorio.' })
 })
 
 const DialogAddGroupMovement = ({ onAddMovement, groupMembers }: DialogAddGroupMovementProps) => {
     const [open, setOpen] = useState<boolean>(false)
     const defaultDebtors: EntityWithIdAndDescription[] = []
     const [debtors, setDebtors] = useState<EntityWithIdAndDescription[]>(defaultDebtors)
+    const [payer, setPayer] = useState<string>('')
 
     const methods = useForm<GroupExpensesInterface>({
         resolver: zodResolver(schema),
@@ -44,11 +42,27 @@ const DialogAddGroupMovement = ({ onAddMovement, groupMembers }: DialogAddGroupM
     }, [open])
 
     const onSubmitMovement = (data: GroupExpensesInterface) => {
+        const newDebtors = debtors.map((d) => {
+            return {
+                ...d,
+                [GroupMemberFields.Amount]: 0
+            }
+        })
+
+        const newPayer = groupMembers.find((g) => g[EntityWithIdAndDescriptionFields.Description] == payer)
+
+        const payerUpdated = {
+            [EntityWithIdFields.Id]: newPayer?.[EntityWithIdFields.Id] ?? 0,
+            [EntityWithIdAndDescriptionFields.Description]: payer,
+            [GroupMemberFields.Amount]: 0
+        }
+        
         const submitData: GroupExpensesInterface = {
             ...data,
-            [GroupExpensesInterfaceFields.Debtors]: debtors
+            [GroupExpensesInterfaceFields.Debtors]: newDebtors,
+            [GroupExpensesInterfaceFields.Payer]: payerUpdated
         }
-
+        
         onAddMovement(submitData)
         setOpen(false)
         methods.reset()
@@ -81,6 +95,7 @@ const DialogAddGroupMovement = ({ onAddMovement, groupMembers }: DialogAddGroupM
                         <FormProvider {...methods}>
                             <GroupExpensesAddNewForm
                                 groupMembers={groupMembers}
+                                setSelectedPayer={setPayer}
                                 selectedDebtors={debtors}
                                 onSelectDebtor={onSelectDebtor}
                                 onUnselectDebtor={onUnselectDebtor}

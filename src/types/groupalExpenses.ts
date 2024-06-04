@@ -25,23 +25,32 @@ export enum GroupExpensesInterfaceFields {
 export interface Group extends EntityWithId {
     [GroupFields.Name]: string
     [GroupFields.Description]: string
-    [GroupFields.Members]: EntityWithIdAndDescription[]
+    [GroupFields.Members]: GroupMember[]
     [GroupFields.Expenses]: GroupExpensesInterface[]
     [GroupFields.Image]?: string | ArrayBuffer | null
 }
 
-export const defaultFriends: EntityWithIdAndDescription[] = [
-    { [EntityWithIdFields.Id]: 1, [EntityWithIdAndDescriptionFields.Description]: 'Renzo Redeuda' },
-    { [EntityWithIdFields.Id]: 2, [EntityWithIdAndDescriptionFields.Description]: 'Debora Saldos' },
-    { [EntityWithIdFields.Id]: 3, [EntityWithIdAndDescriptionFields.Description]: 'Jazmin Grezhos' },
-    { [EntityWithIdFields.Id]: 4, [EntityWithIdAndDescriptionFields.Description]: 'Camila Presta' }
+export enum GroupMemberFields {
+    Amount = 'monto'
+}
+
+
+export interface GroupMember extends EntityWithIdAndDescription {
+    [GroupMemberFields.Amount]: number
+}
+
+export const defaultFriends: GroupMember[] = [
+    { [EntityWithIdFields.Id]: 1, [EntityWithIdAndDescriptionFields.Description]: 'Renzo Redeuda', [GroupMemberFields.Amount]: 0 },
+    { [EntityWithIdFields.Id]: 2, [EntityWithIdAndDescriptionFields.Description]: 'Debora Saldos', [GroupMemberFields.Amount]: 0 },
+    { [EntityWithIdFields.Id]: 3, [EntityWithIdAndDescriptionFields.Description]: 'Jazmin Grezhos', [GroupMemberFields.Amount]: 0 },
+    { [EntityWithIdFields.Id]: 4, [EntityWithIdAndDescriptionFields.Description]: 'Camila Presta' , [GroupMemberFields.Amount]: 0}
 ]
 
 export interface GroupExpensesInterface extends EntityWithId {
     [GroupExpensesInterfaceFields.Title]: string
     [GroupExpensesInterfaceFields.Description]: string
     [GroupExpensesInterfaceFields.Amount]?: number
-    [GroupExpensesInterfaceFields.Payer]: string
-    [GroupExpensesInterfaceFields.Debtors]: EntityWithIdAndDescription[]
+    [GroupExpensesInterfaceFields.Payer]: GroupMember
+    [GroupExpensesInterfaceFields.Debtors]: GroupMember[]
     [GroupExpensesInterfaceFields.Date]: Date
 }

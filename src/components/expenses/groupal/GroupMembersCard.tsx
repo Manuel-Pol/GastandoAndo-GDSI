@@ -1,6 +1,6 @@
 import { EntityWithIdAndDescriptionFields, EntityWithIdFields } from '@/types/baseEntities'
 import { UserMinus } from 'lucide-react'
-import { Group, GroupExpensesInterface, GroupExpensesInterfaceFields, GroupFields } from '@/types/groupalExpenses.ts'
+import { Group, GroupExpensesInterface, GroupExpensesInterfaceFields, GroupFields, GroupMemberFields } from '@/types/groupalExpenses.ts'
 import { useMemo } from 'react'
 import { stringFormatter } from '@/utils/formatters/stringFormatter'
 import { numberFormatter } from '@/utils/formatters/numberFormatter'
@@ -11,23 +11,25 @@ interface GroupalMembersCardProps {
 }
 
 const GroupMembersCard = ({ group, onRemoveMember }: GroupalMembersCardProps) => {
-    const memberDebts = useMemo(() => {
+    
+    /*const memberDebts = useMemo(() => {
         const debts: { [key: number]: number } = {};
 
         group[GroupFields.Expenses].forEach((expense: GroupExpensesInterface) => {
             const amountPerDebtor = (expense[GroupExpensesInterfaceFields.Amount] ?? 0) / (expense[GroupExpensesInterfaceFields.Debtors].length + 1);
+            const amountPayer = (expense[GroupExpensesInterfaceFields.Amount] ?? 0) - amountPerDebtor
 
             expense[GroupExpensesInterfaceFields.Debtors].forEach(debtor => {
-                if (debts[debtor[EntityWithIdFields.Id]]) {
-                    debts[debtor[EntityWithIdFields.Id]] += amountPerDebtor;
+                if (debts[debtor[EntityWithIdFields.Id]] && debtor[EntityWithIdAndDescriptionFields.Description] !== expense[GroupExpensesInterfaceFields.Payer]) {
+                    debts[debtor[EntityWithIdFields.Id]] -= amountPerDebtor;
                 } else {
-                    debts[debtor[EntityWithIdFields.Id]] = amountPerDebtor;
+                    debts[debtor[EntityWithIdFields.Id]] += amountPayer;
                 }
             });
         });
 
         return debts;
-    }, [group]);
+    }, [group]);*/
 
     return (
         <div className='w-full'>
@@ -41,11 +43,11 @@ const GroupMembersCard = ({ group, onRemoveMember }: GroupalMembersCardProps) =>
                     </p>
                     <div className='col-span-6 flex flex-row justify-between items-center'>
                         <p
-                            className={`text-sm ${memberDebts[member[EntityWithIdFields.Id]] ? 'text-red-500' : 'text-gray-500'}`}
+                            className={`text-sm ${member[GroupMemberFields.Amount] < 0 ? 'text-red-500' : 'text-green-500'}`}
                         >
-                            {stringFormatter.cutIfHaveMoreThan(memberDebts[member[EntityWithIdFields.Id]] ? 
-                                `- $${numberFormatter.toStringWithDecimals(parseFloat(memberDebts[member[EntityWithIdFields.Id]] ?? 0), 0, 0)}` : 
-                                `$${numberFormatter.toStringWithDecimals(parseFloat(0), 0, 0)}`, 14)}
+                            {stringFormatter.cutIfHaveMoreThan(member[GroupMemberFields.Amount] < 0 ? 
+                                `- $${numberFormatter.toStringWithDecimals(parseFloat(Math.abs(member[GroupMemberFields.Amount] ?? 0)), 0, 0)}` : 
+                                ` + $${numberFormatter.toStringWithDecimals(parseFloat(member[GroupMemberFields.Amount] ?? 0), 0, 0)}`, 14)}
                         </p>
                         {member[EntityWithIdFields.Id] !== 0 && (
                             <div className="rounded-full p-3 hover:bg-[#e2e2e2] cursor-pointer">

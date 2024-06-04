@@ -1,5 +1,5 @@
-import { EntityWithIdAndDescription, EntityWithIdFields } from '@/types/baseEntities'
-import { GroupExpensesInterface, GroupExpensesInterfaceFields } from '@/types/groupalExpenses'
+import { EntityWithIdAndDescription, EntityWithIdAndDescriptionFields, EntityWithIdFields } from '@/types/baseEntities'
+import { GroupExpensesInterface, GroupExpensesInterfaceFields, GroupMember, GroupMemberFields } from '@/types/groupalExpenses'
 import { useEffect, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Edit, Save } from 'lucide-react'
@@ -9,13 +9,22 @@ import GroupExpensesAddNewForm from './GroupExpensesAddNewForm'
 
 interface GroupExpensesEditDialogProps {
     expense: GroupExpensesInterface
-    friends: EntityWithIdAndDescription[]
+    friends: GroupMember[]
     onSaveEdit: (exp: GroupExpensesInterface) => void
+}
+
+const entityToIdAndDescription = (e: GroupMember[]) => {
+    const entityMapped = e.map((a) => {
+        return {id: a[EntityWithIdFields.Id], descripcion: a[EntityWithIdAndDescriptionFields.Description]}
+    })
+    return entityMapped
 }
 
 const GroupExpensesEditDialog = ({ expense, friends, onSaveEdit }: GroupExpensesEditDialogProps) => {
     const [openEdit, setOpenEdit] = useState<boolean>(false)
-    const [debtors, setDebtors] = useState<EntityWithIdAndDescription[]>(expense[GroupExpensesInterfaceFields.Debtors])
+    const [debtors, setDebtors] = useState<EntityWithIdAndDescription[]>(entityToIdAndDescription(expense[GroupExpensesInterfaceFields.Debtors]))
+    const [payer, setPayer] = useState<string>(expense[GroupExpensesInterfaceFields.Payer][EntityWithIdAndDescriptionFields.Description])
+
 
     const onSelectDebtor = (debtor: EntityWithIdAndDescription) => {
         setDebtors([...debtors, debtor])
@@ -31,7 +40,7 @@ const GroupExpensesEditDialog = ({ expense, friends, onSaveEdit }: GroupExpenses
         [GroupExpensesInterfaceFields.Description]: expense[GroupExpensesInterfaceFields.Description],
         [GroupExpensesInterfaceFields.Title]: expense[GroupExpensesInterfaceFields.Title],
         [GroupExpensesInterfaceFields.Debtors]: expense[GroupExpensesInterfaceFields.Debtors],
-        [GroupExpensesInterfaceFields.Payer]: expense[GroupExpensesInterfaceFields.Payer],
+        [GroupExpensesInterfaceFields.Payer]: expense[GroupExpensesInterfaceFields.Payer][EntityWithIdAndDescriptionFields.Description],
         [GroupExpensesInterfaceFields.Date]: expense[GroupExpensesInterfaceFields.Date]
     }
 
@@ -40,11 +49,27 @@ const GroupExpensesEditDialog = ({ expense, friends, onSaveEdit }: GroupExpenses
     })
 
     const onSubmitExpense = (data: GroupExpensesInterface) => {
+        const newDebtors = debtors.map((d) => {
+            return {
+                ...d,
+                [GroupMemberFields.Amount]: 0
+            }
+        })
+
+        const newPayer = friends.find((g) => g[EntityWithIdAndDescriptionFields.Description] == payer)
+
+        const payerUpdated = {
+            [EntityWithIdFields.Id]: newPayer?.[EntityWithIdFields.Id] ?? 0,
+            [EntityWithIdAndDescriptionFields.Description]: payer,
+            [GroupMemberFields.Amount]: 0
+        }
+        
         const submitData: GroupExpensesInterface = {
             ...data,
-            [GroupExpensesInterfaceFields.Debtors]: debtors
+            [GroupExpensesInterfaceFields.Debtors]: newDebtors,
+            [GroupExpensesInterfaceFields.Payer]: payerUpdated
         }
-
+        
         onSaveEdit(submitData)
         setOpenEdit(false)
     }
@@ -53,10 +78,13 @@ const GroupExpensesEditDialog = ({ expense, friends, onSaveEdit }: GroupExpenses
         if (openEdit) {
             methods.reset(defaultFormValues)
             setDebtors(expense[GroupExpensesInterfaceFields.Debtors])
+            setPayer(expense[GroupExpensesInterfaceFields.Payer][EntityWithIdAndDescriptionFields.Description])
         }
     }, [openEdit])
 
     const onEditExp = () => setOpenEdit(true)
+
+    const friendsParams = friends.map((f) => {return {id: f.id, descripcion: f.descripcion}})
 
     return (
         <div>
@@ -71,7 +99,8 @@ const GroupExpensesEditDialog = ({ expense, friends, onSaveEdit }: GroupExpenses
                         <DialogTitle className='text-black mb-2'>Editar Movimiento</DialogTitle>
                         <FormProvider {...methods}>
                             <GroupExpensesAddNewForm
-                                groupMembers={friends}
+                                groupMembers={friendsParams}
+                                setSelectedPayer={setPayer}
                                 selectedDebtors={debtors}
                                 onSelectDebtor={onSelectDebtor}
                                 onUnselectDebtor={onUnselectDebtor}

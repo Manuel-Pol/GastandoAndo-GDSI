@@ -1,5 +1,5 @@
 import { Dialog, DialogContent, DialogClose, DialogTitle, DialogTrigger, DialogFooter } from '@/components/ui/dialog'
-import { Group, GroupFields } from '@/types/groupalExpenses'
+import { Group, GroupFields, GroupMember, GroupMemberFields } from '@/types/groupalExpenses'
 import { Button } from '@/components/ui/button'
 import { CirclePlusIcon } from 'lucide-react'
 import { useForm, FormProvider } from 'react-hook-form'
@@ -22,7 +22,7 @@ const schema = z.object({
         .max(20, { message: 'El nombre debe tener menos de 20 caracteres.' }),
     [GroupFields.Description]: z.string().optional(),
     [GroupFields.Image]: z.string().optional(),
-    [GroupFields.Members]: z.array(z.object({ id: z.string(), description: z.string() })).optional()
+    [GroupFields.Members]: z.array(z.object({ id: z.string(), description: z.string(), monto: z.number() })).optional()
 })
 
 const GroupExpensesAddDialog = ({ onAddGroup, friends }: GroupExpensesAddDialogProps) => {
@@ -30,10 +30,10 @@ const GroupExpensesAddDialog = ({ onAddGroup, friends }: GroupExpensesAddDialogP
     const [img, setImg] = useState<string | ArrayBuffer | null>()
     const { user } = useContext(UserContext) // Obtener el nombre de usuario del contexto
 
-    const defaultMembers: EntityWithIdAndDescription[] = [
-        { [EntityWithIdFields.Id]: 0, [EntityWithIdAndDescriptionFields.Description]: user[UserFields.Name] } // Utilizar el nombre de usuario obtenido del contexto
+    const defaultMembers: GroupMember[] = [
+        { [EntityWithIdFields.Id]: 0, [EntityWithIdAndDescriptionFields.Description]: user[UserFields.Name], [GroupMemberFields.Amount]: 0 } // Utilizar el nombre de usuario obtenido del contexto
     ]
-    const [members, setMembers] = useState<EntityWithIdAndDescription[]>(defaultMembers)
+    const [members, setMembers] = useState<GroupMember[]>(defaultMembers)
 
     const methods = useForm<Group>({
         resolver: zodResolver(schema),
@@ -63,7 +63,12 @@ const GroupExpensesAddDialog = ({ onAddGroup, friends }: GroupExpensesAddDialogP
     const onTriggerImage = (newImg: string | ArrayBuffer | null) => setImg(newImg)
 
     const onSelectMember = (member: EntityWithIdAndDescription) => {
-        setMembers([...members, member])
+        const addMember = {
+            ...member,
+            [GroupMemberFields.Amount]: 0
+        }
+
+        setMembers([...members, addMember])
     }
 
     const onUnselectMember = (member: EntityWithIdAndDescription) => {

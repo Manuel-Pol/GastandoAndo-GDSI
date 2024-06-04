@@ -1,6 +1,6 @@
-import { GroupExpensesInterface, GroupExpensesInterfaceFields } from '@/types/groupalExpenses'
+import { GroupExpensesInterface, GroupExpensesInterfaceFields, GroupMember } from '@/types/groupalExpenses'
 import GroupExpensesEditDialog from './GroupExpensesEditDialog'
-import { EntityWithIdAndDescription, EntityWithIdAndDescriptionFields, EntityWithIdFields } from '@/types/baseEntities'
+import { EntityWithIdAndDescriptionFields, EntityWithIdFields } from '@/types/baseEntities'
 import { stringFormatter } from '@/utils/formatters/stringFormatter'
 import { Button } from '@/components/ui/button'
 import { Trash2 } from 'lucide-react'
@@ -12,7 +12,7 @@ import { numberFormatter } from '@/utils/formatters/numberFormatter'
 interface AccordionItemGroupExpenseProps {
     expense: GroupExpensesInterface,
     onSaveEdit: (exp: GroupExpensesInterface) => void,
-    friends: EntityWithIdAndDescription[],
+    friends: GroupMember[],
     onDeleteExpense: (exp: GroupExpensesInterface) => void
 }
 
@@ -24,9 +24,13 @@ const AccordionItemGroupExpense = ({expense, onSaveEdit, friends, onDeleteExpens
         return numberFormatter.toStringWithDecimals(totalDebt)
     }
 
+    const calculatePayerAmount = (expense: GroupExpensesInterface) => {
+        const total = (expense[GroupExpensesInterfaceFields.Amount] ?? 0) - (expense[GroupExpensesInterfaceFields.Amount] ?? 0) / (expense[GroupExpensesInterfaceFields.Debtors].length + 1)
+        return numberFormatter.toStringWithDecimals(total)
+    }
+
     return (
         <div>
-
             <Accordion type="single" collapsible className="w-full">
                 <AccordionItem value={`${expense[EntityWithIdFields.Id]}`}>
                     <Card>
@@ -70,7 +74,7 @@ const AccordionItemGroupExpense = ({expense, onSaveEdit, friends, onDeleteExpens
                                 <div className='grid grid-cols-2 gap-8'>
                                     <div className='col-span-1'>
                                         <p className='font-semibold text-black'>
-                                            Pagado por {expense[GroupExpensesInterfaceFields.Payer]}
+                                            Pagado por {expense[GroupExpensesInterfaceFields.Payer][EntityWithIdAndDescriptionFields.Description]}
                                         </p>
                                         <p className='font-normal text-sm'>
                                             (En partes iguales deben pagar ${calculateDebt(expense)})
@@ -79,8 +83,8 @@ const AccordionItemGroupExpense = ({expense, onSaveEdit, friends, onDeleteExpens
                                     <div className='col-span-1'>
                                         <p className='font-semibold text-black text-lg'>Participantes</p>
                                         <div className='grid grid-cols-2 w-full items-center'>
-                                            <p className='font-medium text-black col-span-1'>{expense[GroupExpensesInterfaceFields.Payer]}</p>
-                                            <p className='font-medium text-slate-500 col-span-1'>{'$ 0'}</p>
+                                            <p className='font-medium text-black col-span-1'>{expense[GroupExpensesInterfaceFields.Payer][EntityWithIdAndDescriptionFields.Description]}</p>
+                                            <p className='font-medium text-green-500 col-span-1'>{`+ $ ${calculatePayerAmount(expense)}`}</p>
                                         </div>
                                         {expense[GroupExpensesInterfaceFields.Debtors].map((deb) => 
                                             <div className='grid grid-cols-2 w-full items-center'>

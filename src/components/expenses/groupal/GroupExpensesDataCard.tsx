@@ -1,14 +1,14 @@
-import { GroupExpensesInterface } from '@/types/groupalExpenses'
+import { GroupExpensesInterface, GroupMember } from '@/types/groupalExpenses'
 import { AlertCircle } from 'lucide-react'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
-import { EntityWithIdAndDescription, EntityWithIdFields } from '@/types/baseEntities'
+import { EntityWithIdFields } from '@/types/baseEntities'
 import AccordionItemGroupExpense from './AccordionItemGroupExpense'
 
 interface GroupExpensesDataCardProps {
     expenses: GroupExpensesInterface[]
     triggerDeleteExp: (exp: GroupExpensesInterface) => void
     onSaveEdit: (exp: GroupExpensesInterface) => void
-    friends: EntityWithIdAndDescription[]
+    friends: GroupMember[]
 }
 
 const GroupExpensesDataCard = ({ expenses, triggerDeleteExp, onSaveEdit, friends }: GroupExpensesDataCardProps) => {

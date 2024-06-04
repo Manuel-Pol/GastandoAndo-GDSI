@@ -11,7 +11,8 @@ import { useEffect, useState } from 'react'
 
 interface GroupFormProps {
     groupMembers: EntityWithIdAndDescription[]
-    selectedDebtors: EntityWithIdAndDescription[]
+    selectedDebtors: EntityWithIdAndDescription[],
+    setSelectedPayer?: (arg: string) => void,
     onSelectDebtor: (Debtor: EntityWithIdAndDescription) => void
     onUnselectDebtor: (Debtor: EntityWithIdAndDescription) => void
 }
@@ -19,6 +20,7 @@ interface GroupFormProps {
 const GroupExpensesAddNewForm = ({
     groupMembers,
     selectedDebtors,
+    setSelectedPayer,
     onSelectDebtor,
     onUnselectDebtor
 }: GroupFormProps) => {
@@ -28,7 +30,12 @@ const GroupExpensesAddNewForm = ({
     const [members, setMembers] = useState<EntityWithIdAndDescription[]>(groupMembers)
 
     useEffect(() => {
-        if (watchPayer) setMembers(members.filter(m => m[EntityWithIdAndDescriptionFields.Description] !== watchPayer))
+        if (watchPayer) {
+            setMembers(groupMembers.filter(m => m[EntityWithIdAndDescriptionFields.Description] !== watchPayer))
+            setSelectedPayer && setSelectedPayer(watchPayer)
+            const removeDebtor = selectedDebtors.find((s) => s[EntityWithIdAndDescriptionFields.Description] == watchPayer)
+            removeDebtor && onUnselectDebtor(removeDebtor)
+        }
     }, [watchPayer])
 
     return (
