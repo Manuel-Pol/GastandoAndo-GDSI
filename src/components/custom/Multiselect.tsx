@@ -47,7 +47,6 @@ const Multiselect = ({ options, selectedOptions, onSelect, onUnselect }: Multise
       <div className="group border border-input px-3 py-2 text-sm ring-offset-background rounded-md focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2">
         <div className="flex gap-1 flex-wrap">
           {selectedOptions.map((option) => (
-            option[EntityWithIdFields.Id] !== 0 &&
                 <Badge key={option[EntityWithIdFields.Id]} className='bg-gray-200 hover:bg-gray-100 cursor-pointer'
                        onClick={(e) => {
                         e.preventDefault();
