@@ -1,13 +1,20 @@
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 import { ExpensesInterface } from '@/types/personalExpenses'
 import PersonalExpensesAddNewDialog from './PersonalExpensesAddNewDialog'
 import PersonalExpensesDataCard from './PersonalExpensesDataCard'
-import { EntityWithIdFields } from '@/types/baseEntities'
+import { EntityWithIdFields, EntityWithUserIdFields } from '@/types/baseEntities'
 import { removeData, saveNewData, updateData } from '@/api/Data'
 import { dataPersonalExpenses } from '@/api/PersonalExpensesData'
+import { UserContext } from '@/utils/contexts/userContext'
 
 const PersonalExpenses = () => {
-    const [expenses, setExpenses] = useState<ExpensesInterface[]>(Object.values(dataPersonalExpenses.data))
+    const { user } = useContext(UserContext)
+
+    const [expenses, setExpenses] = useState<ExpensesInterface[]>(
+        Object.values(dataPersonalExpenses.data).filter(
+            value => value[EntityWithUserIdFields.UserId] === user[EntityWithIdFields.Id]
+        )
+    )
 
     const onAddExpense = (exp: ExpensesInterface) => {
         const expAdd: ExpensesInterface = {
@@ -16,7 +23,9 @@ const PersonalExpenses = () => {
         }
         saveNewData(dataPersonalExpenses, expAdd[EntityWithIdFields.Id], expAdd)
 
-        const newExpenses = Object.values(dataPersonalExpenses.data)
+        const newExpenses = Object.values(dataPersonalExpenses.data).filter(
+            value => value[EntityWithUserIdFields.UserId] === user[EntityWithIdFields.Id]
+        )
         setExpenses(newExpenses)
     }
 
@@ -24,7 +33,9 @@ const PersonalExpenses = () => {
         if (exp[EntityWithIdFields.Id] in dataPersonalExpenses.data) {
             removeData(dataPersonalExpenses, exp[EntityWithIdFields.Id])
 
-            const newExpenses = Object.values(dataPersonalExpenses.data)
+            const newExpenses = Object.values(dataPersonalExpenses.data).filter(
+                value => value[EntityWithUserIdFields.UserId] === user[EntityWithIdFields.Id]
+            )
             setExpenses(newExpenses)
         }
     }
@@ -33,7 +44,9 @@ const PersonalExpenses = () => {
         if (exp[EntityWithIdFields.Id] in dataPersonalExpenses.data) {
             updateData(dataPersonalExpenses, exp[EntityWithIdFields.Id], exp)
 
-            const newExpenses = Object.values(dataPersonalExpenses.data)
+            const newExpenses = Object.values(dataPersonalExpenses.data).filter(
+                value => value[EntityWithUserIdFields.UserId] === user[EntityWithIdFields.Id]
+            )
             setExpenses(newExpenses)
         }
     }

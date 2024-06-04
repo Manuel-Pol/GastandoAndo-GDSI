@@ -2,11 +2,13 @@ import { Button } from '@/components/ui/button'
 import { ExpenseType, ExpensesInterface, ExpensesInterfaceFields, RecurrenceType } from '@/types/personalExpenses'
 import { Dialog, DialogContent, DialogClose, DialogTitle, DialogTrigger, DialogFooter } from '@/components/ui/dialog'
 import { CirclePlusIcon } from 'lucide-react'
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { useForm, FormProvider } from 'react-hook-form'
 import PersonalExpensesAddNewForm from './PersonalExpensesAddNewForm'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { UserContext } from '@/utils/contexts/userContext'
+import { EntityWithIdFields, EntityWithUserIdFields } from '@/types/baseEntities'
 
 interface PersonalExpensesAddNewDialogProps {
     onAddExpense: (exp: ExpensesInterface) => void
@@ -27,6 +29,7 @@ const schema = z.object({
 const PersonalExpensesAddNewDialog = ({ onAddExpense }: PersonalExpensesAddNewDialogProps) => {
     const [open, setOpen] = useState<boolean>(false)
     const [img, setImg] = useState<string | ArrayBuffer | null>()
+    const { user } = useContext(UserContext)
 
     const methods = useForm<ExpensesInterface>({
         resolver: zodResolver(schema),
@@ -41,7 +44,8 @@ const PersonalExpensesAddNewDialog = ({ onAddExpense }: PersonalExpensesAddNewDi
     const onSubmitExpense = (data: ExpensesInterface) => {
         const submitData: ExpensesInterface = {
             ...data,
-            [ExpensesInterfaceFields.Image]: img
+            [ExpensesInterfaceFields.Image]: img,
+            [EntityWithUserIdFields.UserId]: user[EntityWithIdFields.Id]
         }
 
         onAddExpense(submitData)

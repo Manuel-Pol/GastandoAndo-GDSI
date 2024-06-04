@@ -1,4 +1,4 @@
-import { EntityWithId } from './baseEntities'
+import { EntityWithUserId } from './baseEntities'
 
 export enum ExpensesInterfaceFields {
     Title = 'titulo',
@@ -23,7 +23,7 @@ export enum RecurrenceType {
     Singular = 'No recurrente'
 }
 
-export interface ExpensesInterface extends EntityWithId {
+export interface ExpensesInterface extends EntityWithUserId {
     [ExpensesInterfaceFields.Title]: string
     [ExpensesInterfaceFields.Description]: string
     [ExpensesInterfaceFields.Image]?: string | ArrayBuffer | null
