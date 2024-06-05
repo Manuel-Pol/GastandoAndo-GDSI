@@ -1,9 +1,11 @@
 import { EntityWithIdAndDescriptionFields, EntityWithIdFields } from '@/types/baseEntities'
 import { UserMinus } from 'lucide-react'
-import { Group, GroupExpensesInterface, GroupExpensesInterfaceFields, GroupFields, GroupMemberFields } from '@/types/groupalExpenses.ts'
-import { useMemo } from 'react'
+import { Group, GroupFields, GroupMember, GroupMemberFields } from '@/types/groupalExpenses.ts'
 import { stringFormatter } from '@/utils/formatters/stringFormatter'
 import { numberFormatter } from '@/utils/formatters/numberFormatter'
+import GroupMemberPayDebt from './components/GroupMemberPayDebt'
+import { useContext } from 'react'
+import { UserContext } from '@/utils/contexts/userContext'
 
 interface GroupalMembersCardProps {
     group: Group
@@ -11,25 +13,22 @@ interface GroupalMembersCardProps {
 }
 
 const GroupMembersCard = ({ group, onRemoveMember }: GroupalMembersCardProps) => {
-    
-    /*const memberDebts = useMemo(() => {
-        const debts: { [key: number]: number } = {};
+    const { user } = useContext(UserContext)
 
-        group[GroupFields.Expenses].forEach((expense: GroupExpensesInterface) => {
-            const amountPerDebtor = (expense[GroupExpensesInterfaceFields.Amount] ?? 0) / (expense[GroupExpensesInterfaceFields.Debtors].length + 1);
-            const amountPayer = (expense[GroupExpensesInterfaceFields.Amount] ?? 0) - amountPerDebtor
+    const handleUpdateGroupMembers = (lst: GroupMember[], member: GroupMember) => {
+        
+    }
 
-            expense[GroupExpensesInterfaceFields.Debtors].forEach(debtor => {
-                if (debts[debtor[EntityWithIdFields.Id]] && debtor[EntityWithIdAndDescriptionFields.Description] !== expense[GroupExpensesInterfaceFields.Payer]) {
-                    debts[debtor[EntityWithIdFields.Id]] -= amountPerDebtor;
-                } else {
-                    debts[debtor[EntityWithIdFields.Id]] += amountPayer;
-                }
-            });
-        });
 
-        return debts;
-    }, [group]);*/
+    const onUpdateMember = (member: GroupMember) => {
+
+        const updatedMembers = group?.[GroupFields.Members].map((m) => {
+            if (m[EntityWithIdFields.Id] == member[EntityWithIdFields.Id]) return member
+            return m
+        })
+
+        handleUpdateGroupMembers(updatedMembers, member)
+    }
 
     return (
         <div className='w-full'>
@@ -49,14 +48,19 @@ const GroupMembersCard = ({ group, onRemoveMember }: GroupalMembersCardProps) =>
                                 `- $${numberFormatter.toStringWithDecimals(parseFloat(Math.abs(member[GroupMemberFields.Amount] ?? 0)), 0, 0)}` : 
                                 ` + $${numberFormatter.toStringWithDecimals(parseFloat(member[GroupMemberFields.Amount] ?? 0), 0, 0)}`, 14)}
                         </p>
-                        {member[EntityWithIdFields.Id] !== 0 && (
-                            <div className="rounded-full p-3 hover:bg-[#e2e2e2] cursor-pointer">
-                                <UserMinus
-                                    className="w-4 h-4 text-red-600"
-                                    onClick={() => onRemoveMember(member[EntityWithIdFields.Id])}
-                                />
-                            </div>
-                        )}
+                        <div className='flex flex-row space-x-2 items-center'>
+                            {member[GroupMemberFields.Amount] > 0 && member[EntityWithIdFields.Id] !== user[EntityWithIdFields.Id] &&
+                                <GroupMemberPayDebt member={member} onUpdateMember={onUpdateMember}/>
+                            }
+                            {member[EntityWithIdFields.Id] !== 0 && (
+                                <div className="rounded-full p-3 hover:bg-[#e2e2e2] cursor-pointer">
+                                    <UserMinus
+                                        className="w-4 h-4 text-red-600"
+                                        onClick={() => onRemoveMember(member[EntityWithIdFields.Id])}
+                                    />
+                                </div>
+                            )}
+                        </div>
                     </div>
                 </div>
             ))}

@@ -15,38 +15,38 @@ const defaultNames = {
 export const currentUser: User = {
     [EntityWithIdFields.Id]: 0,
     [UserFields.Name]: 'Fernando Gastioni',
-    [UserFields.Friends]: [1, 2, 3, 4],
+    [UserFields.Friends]: [1000, 1001, 1002, 1003],
     [UserFields.Mail]: 'fgastioni@fi.uba.ar',
     [UserFields.Password]: 'gastioni'
 }
 
 const defaultUsers: Data<User> = {
     0: currentUser,
-    1: {
-        [EntityWithIdFields.Id]: 1,
+    1000: {
+        [EntityWithIdFields.Id]: 1000,
         [UserFields.Name]: 'Renzo Redeuda',
-        [UserFields.Friends]: [0, 2, 3, 4],
+        [UserFields.Friends]: [0, 1001, 1002, 1003],
         [UserFields.Mail]: 'rredeuda@fi.uba.ar',
         [UserFields.Password]: 'redeuda'
     },
-    2: {
-        [EntityWithIdFields.Id]: 2,
+    1001: {
+        [EntityWithIdFields.Id]: 1001,
         [UserFields.Name]: 'Debora Saldos',
-        [UserFields.Friends]: [0, 1, 3, 4],
+        [UserFields.Friends]: [0, 1000, 1002, 1003],
         [UserFields.Mail]: 'dsaldos@fi.uba.ar',
         [UserFields.Password]: 'saldos'
     },
-    3: {
-        [EntityWithIdFields.Id]: 3,
+    1002: {
+        [EntityWithIdFields.Id]: 1002,
         [UserFields.Name]: 'Jazmin Grezhos',
-        [UserFields.Friends]: [0, 1, 2, 4],
+        [UserFields.Friends]: [0, 1000, 1001, 1003],
         [UserFields.Mail]: 'jgrezhos@fi.uba.ar',
         [UserFields.Password]: 'grezhos'
     },
-    4: {
-        [EntityWithIdFields.Id]: 4,
+    1003: {
+        [EntityWithIdFields.Id]: 1003,
         [UserFields.Name]: 'Camila Presta',
-        [UserFields.Friends]: [0, 1, 2, 3],
+        [UserFields.Friends]: [0, 1000, 1001, 1002],
         [UserFields.Mail]: 'cpresta@fi.uba.ar',
         [UserFields.Password]: 'presta'
     }

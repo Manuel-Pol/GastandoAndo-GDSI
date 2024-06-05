@@ -44,9 +44,11 @@ const GroupMovements = ({ group, updateGroups }: GroupMovementsProps) => {
 
         const membersUpdated = group[GroupFields.Members].map((m) => {
             const matchDebtor = debtorsUpdated.find((d) => d[EntityWithIdFields.Id] == m[EntityWithIdFields.Id])
+            const matchPayer = m[EntityWithIdFields.Id] == payerUpdated[EntityWithIdFields.Id]
             return {
                 ...m,
-                [GroupMemberFields.Amount]: matchDebtor ? m[GroupMemberFields.Amount] - matchDebtor[GroupMemberFields.Amount] : m[GroupMemberFields.Amount] + payerUpdated[GroupMemberFields.Amount]
+                [GroupMemberFields.Amount]: matchDebtor ? m[GroupMemberFields.Amount] - matchDebtor[GroupMemberFields.Amount] 
+                : matchPayer ? m[GroupMemberFields.Amount] + payerUpdated[GroupMemberFields.Amount] : m[GroupMemberFields.Amount]
             }
         })
 
@@ -64,10 +66,11 @@ const GroupMovements = ({ group, updateGroups }: GroupMovementsProps) => {
     const onDeleteMovement = (mov: GroupExpensesInterface) => {
         const membersUpdated = group[GroupFields.Members].map((m) => {
             const matchDebtor = mov[GroupExpensesInterfaceFields.Debtors].find((d) => d[EntityWithIdFields.Id] == m[EntityWithIdFields.Id])
+            const matchPayer = mov[GroupExpensesInterfaceFields.Payer][EntityWithIdFields.Id] == m[EntityWithIdFields.Id]
             return {
                 ...m,
                 [GroupMemberFields.Amount]: matchDebtor ? m[GroupMemberFields.Amount] + matchDebtor[GroupMemberFields.Amount] 
-                : m[GroupMemberFields.Amount] - mov[GroupExpensesInterfaceFields.Payer][GroupMemberFields.Amount]
+                : matchPayer ? m[GroupMemberFields.Amount] - mov[GroupExpensesInterfaceFields.Payer][GroupMemberFields.Amount] : m[GroupMemberFields.Amount]
             }
         })
         
@@ -92,10 +95,11 @@ const GroupMovements = ({ group, updateGroups }: GroupMovementsProps) => {
 
         const prevMembersInitialize = group[GroupFields.Members].map((member) => {
             const matchDebtor = prevDebtorsUpdated?.find((d) => d[EntityWithIdFields.Id] == member[EntityWithIdFields.Id])
+            const matchPayer = member[EntityWithIdFields.Id] == moveToEdit?.[GroupExpensesInterfaceFields.Payer][EntityWithIdFields.Id]
             return {
                 ...member,
                 [GroupMemberFields.Amount]: matchDebtor ? member[GroupMemberFields.Amount] + debtToEdit
-                : member[GroupMemberFields.Amount] - advToEdit
+                : matchPayer ? member[GroupMemberFields.Amount] - advToEdit : member[GroupMemberFields.Amount]
             }
         })
 
@@ -113,10 +117,11 @@ const GroupMovements = ({ group, updateGroups }: GroupMovementsProps) => {
 
         const membersUpdated = prevMembersInitialize.map((m) => {
             const matchDebtor = debtorsUpdated.find((d) => d[EntityWithIdFields.Id] == m[EntityWithIdFields.Id])
+            const matchPayer = m[EntityWithIdFields.Id] == mov[GroupExpensesInterfaceFields.Payer][EntityWithIdFields.Id]
             return {
                 ...m,
                 [GroupMemberFields.Amount]: matchDebtor ? m[GroupMemberFields.Amount] - matchDebtor[GroupMemberFields.Amount] 
-                : m[GroupMemberFields.Amount] + payerUpdated[GroupMemberFields.Amount]
+                : matchPayer ? m[GroupMemberFields.Amount] + payerUpdated[GroupMemberFields.Amount] : m[GroupMemberFields.Amount]
             }
         })
 

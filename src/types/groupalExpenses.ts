@@ -40,10 +40,10 @@ export interface GroupMember extends EntityWithIdAndDescription {
 }
 
 export const defaultFriends: GroupMember[] = [
-    { [EntityWithIdFields.Id]: 1, [EntityWithIdAndDescriptionFields.Description]: 'Renzo Redeuda', [GroupMemberFields.Amount]: 0 },
-    { [EntityWithIdFields.Id]: 2, [EntityWithIdAndDescriptionFields.Description]: 'Debora Saldos', [GroupMemberFields.Amount]: 0 },
-    { [EntityWithIdFields.Id]: 3, [EntityWithIdAndDescriptionFields.Description]: 'Jazmin Grezhos', [GroupMemberFields.Amount]: 0 },
-    { [EntityWithIdFields.Id]: 4, [EntityWithIdAndDescriptionFields.Description]: 'Camila Presta' , [GroupMemberFields.Amount]: 0}
+    { [EntityWithIdFields.Id]: 1000, [EntityWithIdAndDescriptionFields.Description]: 'Renzo Redeuda', [GroupMemberFields.Amount]: 0 },
+    { [EntityWithIdFields.Id]: 1001, [EntityWithIdAndDescriptionFields.Description]: 'Debora Saldos', [GroupMemberFields.Amount]: 0 },
+    { [EntityWithIdFields.Id]: 1002, [EntityWithIdAndDescriptionFields.Description]: 'Jazmin Grezhos', [GroupMemberFields.Amount]: 0 },
+    { [EntityWithIdFields.Id]: 1003, [EntityWithIdAndDescriptionFields.Description]: 'Camila Presta' , [GroupMemberFields.Amount]: 0}
 ]
 
 export interface GroupExpensesInterface extends EntityWithId {

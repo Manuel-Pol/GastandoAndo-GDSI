@@ -31,7 +31,7 @@ const GroupExpensesAddDialog = ({ onAddGroup, friends }: GroupExpensesAddDialogP
     const { user } = useContext(UserContext) // Obtener el nombre de usuario del contexto
 
     const defaultMembers: GroupMember[] = [
-        { [EntityWithIdFields.Id]: 0, [EntityWithIdAndDescriptionFields.Description]: user[UserFields.Name], [GroupMemberFields.Amount]: 0 } // Utilizar el nombre de usuario obtenido del contexto
+        { [EntityWithIdFields.Id]: user[EntityWithIdFields.Id], [EntityWithIdAndDescriptionFields.Description]: user[UserFields.Name], [GroupMemberFields.Amount]: 0 } // Utilizar el nombre de usuario obtenido del contexto
     ]
     const [members, setMembers] = useState<GroupMember[]>(defaultMembers)
 
