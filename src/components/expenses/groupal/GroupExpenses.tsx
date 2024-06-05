@@ -1,6 +1,6 @@
-import { EntityWithIdFields } from '@/types/baseEntities'
+import { EntityWithIdAndDescriptionFields, EntityWithIdFields } from '@/types/baseEntities'
 import { useState } from 'react'
-import { Group, GroupFields, defaultFriends } from '@/types/groupalExpenses'
+import { Group, GroupExpensesInterface, GroupExpensesInterfaceFields, GroupFields, GroupMember, GroupMemberBalance, GroupMemberBalanceFields, GroupMemberFields, defaultFriends } from '@/types/groupalExpenses'
 import GroupExpensesAddDialog from './GroupExpensesAddDialog'
 import GroupDataCard from './GroupDataCard'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
@@ -63,6 +63,53 @@ const GroupExpenses = () => {
         }
     }
 
+    const onUpdateExpensesByBalance = (balance: GroupMemberBalance, logged: GroupMember, payedMember: GroupMember) => {
+        if (selectedGroup) {
+            const loggedPayer = {
+                ...logged,
+                [GroupMemberFields.Amount]: Math.abs(balance[GroupMemberBalanceFields.Balance])
+            }
+            const newPayedMember = {
+                ...payedMember,
+                [GroupMemberFields.Amount]: balance[GroupMemberBalanceFields.Balance]
+            }
+
+            const currentExpenses = selectedGroup[GroupFields.Expenses]
+
+            const newExp: GroupExpensesInterface = {
+                [EntityWithIdFields.Id]: currentExpenses.length + 1,
+                [GroupExpensesInterfaceFields.Payer]: loggedPayer,
+                [GroupExpensesInterfaceFields.Amount]: Math.abs(balance[GroupMemberBalanceFields.Balance]),
+                [GroupExpensesInterfaceFields.Date]: new Date(),
+                [GroupExpensesInterfaceFields.Title]: 'Pago de deuda',
+                [GroupExpensesInterfaceFields.Description]: `${logged[EntityWithIdAndDescriptionFields.Description]} le pagó la deuda de $ ${Math.abs(balance[GroupMemberBalanceFields.Balance])} a ${payedMember[EntityWithIdAndDescriptionFields.Description]}`,
+                [GroupExpensesInterfaceFields.Debtors]: [newPayedMember],
+                [GroupExpensesInterfaceFields.DebtPay]: true
+            }
+
+            const newExpenses: GroupExpensesInterface[] = [...currentExpenses, newExp]
+
+            const membersUpdated = selectedGroup[GroupFields.Members].map((m) => {
+                const matchDebtor = m[EntityWithIdFields.Id] == payedMember[EntityWithIdFields.Id]
+                const matchPayer = m[EntityWithIdFields.Id] == logged[EntityWithIdFields.Id]
+
+                return {
+                    ...m,
+                    [GroupMemberFields.Amount]: matchPayer ? m[GroupMemberFields.Amount] + loggedPayer[GroupMemberFields.Amount] 
+                    : matchDebtor ? m[GroupMemberFields.Amount] + newPayedMember[GroupMemberFields.Amount] : m[GroupMemberFields.Amount]
+                }
+            })
+
+            const groupUpdated: Group = {
+                ...selectedGroup,
+                [GroupFields.Expenses]: newExpenses,
+                [GroupFields.Members]: membersUpdated
+            }
+
+            onSaveEdit(groupUpdated)
+        }
+    }
+
     return (
         <div className='grid grid-cols-4 gap-6 justify-center items-start w-full'>
             <div className='col-span-1 bg-white rounded p-4'>
@@ -102,7 +149,7 @@ const GroupExpenses = () => {
                             <p>Integrantes</p>
                             <GroupAddMemberDialog />
                         </div>
-                        <GroupMembersCard group={selectedGroup} onRemoveMember={onDeleteMember} />
+                        <GroupMembersCard group={selectedGroup} onRemoveMember={onDeleteMember} onUpdateMember={onUpdateExpensesByBalance}/>
                     </div>
                 </div>
             )}
