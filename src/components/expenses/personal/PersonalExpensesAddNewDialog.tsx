@@ -20,7 +20,6 @@ const schema = z.object({
     [ExpensesInterfaceFields.Amount]: z.coerce
         .number({ message: 'Este campo es obligatorio.' })
         .positive({ message: 'El monto debe ser mayor a 0.' }),
-    [ExpensesInterfaceFields.Image]: z.string().optional(),
     [ExpensesInterfaceFields.Date]: z.date({ message: 'Este campo es obligatorio.' }),
     [ExpensesInterfaceFields.IsExpense]: z.nativeEnum(ExpenseType, { message: 'Este campo es obligatorio.' }),
     [ExpensesInterfaceFields.Recurrence]: z.nativeEnum(RecurrenceType, { message: 'Este campo es obligatorio.' })
