@@ -18,31 +18,34 @@ interface AccordionSavingsProps {
 }
 
 export const AccordionSavings = ({ saving, onSaveEdit, onDelete }: AccordionSavingsProps) => {
-    const [progress, setProgress] = useState<Progress>()
     const [progressValue, setProgressValue] = useState<number>(0)
+    const [disabled, setDisabled] = useState<boolean>(saving[SavingsFields.Amount] == progressValue)
+
+    const cuantoFalta = () => {
+        const total = parseFloat(saving[SavingsFields.Amount] ?? 0)
+        return total - progressValue
+    }
 
     const calculateProgress = () => {
         const total = parseFloat(saving[SavingsFields.Amount] ?? 0)
-        console.log('Monto a ahorrar:', total)
-        const progresos = saving[SavingsFields.Progress]
-        if (progresos.length === 0) return 0
-        const montos = progresos.map(p => p[ProgressFields.Amount])
-        console.log('Montos:', montos)
-        const montoRestante = total - montos.reduce((acc, curr) => acc + curr, 0)
-        console.log('Monto restante:', montoRestante)
+        const montoRestante = cuantoFalta()
         const porcentaje = ((total - montoRestante) / total) * 100
-        console.log('Porcentaje:', porcentaje)
         return porcentaje
     }
 
-    /* {const newProgress = [...(saving[SavingsFields.Progress] ?? []), progress]
-    const newSaving: Savings = {
-        ...saving,
-        [SavingsFields.Progress]: newProgress
+    const onAddProgress = (prog: Progress) => {
+        setProgressValue(progressValue + prog[ProgressFields.Amount])
+
+        const currentProgress = [...(saving[SavingsFields.Progress] ?? [0]), prog]
+
+        const newSaving = {
+            ...saving,
+            [SavingsFields.Progress]: currentProgress
+        }
+
+        setDisabled(progressValue + prog[ProgressFields.Amount] == saving[SavingsFields.Amount])
+        onSaveEdit(newSaving)
     }
-    saving = newSaving
-    onSaveEdit(newSaving)
-    setProgressValue(calculateProgress()) }*/
 
     return (
         <Accordion type='single' collapsible className='w-full'>
@@ -67,11 +70,14 @@ export const AccordionSavings = ({ saving, onSaveEdit, onDelete }: AccordionSavi
                                     </div>
                                 </div>
                                 <div>
-                                    <p className='text-sm'>50% o 100/500000 o falta tanto</p>
+                                    <p className='text-sm'>
+                                        $ {numberFormatter.toStringWithDecimals(progressValue)}/ ${' '}
+                                        {numberFormatter.toStringWithDecimals(saving[SavingsFields.Amount])}
+                                    </p>
                                     <ProgressBar
-                                        value={progressValue}
+                                        value={calculateProgress()}
                                         max={100}
-                                        className='[&>*]:bg-gradient-to-r [&>*]:from-red-600 [&>*]:to-yellow-400 [&>*]:via-orange-600 bg-neutral-200 w-56'
+                                        className='[&>*]:bg-gradient-to-r [&>*]:from-[#34db88] [&>*]:to-[#0d3822] [&>*]:via-[#29a768] bg-neutral-200 w-56'
                                     />
                                 </div>
                                 <div className='flex flex-row items-center space-x-2'>
@@ -122,7 +128,12 @@ export const AccordionSavings = ({ saving, onSaveEdit, onDelete }: AccordionSavi
                                     <Button className=' bg-[#1c7549] hover:bg-[#124e30] text-white rounded px-8'>
                                         Pedir sugerencia
                                     </Button>
-                                    <AddProgress onAddProgress={setProgress} />
+                                    <AddProgress
+                                        progreso={progressValue}
+                                        total={saving[SavingsFields.Amount]}
+                                        disabled={disabled}
+                                        onAddProgress={onAddProgress}
+                                    />
                                 </div>
                             </div>
                         </AccordionContent>

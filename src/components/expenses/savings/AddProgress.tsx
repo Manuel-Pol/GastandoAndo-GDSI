@@ -12,28 +12,41 @@ import { useEffect, useState } from 'react'
 
 interface AddProgressProps {
     onAddProgress: (prog: Progress) => void
+    disabled: boolean
+    progreso: number
+    total: number
 }
 
-const schema = z.object({
-    [ProgressFields.Amount]: z.coerce
-        .number({ message: 'Este campo es obligatorio.' })
-        .positive({ message: 'El monto debe ser positivo.' }),
-    [ProgressFields.Date]: z.date({ message: 'Este campo es obligatorio.' })
-})
-
 export const AddProgress = (props: AddProgressProps) => {
-    const { onAddProgress } = props
+    const { onAddProgress, disabled, total, progreso } = props
     const [open, setOpen] = useState<boolean>(false)
+    const [disableAdd, setDisableAdd] = useState<boolean>(false)
+
+    const schema = z.object({
+        [ProgressFields.Amount]: z.coerce
+            .number({ message: 'Este campo es obligatorio.' })
+            .lte(total - progreso, { message: 'El monto supera el total del ahorro.' })
+            .positive({ message: 'El monto debe ser positivo.' }),
+        [ProgressFields.Date]: z.date({ message: 'Este campo es obligatorio.' })
+    })
 
     const form = useForm<Progress>({
         resolver: zodResolver(schema),
         mode: 'onBlur'
     })
 
+    const watchAmount = form.watch(ProgressFields.Amount)
+
+    useEffect(() => {
+        if (watchAmount) {
+            if (total - watchAmount < 0) setDisableAdd(true)
+            else setDisableAdd(false)
+        }
+    }, [watchAmount])
+
     const onSubmitProgress = (data: Progress) => {
         onAddProgress(data)
         setOpen(false)
-        form.reset()
     }
 
     useEffect(() => {
@@ -45,7 +58,9 @@ export const AddProgress = (props: AddProgressProps) => {
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
-                <Button className=' bg-[#1c7549] hover:bg-[#124e30] text-white rounded px-8'>Añadir progreso</Button>
+                <Button className=' bg-[#1c7549] hover:bg-[#124e30] text-white rounded px-8' disabled={disabled}>
+                    Añadir progreso
+                </Button>
             </DialogTrigger>
             <DialogContent className='bg-white'>
                 <DialogTitle className='text-black'>Añadir progreso</DialogTitle>
@@ -58,6 +73,7 @@ export const AddProgress = (props: AddProgressProps) => {
                         <Button
                             className='rounded text-black hover:bg-neutral-300'
                             onClick={form.handleSubmit(onSubmitProgress)}
+                            disabled={disableAdd}
                         >
                             <CirclePlusIcon className='mr-2 items-center' /> Agregar
                         </Button>
