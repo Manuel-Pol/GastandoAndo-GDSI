@@ -1,4 +1,4 @@
-import { Calculator, User, Users } from 'lucide-react'
+import { PiggyBank, User, Users } from 'lucide-react'
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
 
@@ -12,6 +12,8 @@ const HomeLanding: React.FC = () => {
     const goToGroupExpenses = () => {
         navigate('/group')
     }
+
+    const goToSavings = () => navigate('/savings')
 
     return (
         <div className='flex flex-col items-center justify-center h-full py-12 gap-14'>
@@ -43,8 +45,10 @@ const HomeLanding: React.FC = () => {
                     <div>
                         <img src='assets/calculo.jpeg' className='w-52 h-52 rounded' />
                     </div>
-                    <button className='bg-[#1c7549] hover:bg-[#175e3a] text-white font-bold py-2 px-4 rounded  flex flex-row items-center gap-3'>
-                        <Calculator /> <p>Calculo Financiero</p>
+                    <button className='bg-[#1c7549] hover:bg-[#175e3a] text-white font-bold py-2 px-4 rounded  flex flex-row items-center gap-3'
+                            onClick={goToSavings}
+                    >
+                        <PiggyBank /> <p>Mis Ahorros</p>
                     </button>
                 </div>
             </div>
