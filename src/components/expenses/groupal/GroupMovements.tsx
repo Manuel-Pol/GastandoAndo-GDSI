@@ -64,12 +64,13 @@ const GroupMovements = ({ group, updateGroups }: GroupMovementsProps) => {
     }
     
     const onDeleteMovement = (mov: GroupExpensesInterface) => {
+        const debtPay = mov[GroupExpensesInterfaceFields.DebtPay]
         const membersUpdated = group[GroupFields.Members].map((m) => {
             const matchDebtor = mov[GroupExpensesInterfaceFields.Debtors].find((d) => d[EntityWithIdFields.Id] == m[EntityWithIdFields.Id])
             const matchPayer = mov[GroupExpensesInterfaceFields.Payer][EntityWithIdFields.Id] == m[EntityWithIdFields.Id]
             return {
                 ...m,
-                [GroupMemberFields.Amount]: matchDebtor ? m[GroupMemberFields.Amount] + matchDebtor[GroupMemberFields.Amount] 
+                [GroupMemberFields.Amount]: matchDebtor ? debtPay ? m[GroupMemberFields.Amount] + Math.abs(matchDebtor[GroupMemberFields.Amount]) : m[GroupMemberFields.Amount] + matchDebtor[GroupMemberFields.Amount]
                 : matchPayer ? m[GroupMemberFields.Amount] - mov[GroupExpensesInterfaceFields.Payer][GroupMemberFields.Amount] : m[GroupMemberFields.Amount]
             }
         })

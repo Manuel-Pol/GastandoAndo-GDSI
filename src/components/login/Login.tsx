@@ -67,7 +67,7 @@ const Login = () => {
                     <DialogTitle className='text-black'>Ingresar</DialogTitle>
                     <FormProvider {...form}>
                         <TextField name={'email'} control={form.control} label='email' />
-                        <TextField name={'password'} control={form.control} label='Constrasenia' type='password' />
+                        <TextField name={'password'} control={form.control} label='Constraseña' type='password' />
                     </FormProvider>
                     <DialogFooter>
                         <DialogClose asChild>

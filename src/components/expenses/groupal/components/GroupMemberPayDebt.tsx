@@ -1,4 +1,4 @@
-import { GroupMember, GroupMemberFields } from "@/types/groupalExpenses";
+import { GroupMember } from "@/types/groupalExpenses";
 import { Dialog, DialogContent, DialogClose, DialogTitle, DialogTrigger, DialogFooter } from '@/components/ui/dialog'
 import { EntityWithIdAndDescriptionFields } from "@/types/baseEntities";
 import { CheckIcon, CircleX, HandCoinsIcon } from "lucide-react";
@@ -7,22 +7,12 @@ import { useState } from "react";
 
 interface GroupMemberPayDebtProps {
     member: GroupMember,
-    onUpdateMember: (mem: GroupMember) => void
+    onUpdateMember: () => void
 }
 
 
 const GroupMemberPayDebt = ({member, onUpdateMember} : GroupMemberPayDebtProps) => {
     const [open, setOpen] = useState<boolean>(false)
-    
-    
-    const handlePayDebt = () => {
-        const newMember = {
-            ...member,
-            [GroupMemberFields.Amount]: 0
-        }
-
-        onUpdateMember(newMember)
-    }
 
     return (
         <Dialog>
@@ -47,7 +37,7 @@ const GroupMemberPayDebt = ({member, onUpdateMember} : GroupMemberPayDebtProps) 
                                 <Button className='bg-[#1b2766] hover:bg-[#1b2766] rounded text-white py-4'
                                         onClick={() => {
                                             setOpen(false)
-                                            handlePayDebt()
+                                            onUpdateMember()
                                         }}
                                 >
                                     <CheckIcon className='mr-2 text-white ' /> <p className='text-lg'>Sí</p>

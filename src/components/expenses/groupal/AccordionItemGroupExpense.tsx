@@ -20,13 +20,18 @@ interface AccordionItemGroupExpenseProps {
 const AccordionItemGroupExpense = ({expense, onSaveEdit, friends, onDeleteExpense}: AccordionItemGroupExpenseProps) => {
     
     const calculateDebt = (exp: GroupExpensesInterface) => {
-        const totalDebt = (exp[GroupExpensesInterfaceFields.Amount] ?? 0) / (exp[GroupExpensesInterfaceFields.Debtors].length + 1)
-        return numberFormatter.toStringWithDecimals(totalDebt)
+        const totalDebt = expense[GroupExpensesInterfaceFields.DebtPay] ? expense[GroupExpensesInterfaceFields.Amount]
+        :
+        (exp[GroupExpensesInterfaceFields.Amount] ?? 0) / (exp[GroupExpensesInterfaceFields.Debtors].length + 1)
+        return numberFormatter.toStringWithDecimals(totalDebt ?? 0)
     }
 
     const calculatePayerAmount = (expense: GroupExpensesInterface) => {
-        const total = (expense[GroupExpensesInterfaceFields.Amount] ?? 0) - (expense[GroupExpensesInterfaceFields.Amount] ?? 0) / (expense[GroupExpensesInterfaceFields.Debtors].length + 1)
-        return numberFormatter.toStringWithDecimals(total)
+        const total = 
+        expense[GroupExpensesInterfaceFields.DebtPay] ? expense[GroupExpensesInterfaceFields.Amount]
+        :
+        (expense[GroupExpensesInterfaceFields.Amount] ?? 0) - (expense[GroupExpensesInterfaceFields.Amount] ?? 0) / (expense[GroupExpensesInterfaceFields.Debtors].length + 1)
+        return numberFormatter.toStringWithDecimals(total ?? 0)
     }
 
     return (
@@ -53,11 +58,14 @@ const AccordionItemGroupExpense = ({expense, onSaveEdit, friends, onDeleteExpens
                                                 )}
                                             </p>
                                             <div className='flex flex-row items-center'>
-                                                <GroupExpensesEditDialog
-                                                    expense={expense}
-                                                    onSaveEdit={onSaveEdit}
-                                                    friends={friends}
-                                                    />
+                                                {
+                                                    !expense[GroupExpensesInterfaceFields.DebtPay] &&
+                                                    <GroupExpensesEditDialog
+                                                        expense={expense}
+                                                        onSaveEdit={onSaveEdit}
+                                                        friends={friends}
+                                                        />
+                                                }
                                                 <Button
                                                     variant='outline'
                                                     size='icon'
@@ -73,12 +81,18 @@ const AccordionItemGroupExpense = ({expense, onSaveEdit, friends, onDeleteExpens
                             <AccordionContent>
                                 <div className='grid grid-cols-2 gap-8'>
                                     <div className='col-span-1'>
-                                        <p className='font-semibold text-black'>
-                                            Pagado por {expense[GroupExpensesInterfaceFields.Payer][EntityWithIdAndDescriptionFields.Description]}
-                                        </p>
-                                        <p className='font-normal text-sm'>
-                                            (En partes iguales deben pagar ${calculateDebt(expense)})
-                                        </p>
+                                        {
+                                            !expense[GroupExpensesInterfaceFields.DebtPay] &&
+                                            <p className='font-semibold text-black'>
+                                                Pagado por {expense[GroupExpensesInterfaceFields.Payer][EntityWithIdAndDescriptionFields.Description]}
+                                            </p>
+                                        }
+                                        {
+                                            !expense[GroupExpensesInterfaceFields.DebtPay] &&
+                                            <p className='font-normal text-sm'>
+                                                (En partes iguales deben pagar ${calculateDebt(expense)})
+                                            </p>
+                                        }
                                     </div>
                                     <div className='col-span-1'>
                                         <p className='font-semibold text-black text-lg'>Participantes</p>

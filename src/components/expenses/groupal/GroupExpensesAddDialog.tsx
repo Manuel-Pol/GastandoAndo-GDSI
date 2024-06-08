@@ -21,7 +21,6 @@ const schema = z.object({
         .string({ message: 'Este campo es obligatorio.' })
         .max(20, { message: 'El nombre debe tener menos de 20 caracteres.' }),
     [GroupFields.Description]: z.string().optional(),
-    [GroupFields.Image]: z.string().optional(),
     [GroupFields.Members]: z.array(z.object({ id: z.string(), description: z.string(), monto: z.number() })).optional()
 })
 

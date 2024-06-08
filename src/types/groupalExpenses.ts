@@ -19,7 +19,8 @@ export enum GroupExpensesInterfaceFields {
     Amount = 'monto',
     Payer = 'pagador',
     Debtors = 'deudores',
-    Date = 'fecha'
+    Date = 'fecha',
+    DebtPay = 'pagoDeDeuda'
 }
 
 export interface Group extends EntityWithId {
@@ -39,6 +40,14 @@ export interface GroupMember extends EntityWithIdAndDescription {
     [GroupMemberFields.Amount]: number
 }
 
+export enum GroupMemberBalanceFields {
+    Balance = 'balance'
+}
+
+export interface GroupMemberBalance extends EntityWithIdAndDescription {
+    [GroupMemberBalanceFields.Balance]: number
+}
+
 export const defaultFriends: GroupMember[] = [
     { [EntityWithIdFields.Id]: 1000, [EntityWithIdAndDescriptionFields.Description]: 'Renzo Redeuda', [GroupMemberFields.Amount]: 0 },
     { [EntityWithIdFields.Id]: 1001, [EntityWithIdAndDescriptionFields.Description]: 'Debora Saldos', [GroupMemberFields.Amount]: 0 },
@@ -52,5 +61,6 @@ export interface GroupExpensesInterface extends EntityWithId {
     [GroupExpensesInterfaceFields.Amount]?: number
     [GroupExpensesInterfaceFields.Payer]: GroupMember
     [GroupExpensesInterfaceFields.Debtors]: GroupMember[]
-    [GroupExpensesInterfaceFields.Date]: Date
+    [GroupExpensesInterfaceFields.Date]: Date,
+    [GroupExpensesInterfaceFields.DebtPay]?: boolean
 }
