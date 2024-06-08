@@ -1,5 +1,5 @@
 import { EntityWithIdFields } from '@/types/baseEntities'
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 import { Group, GroupFields, defaultFriends } from '@/types/groupalExpenses'
 import GroupExpensesAddDialog from './GroupExpensesAddDialog'
 import GroupDataCard from './GroupDataCard'
@@ -10,9 +10,14 @@ import GroupMembersCard from './GroupMembersCard'
 import { GroupAddMemberDialog } from './GroupAddMemberDialog'
 import { removeData, saveNewData, updateData } from '@/api/Data'
 import { dataGroups } from '@/api/GroupsData'
+import { UserFields } from '@/types/users'
+import { UserContext } from '@/utils/contexts/userContext'
+import { dataUsers } from '@/api/UsersData'
 
 const GroupExpenses = () => {
-    const [currentGroups, setCurrentGroups] = useState<Group[]>(Object.values(dataGroups.data))
+    const { user } = useContext(UserContext)
+
+    const [currentGroups, setCurrentGroups] = useState<Group[]>(user[UserFields.Groups].map(id => dataGroups.data[id]))
     const [selectedGroup, setSelectedGroup] = useState<Group | undefined>(undefined)
 
     const handleAddGroup = (group: Group) => {
@@ -20,10 +25,12 @@ const GroupExpenses = () => {
             ...group,
             [EntityWithIdFields.Id]: dataGroups.id
         }
+        user[UserFields.Groups].push(groupAdd[EntityWithIdFields.Id])
 
         saveNewData(dataGroups, groupAdd[EntityWithIdFields.Id], groupAdd)
+        updateData(dataUsers, user[EntityWithIdFields.Id], user)
 
-        setCurrentGroups(Object.values(dataGroups.data))
+        setCurrentGroups(user[UserFields.Groups].map(id => dataGroups.data[id]))
         setSelectedGroup(groupAdd)
     }
 
@@ -35,7 +42,11 @@ const GroupExpenses = () => {
         }
         if (id in dataGroups.data) {
             removeData(dataGroups, id)
-            const newGroups = Object.values(dataGroups.data)
+
+            user[UserFields.Groups] = user[UserFields.Groups].filter(value => value !== id)
+            updateData(dataUsers, user[EntityWithIdFields.Id], user)
+
+            const newGroups = user[UserFields.Groups].map(id => dataGroups.data[id])
             setCurrentGroups(newGroups)
         }
     }
@@ -44,7 +55,7 @@ const GroupExpenses = () => {
         if (group[EntityWithIdFields.Id] in dataGroups.data) {
             updateData(dataGroups, group[EntityWithIdFields.Id], group)
 
-            const newGroups = Object.values(dataGroups.data)
+            const newGroups = user[UserFields.Groups].map(id => dataGroups.data[id])
             setCurrentGroups(newGroups)
         }
         onClickGroup(group)

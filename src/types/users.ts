@@ -4,7 +4,10 @@ export enum UserFields {
     Name = 'nombre',
     Friends = 'amigos',
     Mail = 'mail',
-    Password = 'contrasenia'
+    Password = 'contrasenia',
+    PersonalExpenses = 'movimientosPersonales',
+    Groups = 'grupos',
+    Savings = 'ahorros'
 }
 
 export interface User extends EntityWithId {
@@ -12,4 +15,7 @@ export interface User extends EntityWithId {
     [UserFields.Friends]: number[]
     [UserFields.Mail]: string
     [UserFields.Password]: string
+    [UserFields.PersonalExpenses]: number[]
+    [UserFields.Groups]: number[]
+    [UserFields.Savings]: number[]
 }

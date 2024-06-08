@@ -44,8 +44,6 @@ const Login = () => {
 
     const navigate = useNavigate()
 
-    useContext(UserContext)
-
     const goToHome = () => {
         navigate('/home')
     }

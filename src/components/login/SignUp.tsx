@@ -59,7 +59,10 @@ export const SignUp = () => {
             [UserFields.Friends]: [],
             [UserFields.Mail]: data.email,
             [UserFields.Password]: data.password,
-            [EntityWithIdFields.Id]: dataUsers.id
+            [EntityWithIdFields.Id]: dataUsers.id,
+            [UserFields.PersonalExpenses]: [],
+            [UserFields.Groups]: [],
+            [UserFields.Savings]: []
         }
         saveNewData(dataUsers, newUser[EntityWithIdFields.Id], newUser, newUser[UserFields.Mail])
         setUser(newUser)

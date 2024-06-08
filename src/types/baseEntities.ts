@@ -13,11 +13,3 @@ export enum EntityWithIdAndDescriptionFields {
 export interface EntityWithIdAndDescription extends EntityWithId {
     [EntityWithIdAndDescriptionFields.Description]: string
 }
-
-export enum EntityWithUserIdFields {
-    UserId = 'usuario'
-}
-
-export interface EntityWithUserId extends EntityWithId {
-    [EntityWithUserIdFields.UserId]: number
-}

@@ -1,12 +1,11 @@
 import { ExpensesInterface, ExpensesInterfaceFields } from '@/types/personalExpenses'
-import { useContext, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Edit, Save } from 'lucide-react'
 import { Dialog, DialogContent, DialogClose, DialogTitle, DialogTrigger, DialogFooter } from '@/components/ui/dialog'
-import { EntityWithIdFields, EntityWithUserIdFields } from '@/types/baseEntities'
+import { EntityWithIdFields } from '@/types/baseEntities'
 import { FormProvider, useForm } from 'react-hook-form'
 import PersonalExpensesAddNewForm from './PersonalExpensesAddNewForm'
-import { UserContext } from '@/utils/contexts/userContext'
 
 interface PersonalExpensesEditDialogProps {
     expense: ExpensesInterface
@@ -16,7 +15,6 @@ interface PersonalExpensesEditDialogProps {
 const PersonalExpensesEditDialog = ({ expense, onSubmitEdit }: PersonalExpensesEditDialogProps) => {
     const [openEdit, setOpenEdit] = useState<boolean>(false)
     const [img, setImg] = useState<string | ArrayBuffer | null | undefined>(expense[ExpensesInterfaceFields.Image])
-    const { user } = useContext(UserContext)
 
     const onEditExp = () => setOpenEdit(true)
 
@@ -28,8 +26,7 @@ const PersonalExpensesEditDialog = ({ expense, onSubmitEdit }: PersonalExpensesE
         [ExpensesInterfaceFields.Title]: expense[ExpensesInterfaceFields.Title],
         [ExpensesInterfaceFields.IsExpense]: expense[ExpensesInterfaceFields.IsExpense],
         [ExpensesInterfaceFields.Recurrence]: expense[ExpensesInterfaceFields.Recurrence],
-        [ExpensesInterfaceFields.Date]: expense[ExpensesInterfaceFields.Date],
-        [EntityWithUserIdFields.UserId]: user[EntityWithIdFields.Id]
+        [ExpensesInterfaceFields.Date]: expense[ExpensesInterfaceFields.Date]
     }
 
     const methods = useForm<ExpensesInterface>({
