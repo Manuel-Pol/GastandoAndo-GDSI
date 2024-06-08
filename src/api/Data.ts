@@ -3,7 +3,7 @@ export type Data<T> = { [key: number]: T }
 export type DB<T> = { storageKey: string; id: number; len: number; data: Data<T>; names?: { [key: string]: number } }
 
 function dateReviver(key: string, value: string) {
-    if (key === 'fecha') {
+    if (key.includes('fecha')) {
         return new Date(value)
     }
     return value

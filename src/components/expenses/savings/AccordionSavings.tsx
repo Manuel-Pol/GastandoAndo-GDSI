@@ -18,7 +18,15 @@ interface AccordionSavingsProps {
 }
 
 export const AccordionSavings = ({ saving, onSaveEdit, onDelete }: AccordionSavingsProps) => {
-    const [progressValue, setProgressValue] = useState<number>(0)
+    const [progressValue, setProgressValue] = useState<number>((): number => {
+        let totalProgress = 0
+        console.log(saving[SavingsFields.Progress])
+        for (const progress of saving[SavingsFields.Progress]) {
+            totalProgress += progress[ProgressFields.Amount]
+        }
+        return totalProgress
+    })
+    console.log(progressValue)
     const [disabled, setDisabled] = useState<boolean>(saving[SavingsFields.Amount] == progressValue)
 
     const cuantoFalta = () => {
@@ -36,7 +44,7 @@ export const AccordionSavings = ({ saving, onSaveEdit, onDelete }: AccordionSavi
     const onAddProgress = (prog: Progress) => {
         setProgressValue(progressValue + prog[ProgressFields.Amount])
 
-        const currentProgress = [...(saving[SavingsFields.Progress] ?? [0]), prog]
+        const currentProgress = [...(saving[SavingsFields.Progress] ?? []), prog]
 
         const newSaving = {
             ...saving,
@@ -102,7 +110,7 @@ export const AccordionSavings = ({ saving, onSaveEdit, onDelete }: AccordionSavi
                                     <p>{dateFormatter.toShortDate(saving[SavingsFields.DateStart])}</p>
                                 </div>
                                 <div className='flex flex-col items-center'>
-                                    {saving[SavingsFields.Progress] ? (
+                                    {saving[SavingsFields.Progress].length !== 0 ? (
                                         <div className='flex flex-col items-center'>
                                             <p className='text-lg text-[#124e30]'>Ultimo progreso cargado</p>
                                             <p>

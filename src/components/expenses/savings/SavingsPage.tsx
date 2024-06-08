@@ -1,32 +1,47 @@
 import { EntityWithIdFields } from '@/types/baseEntities'
-import { Savings } from '@/types/savings'
-import { useState } from 'react'
+import { Savings, SavingsFields } from '@/types/savings'
+import { useContext, useState } from 'react'
 import { AddNewSaving } from './AddNewSaving'
 import { SavingsDataCard } from './SavingsDataCard'
+import { UserContext } from '@/utils/contexts/userContext'
+import { UserFields } from '@/types/users'
+import { dataSavings } from '@/api/SavingsData'
+import { removeData, saveNewData, updateData } from '@/api/Data'
+import { dataUsers } from '@/api/UsersData'
 
 const SavingsPage = () => {
-    const [savings, setSavings] = useState<Savings[]>([])
+    const { user } = useContext(UserContext)
+
+    const [savings, setSavings] = useState<Savings[]>(user[UserFields.Savings].map(id => dataSavings.data[id]))
 
     const onAddSaving = (saving: Savings) => {
         const savingAdd: Savings = {
             ...saving,
-            [EntityWithIdFields.Id]: savings.length + 1
+            [SavingsFields.Progress]: [],
+            [EntityWithIdFields.Id]: dataSavings.id
         }
+
+        user[UserFields.Savings].push(savingAdd[EntityWithIdFields.Id])
+
+        saveNewData(dataSavings, savingAdd[EntityWithIdFields.Id], savingAdd)
+        updateData(dataUsers, user[EntityWithIdFields.Id], user)
+
         setSavings([...savings, savingAdd])
     }
 
     const onDeleteSaving = (saving: Savings) => {
-        const newSavings = savings.filter(s => s[EntityWithIdFields.Id] !== saving[EntityWithIdFields.Id])
+        removeData(dataSavings, saving[EntityWithIdFields.Id])
+        user[UserFields.Savings] = user[UserFields.Savings].filter(id => id !== saving[EntityWithIdFields.Id])
+        updateData(dataUsers, user[EntityWithIdFields.Id], user)
+
+        const newSavings = user[UserFields.Savings].map(id => dataSavings.data[id])
         setSavings(newSavings)
     }
 
     const onSaveEdit = (saving: Savings) => {
-        const newSavings = savings.map(s => {
-            if (s[EntityWithIdFields.Id] === saving[EntityWithIdFields.Id]) return saving
+        updateData(dataSavings, saving[EntityWithIdFields.Id], saving)
 
-            return s
-        })
-
+        const newSavings = user[UserFields.Savings].map(id => dataSavings.data[id])
         setSavings(newSavings)
     }
 
