@@ -47,7 +47,7 @@ export const SignUp = () => {
 
     const navigate = useNavigate()
 
-    const { setUser } = useContext(UserContext)
+    const { changeUser } = useContext(UserContext)
 
     const goToHome = () => {
         navigate('/home')
@@ -65,7 +65,7 @@ export const SignUp = () => {
             [UserFields.Savings]: []
         }
         saveNewData(dataUsers, newUser[EntityWithIdFields.Id], newUser, newUser[UserFields.Mail])
-        setUser(newUser)
+        changeUser(newUser)
         goToHome()
     }
 

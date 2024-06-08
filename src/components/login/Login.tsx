@@ -40,7 +40,7 @@ type Schema = z.infer<typeof schema>
 const Login = () => {
     const form = useForm<Schema>({ resolver: zodResolver(schema), mode: 'onBlur' })
 
-    const { setUser } = useContext(UserContext)
+    const { changeUser } = useContext(UserContext)
 
     const navigate = useNavigate()
 
@@ -52,7 +52,7 @@ const Login = () => {
         if (dataUsers.names) {
             const inputUserId = dataUsers.names[data.email]
             const inputUser: User = dataUsers.data[inputUserId]
-            setUser(inputUser)
+            changeUser(inputUser)
             goToHome()
         }
     }
