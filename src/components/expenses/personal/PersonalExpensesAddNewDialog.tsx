@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button'
-import { ExpenseType, ExpensesInterface, ExpensesInterfaceFields, RecurrenceType } from '@/types/personalExpenses'
+import { ExpenseType, ExpensesInterface, ExpensesInterfaceFields, PriorityType, RecurrenceType } from '@/types/personalExpenses'
 import { Dialog, DialogContent, DialogClose, DialogTitle, DialogTrigger, DialogFooter } from '@/components/ui/dialog'
 import { CirclePlusIcon } from 'lucide-react'
 import { useEffect, useState } from 'react'
@@ -20,15 +20,27 @@ const schema = z.object({
         .positive({ message: 'El monto debe ser mayor a 0.' }),
     [ExpensesInterfaceFields.Date]: z.date({ message: 'Este campo es obligatorio.' }),
     [ExpensesInterfaceFields.IsExpense]: z.nativeEnum(ExpenseType, { message: 'Este campo es obligatorio.' }),
-    [ExpensesInterfaceFields.Recurrence]: z.nativeEnum(RecurrenceType, { message: 'Este campo es obligatorio.' })
+    [ExpensesInterfaceFields.Recurrence]: z.nativeEnum(RecurrenceType, { message: 'Este campo es obligatorio.' }),
+    [ExpensesInterfaceFields.Priority]: z.nativeEnum(PriorityType, { message: 'Este campo es obligatorio.' }).optional()
 })
+
+const refinedSchema = schema.refine(data => {
+    if (data[ExpensesInterfaceFields.IsExpense] === ExpenseType.Gasto && !data[ExpensesInterfaceFields.Priority]) {
+        return false
+    }
+    return true
+    }, {
+        message: 'Este campo es obligatorio',
+        path: [ExpensesInterfaceFields.Priority]
+    }
+)
 
 const PersonalExpensesAddNewDialog = ({ onAddExpense }: PersonalExpensesAddNewDialogProps) => {
     const [open, setOpen] = useState<boolean>(false)
     const [img, setImg] = useState<string | ArrayBuffer | null>()
 
     const methods = useForm<ExpensesInterface>({
-        resolver: zodResolver(schema),
+        resolver: zodResolver(refinedSchema),
         mode: 'onBlur'
     })
 

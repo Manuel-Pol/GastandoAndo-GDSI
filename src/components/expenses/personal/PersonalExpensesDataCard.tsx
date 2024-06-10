@@ -48,6 +48,12 @@ const PersonalExpensesDataCard = ({ expenses, triggerDeleteExp, onSaveEdit }: Pe
                                                 <Badge className='bg-[#e8ebe9]'>
                                                     {exp[ExpensesInterfaceFields.Recurrence]}
                                                 </Badge>
+                                                {
+                                                    exp[ExpensesInterfaceFields.Priority] &&
+                                                    <Badge className='bg-[#274783] text-white'>
+                                                        {exp[ExpensesInterfaceFields.Priority]}
+                                                    </Badge>
+                                                }
                                             </div>
                                             <h6 className='font-semibold text-gray-400'>
                                                 {stringFormatter.cutIfHaveMoreThan(

@@ -26,6 +26,7 @@ const PersonalExpensesEditDialog = ({ expense, onSubmitEdit }: PersonalExpensesE
         [ExpensesInterfaceFields.Title]: expense[ExpensesInterfaceFields.Title],
         [ExpensesInterfaceFields.IsExpense]: expense[ExpensesInterfaceFields.IsExpense],
         [ExpensesInterfaceFields.Recurrence]: expense[ExpensesInterfaceFields.Recurrence],
+        [ExpensesInterfaceFields.Priority]: expense[ExpensesInterfaceFields.Priority],
         [ExpensesInterfaceFields.Date]: expense[ExpensesInterfaceFields.Date]
     }
 

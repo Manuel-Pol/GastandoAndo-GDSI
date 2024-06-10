@@ -3,12 +3,13 @@ import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '../ui/
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '../ui/select'
 
 interface SelectFieldProps<TForm extends FieldValues> extends Omit<ControllerProps<TForm>, 'render'> {
-    label: string
+    label: string,
+    placeholder?: string,
     values: string[]
 }
 
 export const SelectField = <TForm extends FieldValues>(props: SelectFieldProps<TForm>) => {
-    const { control, name, label, values } = props
+    const { control, name, label, values, placeholder } = props
     return (
         <FormField
             rules={{ required: true }}
@@ -20,7 +21,7 @@ export const SelectField = <TForm extends FieldValues>(props: SelectFieldProps<T
                     <FormControl>
                         <Select onValueChange={onChange} value={value}>
                             <SelectTrigger className='w-[200px]'>
-                                <SelectValue placeholder={label} />
+                                <SelectValue placeholder={placeholder ?? label} />
                             </SelectTrigger>
                             <SelectContent className='bg-white'>
                                 <SelectGroup>

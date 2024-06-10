@@ -7,7 +7,8 @@ export enum ExpensesInterfaceFields {
     Amount = 'monto',
     IsExpense = 'esGasto',
     Date = 'fecha',
-    Recurrence = 'recurrencia'
+    Recurrence = 'recurrencia',
+    Priority = 'prioridad'
 }
 
 export enum ExpenseType {
@@ -23,6 +24,14 @@ export enum RecurrenceType {
     Singular = 'No recurrente'
 }
 
+export enum PriorityType {
+    Essential = 'Imprescindible',
+    High = 'Alta',
+    Medium = 'Media',
+    Low = 'Baja',
+    Disposable = 'Descartable'
+}
+
 export interface ExpensesInterface extends EntityWithId {
     [ExpensesInterfaceFields.Title]: string
     [ExpensesInterfaceFields.Description]: string
@@ -30,5 +39,6 @@ export interface ExpensesInterface extends EntityWithId {
     [ExpensesInterfaceFields.Amount]?: number
     [ExpensesInterfaceFields.IsExpense]: ExpenseType
     [ExpensesInterfaceFields.Date]: Date
+    [ExpensesInterfaceFields.Priority]?: PriorityType
     [ExpensesInterfaceFields.Recurrence]: RecurrenceType
 }

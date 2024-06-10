@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { ExpensesInterface } from '@/types/personalExpenses'
 import PersonalExpensesAddNewDialog from './PersonalExpensesAddNewDialog'
 import PersonalExpensesDataCard from './PersonalExpensesDataCard'
@@ -12,9 +12,7 @@ import { dataUsers } from '@/api/UsersData'
 const PersonalExpenses = () => {
     const { user } = useContext(UserContext)
 
-    const [expenses, setExpenses] = useState<ExpensesInterface[]>(
-        user[UserFields.PersonalExpenses].map(id => dataPersonalExpenses.data[id])
-    )
+    const [expenses, setExpenses] = useState<ExpensesInterface[]>([])
 
     const onAddExpense = (exp: ExpensesInterface) => {
         const expAdd: ExpensesInterface = {
@@ -29,6 +27,10 @@ const PersonalExpenses = () => {
         const newExpenses = user[UserFields.PersonalExpenses].map(id => dataPersonalExpenses.data[id])
         setExpenses(newExpenses)
     }
+
+    useEffect(() => {
+        !!user && setExpenses(user[UserFields.PersonalExpenses].map(id => dataPersonalExpenses.data[id]))
+    }, [user])
 
     const onDeleteExpense = (exp: ExpensesInterface) => {
         if (exp[EntityWithIdFields.Id] in dataPersonalExpenses.data) {

@@ -58,8 +58,10 @@ export const AddNewSaving = (props: AddNewSavingProps) => {
                     <TextField control={form.control} name={SavingsFields.Title} label='Titulo' />
                     <TextArea control={form.control} name={SavingsFields.Description} label='Descripcion' />
                     <TextField control={form.control} name={SavingsFields.Amount} label='Monto' adornment='$' />
-                    <DateField control={form.control} name={SavingsFields.DateStart} label='Fecha de inicio' />
-                    <DateField control={form.control} name={SavingsFields.DateObjective} label='Fecha objetivo' />
+                    <div className='flex flex-row items-center justify-between'>
+                        <DateField control={form.control} name={SavingsFields.DateStart} label='Fecha de inicio' />
+                        <DateField control={form.control} name={SavingsFields.DateObjective} label='Fecha objetivo' />
+                    </div>
                 </FormProvider>
                 <DialogFooter>
                     <DialogClose asChild>

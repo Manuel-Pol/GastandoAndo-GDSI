@@ -1,12 +1,12 @@
-import { ExpensesInterfaceFields, ExpenseType, RecurrenceType } from '@/types/personalExpenses'
+import { ExpensesInterfaceFields, ExpenseType, RecurrenceType, PriorityType } from '@/types/personalExpenses'
 import { Form, useFormContext } from 'react-hook-form'
 
 import { useEffect, useState } from 'react'
 import { TextField } from '@/components/forms/TextField'
 import { TextArea } from '@/components/forms/TextArea'
-import { DateField } from '@/components/forms/DateField'
 import { FileField } from '@/components/forms/FileField'
 import { SelectField } from '@/components/forms/SelectField'
+import { DateField } from '@/components/forms/DateField'
 
 interface PersonalExpensesAddNewFormProps {
     onTriggerImage: (img: string | ArrayBuffer | null) => void
@@ -16,6 +16,8 @@ interface PersonalExpensesAddNewFormProps {
 const PersonalExpensesAddNewForm = ({ onTriggerImage, prevImg }: PersonalExpensesAddNewFormProps) => {
     const methods = useFormContext()
     const watchFile = methods.watch(ExpensesInterfaceFields.Image)
+    const watchIsExpense = methods.watch(ExpensesInterfaceFields.IsExpense)
+    const [enablePriority, setEnablePriority] = useState<boolean>(false)
     const [img, setImg] = useState<string | ArrayBuffer | null>(null)
 
     useEffect(() => {
@@ -29,6 +31,14 @@ const PersonalExpensesAddNewForm = ({ onTriggerImage, prevImg }: PersonalExpense
             reader.readAsDataURL(watchFile)
         }
     }, [watchFile])
+
+    useEffect(() => {
+        setEnablePriority(false)
+        if (watchIsExpense == ExpenseType.Gasto) {
+            setEnablePriority(true)
+        }
+        methods.setValue(ExpensesInterfaceFields.Priority, undefined)
+    }, [watchIsExpense])
 
     useEffect(() => {
         if (prevImg) {
@@ -69,7 +79,24 @@ const PersonalExpensesAddNewForm = ({ onTriggerImage, prevImg }: PersonalExpense
                         ]}
                     />
                 </div>
-                <DateField control={methods.control} name={ExpensesInterfaceFields.Date} label='Fecha' />
+                <div className='flex flex-row justify-between items-center space-x-4'>
+                    <DateField control={methods.control} name={ExpensesInterfaceFields.Date} label='Fecha'/>
+                    {
+                        enablePriority &&
+                        <SelectField control={methods.control}
+                                    name={ExpensesInterfaceFields.Priority}
+                                    placeholder='Seleccione la prioridad'
+                                    label='Prioridad'
+                                    values={[
+                                        PriorityType.Essential,
+                                        PriorityType.High,
+                                        PriorityType.Medium,
+                                        PriorityType.Low,
+                                        PriorityType.Disposable,
+                                    ]}
+                        />
+                    }
+                </div>
             </div>
         </Form>
     )
