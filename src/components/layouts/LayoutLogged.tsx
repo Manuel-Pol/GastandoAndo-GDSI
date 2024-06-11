@@ -3,9 +3,11 @@ import { UserFields } from '@/types/users'
 import { UserContext } from '@/utils/contexts/userContext'
 import React from 'react'
 import { Outlet } from 'react-router-dom'
+import Calculator from './components/Calculator'
 
 const LayoutLogged = () => {
     const { user } = React.useContext(UserContext)
+
     return (
         <div>
             <div className='w-full flex items-center justify-between bg-[#1C7549] space-x-4 py-2 px-10'>
@@ -22,6 +24,7 @@ const LayoutLogged = () => {
                     </Avatar>
                 </div>
             </div>
+            <Calculator />
             <div className='container mx-auto my-6'>
                 <Outlet />
             </div>
