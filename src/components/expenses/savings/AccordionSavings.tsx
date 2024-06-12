@@ -10,6 +10,7 @@ import { SavingsEdit } from './SavingsEdit'
 import { AddProgress } from './AddProgress'
 import { Progress as ProgressBar } from '@/components/ui/progress'
 import { useState } from 'react'
+import SavingsSuggestions from './SavingsSuggestions'
 
 interface AccordionSavingsProps {
     saving: Savings
@@ -133,9 +134,7 @@ export const AccordionSavings = ({ saving, onSaveEdit, onDelete }: AccordionSavi
                                     )}
                                 </div>
                                 <div className='flex flex-col items-center space-y-4'>
-                                    <Button className=' bg-[#1c7549] hover:bg-[#124e30] text-white rounded px-8'>
-                                        Pedir sugerencia
-                                    </Button>
+                                    <SavingsSuggestions />
                                     <AddProgress
                                         progreso={progressValue}
                                         total={saving[SavingsFields.Amount]}
