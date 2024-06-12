@@ -40,7 +40,18 @@ const PreviewMovementDialog = ({ movement }: PreviewMovementDialogProps) => {
                     <DialogContent className='min-w-[400px] bg-white rounded'>
                         <div className='flex flex-row justify-between items-center py-6 border-b-gray-400 border-b-[1px]'>
                             <DialogTitle className='text-black mb-2'>
-                                {movement[ExpensesInterfaceFields.Title]}
+                                <div className='flex flex-col gap-2'>
+                                    {movement[ExpensesInterfaceFields.Title]}
+                                    {
+                                    movement[ExpensesInterfaceFields.Priority] &&
+                                    <div className='flex flex-row space-x-2 items-center'>
+                                        <p className='text-gray-400 text-[13px]'>Prioridad:</p>
+                                        <Badge className='bg-[#274783] text-white text-[14px] px-3'>
+                                            {movement[ExpensesInterfaceFields.Priority]}
+                                        </Badge>
+                                    </div>
+                                }
+                                </div>
                             </DialogTitle>
                             <div className='space-x-4'>
                                 {movement[ExpensesInterfaceFields.IsExpense] === ExpenseType.Gasto ? (
