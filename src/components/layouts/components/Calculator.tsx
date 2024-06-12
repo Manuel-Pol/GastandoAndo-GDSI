@@ -1,7 +1,7 @@
 import { Dialog, DialogContent, DialogClose, DialogTitle, DialogTrigger, DialogFooter } from '@/components/ui/dialog'
 import calcu from '../../../../assets/calcu.png'
 import indec from '../../../../assets/indec.png'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
 import { useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { Button } from '@/components/ui/button'
@@ -27,7 +27,6 @@ const IDX_IPC = 1.136
 
 
 const Calculator = () => {
-    const navigate = useNavigate()
     const location = useLocation()
     const matchSavings = location.pathname === '/savings'
 

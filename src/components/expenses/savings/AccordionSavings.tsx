@@ -10,7 +10,6 @@ import { SavingsEdit } from './SavingsEdit'
 import { AddProgress } from './AddProgress'
 import { Progress as ProgressBar } from '@/components/ui/progress'
 import { useState } from 'react'
-import SavingsSuggestions from './SavingsSuggestions'
 
 interface AccordionSavingsProps {
     saving: Savings
@@ -21,13 +20,11 @@ interface AccordionSavingsProps {
 export const AccordionSavings = ({ saving, onSaveEdit, onDelete }: AccordionSavingsProps) => {
     const [progressValue, setProgressValue] = useState<number>((): number => {
         let totalProgress = 0
-        console.log(saving[SavingsFields.Progress])
         for (const progress of saving[SavingsFields.Progress]) {
             totalProgress += progress[ProgressFields.Amount]
         }
         return totalProgress
     })
-    console.log(progressValue)
     const [disabled, setDisabled] = useState<boolean>(saving[SavingsFields.Amount] == progressValue)
 
     const cuantoFalta = () => {
@@ -133,15 +130,11 @@ export const AccordionSavings = ({ saving, onSaveEdit, onDelete }: AccordionSavi
                                         <p className='text-lg text-[#124e30]'>Todavia no hay progresos cargados</p>
                                     )}
                                 </div>
-                                <div className='flex flex-col items-center space-y-4'>
-                                    <SavingsSuggestions />
-                                    <AddProgress
-                                        progreso={progressValue}
-                                        total={saving[SavingsFields.Amount]}
-                                        disabled={disabled}
-                                        onAddProgress={onAddProgress}
-                                    />
-                                </div>
+                                <AddProgress progreso={progressValue}
+                                             total={saving[SavingsFields.Amount]}
+                                             disabled={disabled}
+                                             onAddProgress={onAddProgress}
+                                />
                             </div>
                         </AccordionContent>
                     </CardContent>
