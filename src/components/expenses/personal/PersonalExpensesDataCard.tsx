@@ -11,6 +11,7 @@ import { numberFormatter } from '@/utils/formatters/numberFormatter'
 import PreviewMovementDialog from '../components/PreviewMovementDialog'
 import { dateFormatter } from '@/utils/formatters/dateFormatter'
 import { stringFormatter } from '@/utils/formatters/stringFormatter'
+import DeleteActionButtonDialog from '@/components/custom/DeleteActionButtonDialog'
 
 interface PersonalExpensesDataCardProps {
     expenses: ExpensesInterface[]
@@ -78,14 +79,10 @@ const PersonalExpensesDataCard = ({ expenses, triggerDeleteExp, onSaveEdit }: Pe
                                         <div className='flex flex-row items-center relative'>
                                             <PreviewMovementDialog movement={exp} />
                                             <PersonalExpensesEditDialog expense={exp} onSubmitEdit={onSaveEdit} />
-                                            <Button
-                                                variant='outline'
-                                                size='icon'
-                                                className='rounded-full border-none p-3 hover:bg-[#ccd3d8]'
-                                                onClick={() => onDelExp(exp)}
-                                            >
-                                                <Trash2 className='h-4 w-4' color='#EF4444' />
-                                            </Button>
+                                            <DeleteActionButtonDialog title={'Eliminar movimiento'}
+                                                                      description={`¿Está seguro que desea eliminar el movimiento ${exp[ExpensesInterfaceFields.Title]}?`}
+                                                                      onDelete={() => onDelExp(exp)}
+                                            />
                                         </div>
                                     </div>
                                 </div>

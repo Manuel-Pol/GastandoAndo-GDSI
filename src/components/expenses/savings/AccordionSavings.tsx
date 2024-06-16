@@ -1,15 +1,14 @@
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion'
-import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { EntityWithIdFields } from '@/types/baseEntities'
 import { Progress, ProgressFields, Savings, SavingsFields } from '@/types/savings'
 import { dateFormatter } from '@/utils/formatters/dateFormatter'
 import { numberFormatter } from '@/utils/formatters/numberFormatter'
-import { Trash2 } from 'lucide-react'
 import { SavingsEdit } from './SavingsEdit'
 import { AddProgress } from './AddProgress'
 import { Progress as ProgressBar } from '@/components/ui/progress'
 import { useState } from 'react'
+import DeleteActionButtonDialog from '@/components/custom/DeleteActionButtonDialog'
 
 interface AccordionSavingsProps {
     saving: Savings
@@ -89,14 +88,10 @@ export const AccordionSavings = ({ saving, onSaveEdit, onDelete }: AccordionSavi
                                 <div className='flex flex-row items-center space-x-2'>
                                     <div className='flex flex-row items-center relative'>
                                         <SavingsEdit saving={saving} onSubmitEdit={onSaveEdit} />
-                                        <Button
-                                            variant='outline'
-                                            size='icon'
-                                            className='rounded-full border-none p-3 hover:bg-[#ccd3d8]'
-                                            onClick={() => onDelete(saving)}
-                                        >
-                                            <Trash2 className='h-4 w-4' color='#EF4444' />
-                                        </Button>
+                                        <DeleteActionButtonDialog title={'Eliminar ahorro'}
+                                                                  description={`¿Está seguro que desea eliminar el ahorro ${saving[SavingsFields.Title]}?`}
+                                                                  onDelete={() => onDelete(saving)}
+                                        />
                                     </div>
                                 </div>
                             </div>

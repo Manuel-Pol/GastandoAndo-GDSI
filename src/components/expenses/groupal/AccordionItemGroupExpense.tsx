@@ -2,12 +2,11 @@ import { GroupExpensesInterface, GroupExpensesInterfaceFields, GroupMember } fro
 import GroupExpensesEditDialog from './GroupExpensesEditDialog'
 import { EntityWithIdAndDescriptionFields, EntityWithIdFields } from '@/types/baseEntities'
 import { stringFormatter } from '@/utils/formatters/stringFormatter'
-import { Button } from '@/components/ui/button'
-import { Trash2 } from 'lucide-react'
 
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion'
 import { Card, CardContent } from '@/components/ui/card'
 import { numberFormatter } from '@/utils/formatters/numberFormatter'
+import DeleteActionButtonDialog from '@/components/custom/DeleteActionButtonDialog'
 
 interface AccordionItemGroupExpenseProps {
     expense: GroupExpensesInterface,
@@ -66,14 +65,10 @@ const AccordionItemGroupExpense = ({expense, onSaveEdit, friends, onDeleteExpens
                                                         friends={friends}
                                                         />
                                                 }
-                                                <Button
-                                                    variant='outline'
-                                                    size='icon'
-                                                    className='rounded-full p-3 hover:bg-[#ccd3d8] border-none'
-                                                    onClick={() => onDeleteExpense(expense)}
-                                                    >
-                                                    <Trash2 className='h-4 w-4' color='#EF4444' />
-                                                </Button>
+                                                <DeleteActionButtonDialog title={'Eliminar gasto grupal'}
+                                                                      description={`¿Está seguro que desea eliminar el gasto ${expense[GroupExpensesInterfaceFields.Title]}?`}
+                                                                      onDelete={() => onDeleteExpense(expense)}
+                                                />
                                             </div>
                                         </div>
                                     </div>

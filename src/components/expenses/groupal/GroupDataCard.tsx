@@ -1,9 +1,10 @@
-import { AlertCircle, Trash } from 'lucide-react'
+import { AlertCircle } from 'lucide-react'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Group, GroupFields } from '@/types/groupalExpenses'
 import { EntityWithIdFields } from '@/types/baseEntities'
 import GroupEditDialog from './GroupEditDialog'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
+import DeleteActionButtonDialog from '@/components/custom/DeleteActionButtonDialog'
 
 interface GroupDataCardProps {
     groups: Group[]
@@ -45,16 +46,10 @@ const GroupDataCard = ({ groups, onSelect, selectedGroup, onSaveEdit, onDelete }
                             <div className='rounded-full hover:bg-[#ccd3d8]'>
                                 <GroupEditDialog group={group} onSubmitEdit={onSaveEdit} />
                             </div>
-                            <div className='rounded-full p-3 hover:bg-[#ccd3d8]'>
-                                <Trash
-                                    className='w-4 h-4 text-red-600'
-                                    onClick={event => {
-                                        event.preventDefault()
-                                        event.stopPropagation() // Evitar la propagación del evento al contenedor del grupo
-                                        onDelete(group[EntityWithIdFields.Id])
-                                    }}
-                                />
-                            </div>
+                            <DeleteActionButtonDialog title={'Eliminar grupo'}
+                                                      description={`¿Está seguro que desea eliminar el grupo ${group[GroupFields.Name]}?`}
+                                                      onDelete={() => onDelete(group[EntityWithIdFields.Id])}
+                            />
                         </div>
                     </div>
                 ))

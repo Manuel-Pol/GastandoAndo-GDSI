@@ -5,6 +5,7 @@ import { UserMinus } from "lucide-react";
 import { useEffect, useState } from "react";
 import GroupMemberPayDebt from "./GroupMemberPayDebt";
 import { numberFormatter } from "@/utils/formatters/numberFormatter";
+import DeleteActionButtonDialog from "@/components/custom/DeleteActionButtonDialog";
 
 
 interface GroupMemberDataCardProps {
@@ -80,12 +81,12 @@ const GroupMemberDataCard = ({member, logged, group, onRemoveMember, handleUpdat
                         <GroupMemberPayDebt member={member} onUpdateMember={onUpdateMember}/>
                     }
                     {member[EntityWithIdFields.Id] !== 0 && (
-                        <div className="rounded-full p-3 hover:bg-[#e2e2e2] cursor-pointer">
-                            <UserMinus
-                                className="w-4 h-4 text-red-600"
-                                onClick={() => onRemoveMember(member[EntityWithIdFields.Id])}
-                            />
-                        </div>
+                        <DeleteActionButtonDialog title={'Eliminar miembro'}
+                                                  icon={<UserMinus className="w-4 h-4 text-red-600" />}
+                                                  description={`¿Está seguro que desea eliminar el miembro ${member[EntityWithIdAndDescriptionFields.Description]}?`}
+                                                  onDelete={() => onRemoveMember(member[EntityWithIdFields.Id])}
+                        />
+                        
                     )}
                 </div>
             </div>
