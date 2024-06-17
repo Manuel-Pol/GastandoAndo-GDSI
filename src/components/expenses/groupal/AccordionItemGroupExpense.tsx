@@ -65,8 +65,11 @@ const AccordionItemGroupExpense = ({expense, onSaveEdit, friends, onDeleteExpens
                                                         friends={friends}
                                                         />
                                                 }
-                                                <DeleteActionButtonDialog title={'Eliminar gasto grupal'}
-                                                                      description={`¿Está seguro que desea eliminar el gasto ${expense[GroupExpensesInterfaceFields.Title]}?`}
+                                                <DeleteActionButtonDialog title={`Eliminar ${ expense[GroupExpensesInterfaceFields.DebtPay] ? 'pago de deuda' : 'gasto grupal'}`}
+                                                                      description={`¿Está seguro que desea eliminar ${ expense[GroupExpensesInterfaceFields.DebtPay] ? ` este ${expense[GroupExpensesInterfaceFields.Title]}?`
+                                                                        :
+                                                                        `gasto ${expense[GroupExpensesInterfaceFields.Title]}?`}`
+                                                                      }
                                                                       onDelete={() => onDeleteExpense(expense)}
                                                 />
                                             </div>

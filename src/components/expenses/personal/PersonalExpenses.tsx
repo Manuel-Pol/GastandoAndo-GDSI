@@ -75,15 +75,24 @@ const PersonalExpenses = () => {
 
     const onSaveEdit = (exp: ExpensesInterface) => {
         const movement = expenses.find((mov) => mov[EntityWithIdFields.Id] == exp[EntityWithIdFields.Id])
-        let total = movement?.[ExpensesInterfaceFields.IsExpense] === ExpenseType.Gasto ? balance + (movement[ExpensesInterfaceFields.Amount] ?? 0) :
-            balance - (exp[ExpensesInterfaceFields.Amount] ?? 0)
+        const newMov = {
+            ...exp,
+            [ExpensesInterfaceFields.Amount]: parseFloat(exp[ExpensesInterfaceFields.Amount])
+        }
+        const total = (movement?.[ExpensesInterfaceFields.IsExpense] === ExpenseType.Gasto) ? (
+            exp[ExpensesInterfaceFields.IsExpense] === ExpenseType.Ingreso ? 
+            balance + (movement[ExpensesInterfaceFields.Amount] ?? 0) + newMov[ExpensesInterfaceFields.Amount] :
+            balance + (movement[ExpensesInterfaceFields.Amount] ?? 0) - newMov[ExpensesInterfaceFields.Amount])
+            : (
+                exp[ExpensesInterfaceFields.IsExpense] === ExpenseType.Ingreso ?
+                balance - (movement[ExpensesInterfaceFields.Amount] ?? 0) + newMov[ExpensesInterfaceFields.Amount] :
+                balance - (movement[ExpensesInterfaceFields.Amount] ?? 0) - newMov[ExpensesInterfaceFields.Amount] 
+            )
 
-        total = exp[ExpensesInterfaceFields.IsExpense] === ExpenseType.Gasto ? total - (exp[ExpensesInterfaceFields.Amount] ?? 0) : total + (exp[ExpensesInterfaceFields.Amount] ?? 0) 
-        
         setBalance(total)
 
         if (exp[EntityWithIdFields.Id] in dataPersonalExpenses.data) {
-            updateData(dataPersonalExpenses, exp[EntityWithIdFields.Id], exp)
+            updateData(dataPersonalExpenses, exp[EntityWithIdFields.Id], newMov)
 
             const newExpenses = user[UserFields.PersonalExpenses].map(id => dataPersonalExpenses.data[id])
             setExpenses(newExpenses)
