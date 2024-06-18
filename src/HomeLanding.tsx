@@ -14,7 +14,7 @@ export const HomeLanding = () => {
             <div className='flex flex-col items-center gap-2'>
                 <img src='assets/tipo.png' className='w-80 h-80' />
                 <p className='text-7xl font-serif font-semibold text-[#0e3d26]'>Gastando Ando</p>
-                <p className='text-xl'>Simplificá tus ganancias maximizá tu bienestar</p>
+                <p className='text-xl'>Simplificá tus gastos, maximizá tu bienestar</p>
             </div>
         </div>
     )
